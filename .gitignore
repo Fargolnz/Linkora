@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Virtual Environment
+.venv/
+venv/
+
+# IDE
+.vscode/
+.idea/
+
+# Environment Variables
+.env
+.env.*
+
+# Build & Generated Files
+output/
+dist/
+build/
+
+# Test & Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Type Checker Cache
+.mypy_cache/
+
+# Operating System
+.DS_Store
+Thumbs.db
+Desktop.ini
