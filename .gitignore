@@ -1,33 +1,53 @@
 # Python
 __pycache__/
 *.py[cod]
+*$py.class
 
-# Virtual Environment
-.venv/
-venv/
-
-# IDE
-.vscode/
-.idea/
-
-# Environment Variables
-.env
-.env.*
-
-# Build & Generated Files
-output/
+# Distribution / packaging
 dist/
 build/
+*.egg-info/
+.eggs/
 
-# Test & Coverage
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# IDE / editors
+.vscode/
+.idea/
+*.swp
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Linkora build output
+output/
+
+# ANTLR auxiliary files (the generated .py parser under compiler/generated/
+# is committed on purpose; these IDE support files are not needed at runtime)
+*.interp
+*.tokens
+
+# Test & coverage
 .pytest_cache/
 .coverage
+.coverage.*
+coverage.xml
 htmlcov/
 
-# Type Checker Cache
+# Lint / type-check caches
 .mypy_cache/
+.ruff_cache/
 
-# Operating System
+# Logs
+*.log
+
+# Operating system
 .DS_Store
 Thumbs.db
 Desktop.ini
