@@ -1,4 +1,10 @@
-Link {
-    title: "GitHub"
-    url: "https://github.com"
+Page {
+
+    Link {
+        title: "My GitHub"
+        url: "https://github.com/Fargolnz"
+    }
+
+    Link { title: "My LinkedIn", url: "https://www.linkedin.com/in/seyyedeh-fargol-nazemzadeh" }
+
 }
