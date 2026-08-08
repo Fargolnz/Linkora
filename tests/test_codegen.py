@@ -61,6 +61,11 @@ class TestResponsiveDesign:
         html = _html()
         assert "min-height: 52px" in html
 
+    def test_vazirmatn_font_loaded(self):
+        html = _html()
+        assert "https://fonts.googleapis.com/css2?family=Vazirmatn" in html
+        assert '"Vazirmatn"' in html
+
 
 class TestLinkRendering:
     def test_renders_anchor(self):

@@ -47,8 +47,8 @@ body {{
     min-height: 100vh;
     min-height: 100dvh;
     background-color: var(--lk-bg);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-        Helvetica, Arial, sans-serif;
+    font-family: "Vazirmatn", -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, Helvetica, Arial, sans-serif;
 }}
 
 /* Mobile-first: the page fills the phone viewport. */
