@@ -5,6 +5,17 @@ Page {
         url: "https://github.com/Fargolnz"
     }
 
-    Link { title: "My LinkedIn", url: "https://www.linkedin.com/in/seyyedeh-fargol-nazemzadeh" }
+    Link {
+        title: "My GitHub, But Customized"
+        url: "https://github.com/Fargolnz"
+        align: left
+        titleColor: "#c7006e"
+        backgroundColor: "#ffa8d8"
+        borderColor: "#f63ba2"
+        shape: pill
+    }
 
+    Link { title: "لینکدین من", url: "https://www.linkedin.com/in/seyyedeh-fargol-nazemzadeh" }
+
+    Link { title: "لینکدین من شخصی‌سازی شده", url: "https://www.linkedin.com/in/seyyedeh-fargol-nazemzadeh", align: right, titleColor: "#4F46E5", backgroundColor: "#FFFFFF", borderColor: "#4F46E5", shape: sharp }
 }
