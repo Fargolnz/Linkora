@@ -11,6 +11,7 @@ import sys
 from pathlib import Path
 
 from compiler import compile_source
+from compiler.pipeline import compile_file
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -38,7 +39,7 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 
     source_text = args.source.read_text(encoding="utf-8")
-    result = compile_source(source_text)
+    result = compile_file(args.source, args.out)
 
     if not result.success:
         for error in result.errors:
