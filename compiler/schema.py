@@ -65,16 +65,9 @@ def _properties(*defs: PropertyDef) -> dict[str, PropertyDef]:
 # Block definitions
 # ---------------------------------------------------------------------------
 
-_PAGE = BlockDef(
-    name="Page",
-    parent=None,
-    repeatable=False,
-    allowed_children=("Link",),
-)
-
 _LINK = BlockDef(
     name="Link",
-    parent="Page",
+    parent=None,
     repeatable=True,
     properties=_properties(
         PropertyDef("title", ValueType.STRING, "", required=True),
@@ -99,7 +92,6 @@ _LINK = BlockDef(
 
 #: The full set of blocks known to the compiler, keyed by block name.
 BLOCKS: dict[str, BlockDef] = {
-    _PAGE.name: _PAGE,
     _LINK.name: _LINK,
 }
 

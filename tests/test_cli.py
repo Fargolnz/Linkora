@@ -18,9 +18,7 @@ def _run_cli(argv, tmp_path, capsys):
 def test_compiles_sample(tmp_path, capsys):
     source = tmp_path / "page.lkr"
     source.write_text(
-        'Page {\n'
-        '    Link { title: "GitHub", url: "https://github.com" }\n'
-        '}\n',
+        'Link { title: "GitHub", url: "https://github.com" }\n',
         encoding="utf-8",
     )
     out_dir = tmp_path / "site"
@@ -36,7 +34,7 @@ def test_compiles_sample(tmp_path, capsys):
 def test_reports_errors_and_returns_nonzero(tmp_path, capsys):
     source = tmp_path / "bad.lkr"
     source.write_text(
-        'Page {\n    Link { title: "GitHub" }\n}\n',
+        'Link { title: "GitHub" }\n',
         encoding="utf-8",
     )
     out_dir = tmp_path / "site"
@@ -60,7 +58,7 @@ def test_missing_source_file_returns_nonzero(tmp_path, capsys):
 def test_default_output_directory(tmp_path, capsys, monkeypatch):
     monkeypatch.chdir(tmp_path)
     source = tmp_path / "page.lkr"
-    source.write_text('Page {}\n', encoding="utf-8")
+    source.write_text('', encoding="utf-8")
 
     code = cli.main([str(source)])
     capsys.readouterr()

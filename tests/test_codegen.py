@@ -4,14 +4,10 @@ from __future__ import annotations
 
 from tests.helpers import compile_ok
 
-PAGE = (
-    "Page {\n"
-    '    Link { title: "GitHub", url: "https://github.com" }\n'
-    "}\n"
-)
+LINK = 'Link { title: "GitHub", url: "https://github.com" }'
 
 
-def _html(source: str = PAGE) -> str:
+def _html(source: str = LINK) -> str:
     result = compile_ok(source)
     assert result.html is not None
     return result.html
@@ -78,11 +74,9 @@ class TestLinkRendering:
 
     def test_custom_visual_properties(self):
         html = _html(
-            "Page {\n"
-            '    Link { title: "Portfolio", url: "https://example.com", '
+            'Link { title: "Portfolio", url: "https://example.com", '
             'align: left, shape: pill, backgroundColor: "#3B82F6", '
-            'titleColor: "#000000", borderColor: "#2563EB" }\n'
-            "}\n"
+            'titleColor: "#000000", borderColor: "#2563EB" }'
         )
         assert 'class="lk-link lk-shape-pill lk-align-left"' in html
         assert (
@@ -92,10 +86,8 @@ class TestLinkRendering:
 
     def test_multiple_links_rendered_in_order(self):
         html = _html(
-            "Page {\n"
-            '    Link { title: "First", url: "https://a.com" }\n'
-            '    Link { title: "Second", url: "https://b.com" }\n'
-            "}\n"
+            'Link { title: "First", url: "https://a.com" }\n'
+            'Link { title: "Second", url: "https://b.com" }\n'
         )
         first = html.index(">First</a>")
         second = html.index(">Second</a>")
@@ -103,18 +95,14 @@ class TestLinkRendering:
 
     def test_html_escaping(self):
         html = _html(
-            "Page {\n"
-            '    Link { title: "He said \\"Hi & Bye\\"", '
-            'url: "https://x.com/?a=1&b=2" }\n'
-            "}\n"
+            'Link { title: "He said \\"Hi & Bye\\"", '
+            'url: "https://x.com/?a=1&b=2" }'
         )
         assert "He said &quot;Hi &amp; Bye&quot;" in html
         assert 'href="https://x.com/?a=1&amp;b=2"' in html
 
     def test_newline_escape_rendered_as_newline(self):
         html = _html(
-            "Page {\n"
-            '    Link { title: "Line1\\nLine2", url: "https://x.com" }\n'
-            "}\n"
+            'Link { title: "Line1\\nLine2", url: "https://x.com" }'
         )
         assert "Line1\nLine2" in html

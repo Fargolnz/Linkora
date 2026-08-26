@@ -80,6 +80,6 @@ class Block:
 
 @dataclass
 class Document:
-    """A fully parsed Linkora document (one ``Page`` block)."""
+    """A fully parsed Linkora document."""
 
-    page: Block
+    blocks: list[Block]

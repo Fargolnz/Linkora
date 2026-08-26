@@ -25,12 +25,15 @@ class Validator:
 
     def validate(self, document: Document) -> list[SemanticError]:
         errors: list[SemanticError] = []
-        self._validate_block(document.page, parent_name=None, sibling_counts={}, errors=errors)
+        sibling_counts: dict[str, int] = {}
+        for block in document.blocks:
+            self._validate_block(block, parent_name=None, sibling_counts=sibling_counts, errors=errors)
         return errors
 
     def resolve(self, document: Document) -> Document:
         """Apply defaults so every block has a complete set of properties."""
-        self._resolve_block(document.page)
+        for block in document.blocks:
+            self._resolve_block(block)
         return document
 
     # -- Block-level rules ---------------------------------------------------
@@ -50,10 +53,11 @@ class Validator:
             return
 
         if parent_name is None:
-            if block.name != "Page":
+            if block_def.parent is not None:
                 errors.append(
                     SemanticError(
-                        f"Block '{block.name}' must be the top-level 'Page' block.",
+                        f"Block '{block.name}' is only allowed inside the "
+                        f"'{block_def.parent}' block.",
                         block.position,
                     )
                 )

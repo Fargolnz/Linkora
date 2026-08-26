@@ -15,8 +15,7 @@ from compiler.codegen.css import build_css
 
 def render_html(document: Document) -> str:
     """Render a validated document into a complete HTML page."""
-    page = document.page
-    body = "\n".join(_render_block(child) for child in page.children)
+    body = "\n".join(_render_block(block) for block in document.blocks)
 
     return (
         "<!DOCTYPE html>\n"

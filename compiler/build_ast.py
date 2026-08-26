@@ -49,22 +49,17 @@ def _decode_value(kind: str, text: str) -> object:
 class _AstBuilder(LinkoraListener):
     def __init__(self) -> None:
         self.stack: list[Block] = []
-        self.document: Document | None = None
-
-    def enterDocument(self, ctx: LinkoraParser.DocumentContext) -> None:
-        page = Block(name="Page", position=_position(ctx.PAGE().symbol))
-        self.stack.append(page)
-        self.document = Document(page=page)
-
-    def exitDocument(self, ctx: LinkoraParser.DocumentContext) -> None:
-        self.stack.pop()
+        self.top_level: list[Block] = []
 
     def enterBlock(self, ctx: LinkoraParser.BlockContext) -> None:
         block = Block(
             name=ctx.BLOCK_NAME().getText(),
             position=_position(ctx.BLOCK_NAME().symbol),
         )
-        self.stack[-1].children.append(block)
+        if self.stack:
+            self.stack[-1].children.append(block)
+        else:
+            self.top_level.append(block)
         self.stack.append(block)
 
     def exitBlock(self, ctx: LinkoraParser.BlockContext) -> None:
@@ -87,5 +82,4 @@ def build_ast(tree: LinkoraParser.DocumentContext) -> Document:
     """Convert an ANTLR ``document`` parse tree into a :class:`Document`."""
     builder = _AstBuilder()
     ParseTreeWalker().walk(builder, tree)
-    assert builder.document is not None
-    return builder.document
+    return Document(blocks=builder.top_level)

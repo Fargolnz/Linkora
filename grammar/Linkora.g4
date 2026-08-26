@@ -1,8 +1,8 @@
 grammar Linkora;
 
-// A Linkora document is a single Page block containing zero or more blocks.
+// A Linkora document is a sequence of top-level blocks.
 document
-    : PAGE LCURLY block* RCURLY EOF
+    : block* EOF
     ;
 
 // A block is a PascalCase name followed by a brace-delimited body of
@@ -38,8 +38,6 @@ booleanLiteral
 
 // Keywords must be declared before the generic identifier rules so they win
 // on equal-length matches.
-PAGE: 'Page';
-
 TRUE: 'true';
 FALSE: 'false';
 
