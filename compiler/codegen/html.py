@@ -45,6 +45,103 @@ def _render_block(block: Block) -> str:
     return renderer(block)
 
 
+_PROFILE_CHILD_ORDER = ["Cover", "Logo", "Name", "Bio"]
+
+
+def render_profile(block: Block) -> str:
+    """Render a Profile container, sorting children into display order."""
+    sorted_children = sorted(
+        block.children,
+        key=lambda c: _PROFILE_CHILD_ORDER.index(c.name)
+        if c.name in _PROFILE_CHILD_ORDER
+        else len(_PROFILE_CHILD_ORDER),
+    )
+    inner = "\n".join(_render_block(child) for child in sorted_children)
+    return f'  <section class="lk-profile">\n{inner}\n  </section>'
+
+
+def render_name(block: Block) -> str:
+    """Render a Name block with title and subtitle."""
+    resolved = block.resolved
+    title = str(resolved["title"])
+    subtitle = str(resolved["subtitle"])
+    text_align = str(resolved["textAlign"])
+    title_color = str(resolved["titleColor"])
+    sub_color = str(resolved["subColor"])
+
+    parts = []
+    if title:
+        parts.append(
+            f'    <h1 class="lk-name-title" '
+            f'style="color: {title_color};">{html.escape(title)}</h1>'
+        )
+    if subtitle:
+        parts.append(
+            f'    <p class="lk-name-subtitle" '
+            f'style="color: {sub_color};">{html.escape(subtitle)}</p>'
+        )
+
+    inner = "\n".join(parts)
+    return (
+        f'  <div class="lk-name lk-align-{text_align}">\n'
+        f"{inner}\n"
+        f"  </div>"
+    )
+
+
+def render_logo(block: Block) -> str:
+    """Render a Logo block as a profile image."""
+    resolved = block.resolved
+    image = str(resolved["image"])
+    shape = str(resolved["shape"])
+    border_color = str(resolved["borderColor"])
+
+    style = f"border-color: {border_color};"
+    return (
+        f'    <img class="lk-logo lk-logo-{shape}" '
+        f'style="{style}" '
+        f'src="{html.escape(image, quote=True)}" alt="Logo">'
+    )
+
+
+def render_bio(block: Block) -> str:
+    """Render a Bio block as a styled paragraph."""
+    resolved = block.resolved
+    bio = str(resolved["bio"])
+    text_align = str(resolved["textAlign"])
+    text_color = str(resolved["textColor"])
+    bg_color = str(resolved["backgroundColor"])
+    border_color = str(resolved["borderColor"])
+    shape = str(resolved["shape"])
+
+    classes = " ".join(["lk-bio", f"lk-shape-{shape}"])
+    style = (
+        f"color: {text_color}; "
+        f"background-color: {bg_color}; "
+        f"border-color: {border_color}; "
+        f"text-align: {text_align};"
+    )
+    return (
+        f'    <p class="{classes}" style="{style}">'
+        f"{html.escape(bio)}</p>"
+    )
+
+
+def render_cover(block: Block) -> str:
+    """Render a Cover block as a full-width banner image."""
+    resolved = block.resolved
+    image = str(resolved["image"])
+    shape = str(resolved["shape"])
+
+    classes = " ".join(["lk-cover", f"lk-cover-{shape}"])
+    return (
+        f'  <div class="{classes}">\n'
+        f'    <img class="lk-cover-img" '
+        f'src="{html.escape(image, quote=True)}" alt="Cover">\n'
+        f"  </div>"
+    )
+
+
 def render_link(block: Block) -> str:
     """Render a Link block as a clickable, styled button."""
     resolved = block.resolved
@@ -72,5 +169,10 @@ def render_link(block: Block) -> str:
 
 #: Dispatch table mapping block names to their HTML renderers.
 _RENDERERS = {
+    "Profile": render_profile,
+    "Name": render_name,
+    "Logo": render_logo,
+    "Bio": render_bio,
+    "Cover": render_cover,
     "Link": render_link,
 }

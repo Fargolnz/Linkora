@@ -88,7 +88,7 @@ body {{
         max-width: 560px;
         min-height: 0;
         margin: 32px auto;
-        padding: 48px 24px;
+        padding: 24px 24px;
         background-color: #ffffff;
         border-radius: 20px;
         box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
@@ -100,6 +100,59 @@ body {{
 def build_css() -> str:
     """Return the complete stylesheet for a generated page."""
     css = _BASE_CSS
+
+    css += "\n.lk-profile {"
+    css += "\n    display: flex;"
+    css += "\n    flex-direction: column;"
+    css += "\n    align-items: center;"
+    css += "\n    gap: 16px;"
+    css += "\n    padding-bottom: 16px;"
+    css += "\n}"
+
+    css += "\n.lk-name {"
+    css += "\n    text-align: center;"
+    css += "\n    width: 100%;"
+    css += "\n}"
+    css += "\n.lk-name-title {"
+    css += "\n    margin: 0;"
+    css += "\n    font-size: 24px;"
+    css += "\n    font-weight: 700;"
+    css += "\n}"
+    css += "\n.lk-name-subtitle {"
+    css += "\n    margin: 4px 0 0;"
+    css += "\n    font-size: 14px;"
+    css += "\n    font-weight: 400;"
+    css += "\n    opacity: 0.8;"
+    css += "\n}"
+    css += "\n.lk-logo {"
+    css += "\n    width: 96px;"
+    css += "\n    height: 96px;"
+    css += "\n    object-fit: cover;"
+    css += "\n    border: 3px solid transparent;"
+    css += "\n}"
+    css += "\n.lk-logo-circle { border-radius: 50%; }"
+    css += "\n.lk-logo-square { border-radius: 0; }"
+    css += "\n.lk-bio {"
+    css += "\n    margin: 0;"
+    css += "\n    padding: 12px 20px;"
+    css += "\n    font-size: 14px;"
+    css += "\n    line-height: 1.6;"
+    css += "\n    width: 100%;"
+    css += "\n    border: 1px solid transparent;"
+    css += "\n}"
+    css += "\n.lk-cover {"
+    css += "\n    width: 100%;"
+    css += "\n    overflow: hidden;"
+    css += "\n}"
+    css += "\n.lk-cover-img {"
+    css += "\n    width: 100%;"
+    css += "\n    height: 160px;"
+    css += "\n    object-fit: cover;"
+    css += "\n    display: block;"
+    css += "\n}"
+    css += "\n.lk-cover-rounded .lk-cover-img {"
+    css += "\n    border-radius: 16px;"
+    css += "\n}"
 
     for name, radius in LINK_SHAPES.items():
         css += f"\n.lk-shape-{name} {{ border-radius: {radius}; }}"
