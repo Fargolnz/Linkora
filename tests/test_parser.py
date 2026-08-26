@@ -60,6 +60,34 @@ class TestValidSyntax:
             '}\n'
         )
 
+    def test_profile_with_children(self):
+        compile_ok(
+            'Profile {\n'
+            '    Name { title: "Test" }\n'
+            '    Logo { image: "https://example.com/photo.jpg" }\n'
+            '    Bio { bio: "Hello" }\n'
+            '    Cover { image: "https://example.com/cover.jpg" }\n'
+            '}\n'
+        )
+
+    def test_profile_empty(self):
+        compile_ok('Profile {}')
+
+    def test_profile_partial_children(self):
+        compile_ok(
+            'Profile {\n'
+            '    Name { title: "Test" }\n'
+            '}\n'
+        )
+
+    def test_profile_and_links(self):
+        compile_ok(
+            'Profile {\n'
+            '    Name { title: "Test" }\n'
+            '}\n'
+            'Link { title: "GitHub", url: "https://github.com" }\n'
+        )
+
 
 class TestInvalidSyntax:
     def test_missing_closing_brace(self):

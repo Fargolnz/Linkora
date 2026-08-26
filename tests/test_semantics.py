@@ -131,6 +131,59 @@ class TestBlockRules:
         compile_ok(f"{LINK}\n{LINK}")
 
 
+class TestProfileRules:
+    def test_profile_not_repeatable(self):
+        from compiler import compile_source
+
+        errors = compile_source('Profile {}\nProfile {}').errors
+        assert len(errors) >= 1
+        assert "may appear only once" in errors[0].message
+
+    def test_name_outside_profile_rejected(self):
+        from compiler import SemanticError, compile_source
+
+        errors = compile_source('Name { title: "Test" }').errors
+        assert len(errors) == 1
+        assert isinstance(errors[0], SemanticError)
+        assert "only allowed inside" in errors[0].message
+
+    def test_logo_outside_profile_rejected(self):
+        from compiler import SemanticError, compile_source
+
+        errors = compile_source('Logo { image: "https://x.com/a.jpg" }').errors
+        assert len(errors) == 1
+        assert "only allowed inside" in errors[0].message
+
+    def test_bio_outside_profile_rejected(self):
+        from compiler import SemanticError, compile_source
+
+        errors = compile_source('Bio { bio: "Hello" }').errors
+        assert len(errors) == 1
+        assert "only allowed inside" in errors[0].message
+
+    def test_cover_outside_profile_rejected(self):
+        from compiler import SemanticError, compile_source
+
+        errors = compile_source('Cover { image: "https://x.com/a.jpg" }').errors
+        assert len(errors) == 1
+        assert "only allowed inside" in errors[0].message
+
+    def test_invalid_image_extension(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            'Profile { Logo { image: "https://x.com/file.txt" } }'
+        ).errors
+        assert len(errors) == 1
+        assert "image URL" in errors[0].message
+
+    def test_valid_image_url(self):
+        compile_ok('Profile { Logo { image: "https://x.com/photo.jpg" } }')
+
+    def test_valid_image_local_path(self):
+        compile_ok('Profile { Logo { image: "./assets/photo.png" } }')
+
+
 class TestDefaultResolution:
     def _first_link(self, source: str):
         result = compile_ok(source)

@@ -106,3 +106,61 @@ class TestLinkRendering:
             'Link { title: "Line1\\nLine2", url: "https://x.com" }'
         )
         assert "Line1\nLine2" in html
+
+
+PROFILE = (
+    'Profile {\n'
+    '    Cover { image: "https://x.com/cover.jpg" }\n'
+    '    Logo { image: "https://x.com/photo.jpg" }\n'
+    '    Name { title: "Fargol", subtitle: "Dev" }\n'
+    '    Bio { bio: "Building things" }\n'
+    '}\n'
+)
+
+
+class TestProfileRendering:
+    def test_profile_section(self):
+        html = _html(PROFILE)
+        assert '<section class="lk-profile">' in html
+        assert "</section>" in html
+
+    def test_cover_renders_first(self):
+        html = _html(PROFILE)
+        cover_pos = html.index('<div class="lk-cover')
+        logo_pos = html.index('<img class="lk-logo')
+        assert cover_pos < logo_pos
+
+    def test_name_renders_after_logo(self):
+        html = _html(PROFILE)
+        logo_pos = html.index('<img class="lk-logo')
+        name_pos = html.index('<div class="lk-name')
+        assert logo_pos < name_pos
+
+    def test_bio_renders_last(self):
+        html = _html(PROFILE)
+        name_pos = html.index("lk-name")
+        bio_pos = html.index("lk-bio")
+        assert name_pos < bio_pos
+
+    def test_name_title_and_subtitle(self):
+        html = _html(PROFILE)
+        assert "Fargol" in html
+        assert "Dev" in html
+        assert "lk-name-title" in html
+        assert "lk-name-subtitle" in html
+
+    def test_logo_shape(self):
+        html = _html(PROFILE)
+        assert "lk-logo-circle" in html
+
+    def test_cover_shape(self):
+        html = _html(PROFILE)
+        assert "lk-cover-rounded" in html
+
+    def test_bio_text(self):
+        html = _html(PROFILE)
+        assert "Building things" in html
+
+    def test_empty_profile(self):
+        html = _html("Profile {}")
+        assert '<section class="lk-profile">' in html
