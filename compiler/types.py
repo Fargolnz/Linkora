@@ -41,6 +41,21 @@ def is_file_path(value: object) -> bool:
     return not any(char.isspace() for char in value)
 
 
+_IMAGE_EXTENSIONS = (".jpg", ".jpeg", ".png", ".svg", ".gif", ".webp")
+
+
+def is_image(value: object) -> bool:
+    """True for an HTTP/HTTPS URL or a relative file path with an image extension."""
+    if not isinstance(value, str) or not value.strip():
+        return False
+    lower = value.lower()
+    if _URL_RE.match(value):
+        return any(lower.endswith(ext) for ext in _IMAGE_EXTENSIONS)
+    if is_file_path(value):
+        return any(lower.endswith(ext) for ext in _IMAGE_EXTENSIONS)
+    return False
+
+
 def is_number(value: object) -> bool:
     return isinstance(value, (int, float)) and not isinstance(value, bool)
 

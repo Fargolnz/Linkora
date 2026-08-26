@@ -176,6 +176,12 @@ class Validator:
         elif expected is ValueType.FILE:
             if not types.is_file_path(value):
                 fail(f"expected a relative file path, found {_describe(prop)}.")
+        elif expected is ValueType.IMAGE:
+            if not types.is_image(value):
+                fail(
+                    "expected an image URL or a relative file path with an image "
+                    f"extension (.jpg, .png, .svg, .gif, .webp), found {_describe(prop)}."
+                )
         elif expected is ValueType.ENUM:
             if prop.kind == KIND_IDENTIFIER and value in prop_def.enum_values:
                 return

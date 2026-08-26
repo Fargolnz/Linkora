@@ -27,6 +27,7 @@ class ValueType(Enum):
     COLOR = "Color"
     URL = "URL"
     FILE = "File"
+    IMAGE = "Image"
     ENUM = "Enum"
 
 
@@ -90,8 +91,93 @@ _LINK = BlockDef(
     ),
 )
 
+_PROFILE = BlockDef(
+    name="Profile",
+    parent=None,
+    repeatable=False,
+    allowed_children=("Name", "Logo", "Bio", "Cover"),
+)
+
+_NAME = BlockDef(
+    name="Name",
+    parent="Profile",
+    repeatable=False,
+    properties=_properties(
+        PropertyDef("title", ValueType.STRING, ""),
+        PropertyDef("subtitle", ValueType.STRING, ""),
+        PropertyDef(
+            "textAlign",
+            ValueType.ENUM,
+            "center",
+            enum_values=("left", "center", "right"),
+        ),
+        PropertyDef("titleColor", ValueType.COLOR, "#000000"),
+        PropertyDef("subColor", ValueType.COLOR, "#000000"),
+    ),
+)
+
+_LOGO = BlockDef(
+    name="Logo",
+    parent="Profile",
+    repeatable=False,
+    properties=_properties(
+        PropertyDef("image", ValueType.IMAGE, ""),
+        PropertyDef(
+            "shape",
+            ValueType.ENUM,
+            "circle",
+            enum_values=("circle", "square"),
+        ),
+        PropertyDef("borderColor", ValueType.COLOR, "transparent"),
+    ),
+)
+
+_BIO = BlockDef(
+    name="Bio",
+    parent="Profile",
+    repeatable=False,
+    properties=_properties(
+        PropertyDef("bio", ValueType.STRING, ""),
+        PropertyDef(
+            "textAlign",
+            ValueType.ENUM,
+            "center",
+            enum_values=("left", "center", "right"),
+        ),
+        PropertyDef("textColor", ValueType.COLOR, "#000000"),
+        PropertyDef("backgroundColor", ValueType.COLOR, "transparent"),
+        PropertyDef("borderColor", ValueType.COLOR, "transparent"),
+        PropertyDef(
+            "shape",
+            ValueType.ENUM,
+            "rounded",
+            enum_values=("sharp", "slightlyRounded", "rounded", "pill"),
+        ),
+    ),
+)
+
+_COVER = BlockDef(
+    name="Cover",
+    parent="Profile",
+    repeatable=False,
+    properties=_properties(
+        PropertyDef("image", ValueType.IMAGE, ""),
+        PropertyDef(
+            "shape",
+            ValueType.ENUM,
+            "rounded",
+            enum_values=("rectangle", "rounded"),
+        ),
+    ),
+)
+
 #: The full set of blocks known to the compiler, keyed by block name.
 BLOCKS: dict[str, BlockDef] = {
+    _PROFILE.name: _PROFILE,
+    _NAME.name: _NAME,
+    _LOGO.name: _LOGO,
+    _BIO.name: _BIO,
+    _COVER.name: _COVER,
     _LINK.name: _LINK,
 }
 
