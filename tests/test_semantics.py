@@ -24,6 +24,29 @@ class TestRequiredProperties:
         assert "required property 'title'" in errors[0].message
 
 
+class TestProfileRequiredProperties:
+    def _missing(self, source: str, prop: str) -> str:
+        from compiler import compile_source
+
+        errors = compile_source(source).errors
+        assert len(errors) == 1, errors
+        assert "missing the required property" in errors[0].message
+        assert f"'{prop}'" in errors[0].message
+        return errors[0].message
+
+    def test_name_requires_title(self):
+        self._missing("Profile { Name {} }", "title")
+
+    def test_logo_requires_image(self):
+        self._missing("Profile { Logo {} }", "image")
+
+    def test_bio_requires_text(self):
+        self._missing("Profile { Bio {} }", "text")
+
+    def test_cover_requires_image(self):
+        self._missing("Profile { Cover {} }", "image")
+
+
 class TestPropertyRules:
     def test_unknown_property(self):
         from compiler import compile_source

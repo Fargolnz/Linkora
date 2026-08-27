@@ -103,7 +103,7 @@ _NAME = BlockDef(
     parent="Profile",
     repeatable=False,
     properties=_properties(
-        PropertyDef("title", ValueType.STRING, ""),
+        PropertyDef("title", ValueType.STRING, "", required=True),
         PropertyDef("subtitle", ValueType.STRING, ""),
         PropertyDef(
             "align",
@@ -121,7 +121,7 @@ _LOGO = BlockDef(
     parent="Profile",
     repeatable=False,
     properties=_properties(
-        PropertyDef("image", ValueType.IMAGE, ""),
+        PropertyDef("image", ValueType.IMAGE, "", required=True),
         PropertyDef(
             "shape",
             ValueType.ENUM,
@@ -137,7 +137,7 @@ _BIO = BlockDef(
     parent="Profile",
     repeatable=False,
     properties=_properties(
-        PropertyDef("text", ValueType.STRING, ""),
+        PropertyDef("text", ValueType.STRING, "", required=True),
         PropertyDef(
             "align",
             ValueType.ENUM,
@@ -161,7 +161,7 @@ _COVER = BlockDef(
     parent="Profile",
     repeatable=False,
     properties=_properties(
-        PropertyDef("image", ValueType.IMAGE, ""),
+        PropertyDef("image", ValueType.IMAGE, "", required=True),
         PropertyDef(
             "shape",
             ValueType.ENUM,

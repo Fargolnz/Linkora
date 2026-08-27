@@ -30,6 +30,21 @@ Its behavior is determined entirely by its children.
 
 ---
 
+## Required Properties
+
+Some child blocks define configurable properties that are **required**:
+
+| Child | Required Property |
+|-------|-------------------|
+| `Name` | `title` |
+| `Logo` | `image` |
+| `Bio` | `text` |
+| `Cover` | `image` |
+
+Failure to provide a required property results in a semantic validation error.
+
+---
+
 ## Children
 
 Children may appear in any order inside the `Profile` block. The renderer automatically sorts them into the correct display order: **Cover → Logo → Name → Bio**.
@@ -202,6 +217,7 @@ The compiler performs the following semantic validations:
 - The `Profile` block may appear at most once per document.
 - Children must be valid child block types (`Name`, `Logo`, `Bio`, `Cover`).
 - Each child type may appear at most once inside `Profile`.
+- Required properties must be provided (`Name.title`, `Logo.image`, `Bio.text`, `Cover.image`).
 - `image` properties in `Logo` and `Cover` must be valid image URLs or local paths with supported extensions.
 - Unknown properties are not allowed inside any child block.
 - Duplicate properties are not allowed inside any child block.
