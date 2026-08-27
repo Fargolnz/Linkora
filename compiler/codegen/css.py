@@ -21,10 +21,15 @@ LINK_ALIGNMENTS = {
     "right": "flex-end",
 }
 
-#: Light tint of the theme accent color (#00B4B0), used as the page
-#: background. Overridable later through a Theme block via the --lk-bg
+#: Primary background of the page/card, identical on every screen size.
+#: Overridable later through a Theme block via the --lk-background
 #: variable.
-PAGE_BACKGROUND = "#e0f4f4"
+BACKGROUND = "#ffffff"
+
+#: Desktop-only surface behind the floating card, hidden on mobile where
+#: the card fills the viewport. Overridable later through a Theme block
+#: via the --lk-backdrop variable.
+BACKDROP = "#e0f4f4"
 
 #: Viewport width (px) above which the page becomes a floating card.
 DESKTOP_BREAKPOINT = "600px"
@@ -32,7 +37,8 @@ DESKTOP_BREAKPOINT = "600px"
 _BASE_CSS = f"""
 :root {{
     color-scheme: light;
-    --lk-bg: {PAGE_BACKGROUND};
+    --lk-background: {BACKGROUND};
+    --lk-backdrop: {BACKDROP};
 }}
 
 * {{
@@ -46,7 +52,7 @@ html, body {{
 body {{
     min-height: 100vh;
     min-height: 100dvh;
-    background-color: var(--lk-bg);
+    background-color: var(--lk-backdrop);
     font-family: "Vazirmatn", -apple-system, BlinkMacSystemFont, "Segoe UI",
         Roboto, Helvetica, Arial, sans-serif;
 }}
@@ -58,6 +64,7 @@ body {{
     min-height: 100dvh;
     margin: 0 auto;
     padding: 24px 16px;
+    background-color: var(--lk-background);
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -93,7 +100,6 @@ body {{
         min-height: 0;
         margin: auto;
         padding: 24px 24px;
-        background-color: #ffffff;
         border-radius: 20px;
         box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
     }}

@@ -35,8 +35,10 @@ class TestPageShell:
 class TestResponsiveDesign:
     def test_theme_background_variable(self):
         html = _html()
-        assert "--lk-bg: #e0f4f4" in html
-        assert "background-color: var(--lk-bg)" in html
+        assert "--lk-background: #ffffff" in html
+        assert "--lk-backdrop: #e0f4f4" in html
+        assert "background-color: var(--lk-background);" in html
+        assert "background-color: var(--lk-backdrop);" in html
 
     def test_mobile_first_page(self):
         html = _html()
