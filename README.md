@@ -14,6 +14,10 @@ Profile {
     Bio { text: "Building cool stuff" }
 }
 
+Title {
+    title: "My Links"
+}
+
 Link { title: "GitHub", url: "https://github.com/Fargolnz" }
 
 Link { title: "Portfolio", url: "https://example.com" }
@@ -125,6 +129,7 @@ Blocks implemented so far:
 | `Logo` | Part of [`docs/language/Profile.md`](docs/language/Profile.md) |
 | `Cover` | Part of [`docs/language/Profile.md`](docs/language/Profile.md) |
 | `Link` | [`docs/language/Link.md`](docs/language/Link.md) |
+| `Title` | [`docs/language/Title.md`](docs/language/Title.md) |
 
 ## Status
 
