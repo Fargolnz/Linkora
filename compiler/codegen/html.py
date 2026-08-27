@@ -167,6 +167,21 @@ def render_link(block: Block) -> str:
     )
 
 
+def render_title(block: Block) -> str:
+    """Render a Title block as a styled heading."""
+    resolved = block.resolved
+    title = str(resolved["title"])
+    text_align = str(resolved["textAlign"])
+    title_color = str(resolved["titleColor"])
+
+    style = f"color: {title_color}; text-align: {text_align};"
+
+    return (
+        f'  <h2 class="lk-title" style="{style}">'
+        f"{html.escape(title)}</h2>"
+    )
+
+
 #: Dispatch table mapping block names to their HTML renderers.
 _RENDERERS = {
     "Profile": render_profile,
@@ -175,4 +190,5 @@ _RENDERERS = {
     "Bio": render_bio,
     "Cover": render_cover,
     "Link": render_link,
+    "Title": render_title,
 }
