@@ -149,7 +149,7 @@ class TestTitle:
         from compiler import compile_source
 
         errors = compile_source(
-            'Title { title: "x", textAlign: justify }'
+            'Title { title: "x", align: justify }'
         ).errors
         assert len(errors) == 1
         assert "not a valid value" in errors[0].message
@@ -159,15 +159,15 @@ class TestTitle:
         block = self._first_title('Title { title: "My Links" }')
         assert block.resolved == {
             "title": "My Links",
-            "textAlign": "center",
+            "align": "center",
             "titleColor": "#000000",
         }
 
     def test_explicit_values_override_defaults(self):
         block = self._first_title(
-            'Title { title: "x", textAlign: left, titleColor: "#c7006e" }'
+            'Title { title: "x", align: left, titleColor: "#c7006e" }'
         )
-        assert block.resolved["textAlign"] == "left"
+        assert block.resolved["align"] == "left"
         assert block.resolved["titleColor"] == "#c7006e"
 
     def test_repeatable_titles_allowed(self):

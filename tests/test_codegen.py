@@ -118,7 +118,7 @@ class TestTitleRendering:
 
     def test_custom_visual_properties(self):
         html = _html(
-            'Title { title: "Customized", textAlign: left, titleColor: "#c7006e" }'
+            'Title { title: "Customized", align: left, titleColor: "#c7006e" }'
         )
         assert (
             '<h2 class="lk-title" style="color: #c7006e; '

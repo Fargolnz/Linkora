@@ -6,7 +6,7 @@ Profile {
 }
 
 Title { title: "My Links" }
-Title { title: "Customized", textAlign: left, titleColor: "#c7006e" }
+Title { title: "Customized", align: left, titleColor: "#c7006e" }
 
 Link {
     title: "My GitHub"

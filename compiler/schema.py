@@ -106,7 +106,7 @@ _NAME = BlockDef(
         PropertyDef("title", ValueType.STRING, ""),
         PropertyDef("subtitle", ValueType.STRING, ""),
         PropertyDef(
-            "textAlign",
+            "align",
             ValueType.ENUM,
             "center",
             enum_values=("left", "center", "right"),
@@ -139,7 +139,7 @@ _BIO = BlockDef(
     properties=_properties(
         PropertyDef("bio", ValueType.STRING, ""),
         PropertyDef(
-            "textAlign",
+            "align",
             ValueType.ENUM,
             "center",
             enum_values=("left", "center", "right"),
@@ -178,7 +178,7 @@ _TITLE = BlockDef(
     properties=_properties(
         PropertyDef("title", ValueType.STRING, "", required=True),
         PropertyDef(
-            "textAlign",
+            "align",
             ValueType.ENUM,
             "center",
             enum_values=("left", "center", "right"),

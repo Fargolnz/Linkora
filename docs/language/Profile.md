@@ -53,7 +53,7 @@ Displays the user's identity — main title and subtitle.
 |----------|---------|------|---------|----------------|
 | Title | `title` | String | `""` | Any valid string |
 | Subtitle | `subtitle` | String | `""` | Any valid string |
-| Text Alignment | `textAlign` | Enum | `center` | `left`, `center`, `right` |
+| Text Alignment | `align` | Enum | `center` | `left`, `center`, `right` |
 | Title Color | `titleColor` | Color | `#000000` | Valid Color |
 | Subtitle Color | `subColor` | Color | `#000000` | Valid Color |
 
@@ -70,7 +70,7 @@ Displays the user's identity — main title and subtitle.
 Name {
     title: "Seyyedeh Fargol Nazemzadeh"
     subtitle: "Developer & Designer"
-    textAlign: center
+    align: center
     titleColor: "#000000"
     subColor: "#666666"
 }
@@ -87,7 +87,7 @@ Displays a short biography or description.
 | Property | Keyword | Type | Default | Allowed Values |
 |----------|---------|------|---------|----------------|
 | Bio Text | `bio` | String | `""` | Any valid string |
-| Text Alignment | `textAlign` | Enum | `center` | `left`, `center`, `right` |
+| Text Alignment | `align` | Enum | `center` | `left`, `center`, `right` |
 | Text Color | `textColor` | Color | `#000000` | Valid Color |
 | Background Color | `backgroundColor` | Color | `transparent` | Valid Color |
 | Border Color | `borderColor` | Color | `transparent` | Valid Color |
@@ -104,7 +104,7 @@ Displays a short biography or description.
 ```lkr
 Bio {
     bio: "Building Linkora — a DSL for customizable link-in-bio pages."
-    textAlign: left
+    align: left
     textColor: "#333333"
     shape: rounded
 }
@@ -249,7 +249,7 @@ Profile {
     }
     Bio {
         bio: "Building Linkora — a DSL for customizable link-in-bio pages."
-        textAlign: center
+        align: center
         textColor: "#333333"
     }
 }

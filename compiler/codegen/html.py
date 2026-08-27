@@ -65,7 +65,7 @@ def render_name(block: Block) -> str:
     resolved = block.resolved
     title = str(resolved["title"])
     subtitle = str(resolved["subtitle"])
-    text_align = str(resolved["textAlign"])
+    align = str(resolved["align"])
     title_color = str(resolved["titleColor"])
     sub_color = str(resolved["subColor"])
 
@@ -83,7 +83,7 @@ def render_name(block: Block) -> str:
 
     inner = "\n".join(parts)
     return (
-        f'  <div class="lk-name lk-align-{text_align}">\n'
+        f'  <div class="lk-name lk-align-{align}">\n'
         f"{inner}\n"
         f"  </div>"
     )
@@ -108,7 +108,7 @@ def render_bio(block: Block) -> str:
     """Render a Bio block as a styled paragraph."""
     resolved = block.resolved
     bio = str(resolved["bio"])
-    text_align = str(resolved["textAlign"])
+    align = str(resolved["align"])
     text_color = str(resolved["textColor"])
     bg_color = str(resolved["backgroundColor"])
     border_color = str(resolved["borderColor"])
@@ -119,7 +119,7 @@ def render_bio(block: Block) -> str:
         f"color: {text_color}; "
         f"background-color: {bg_color}; "
         f"border-color: {border_color}; "
-        f"text-align: {text_align};"
+        f"text-align: {align};"
     )
     return (
         f'    <p class="{classes}" style="{style}">'
@@ -171,10 +171,10 @@ def render_title(block: Block) -> str:
     """Render a Title block as a styled heading."""
     resolved = block.resolved
     title = str(resolved["title"])
-    text_align = str(resolved["textAlign"])
+    align = str(resolved["align"])
     title_color = str(resolved["titleColor"])
 
-    style = f"color: {title_color}; text-align: {text_align};"
+    style = f"color: {title_color}; text-align: {align};"
 
     return (
         f'  <h2 class="lk-title" style="{style}">'

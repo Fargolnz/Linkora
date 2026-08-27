@@ -49,7 +49,7 @@ class TestValidSyntax:
         compile_ok(
             'Title {\n'
             '    title: "My Links"\n'
-            '    textAlign: left\n'
+            '    align: left\n'
             '    titleColor: "#c7006e"\n'
             '}\n'
         )
