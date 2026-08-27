@@ -171,6 +171,22 @@ _COVER = BlockDef(
     ),
 )
 
+_TITLE = BlockDef(
+    name="Title",
+    parent=None,
+    repeatable=True,
+    properties=_properties(
+        PropertyDef("title", ValueType.STRING, "", required=True),
+        PropertyDef(
+            "textAlign",
+            ValueType.ENUM,
+            "center",
+            enum_values=("left", "center", "right"),
+        ),
+        PropertyDef("titleColor", ValueType.COLOR, "#000000"),
+    )
+)
+
 #: The full set of blocks known to the compiler, keyed by block name.
 BLOCKS: dict[str, BlockDef] = {
     _PROFILE.name: _PROFILE,
@@ -179,6 +195,7 @@ BLOCKS: dict[str, BlockDef] = {
     _BIO.name: _BIO,
     _COVER.name: _COVER,
     _LINK.name: _LINK,
+    _TITLE.name: _TITLE,
 }
 
 
