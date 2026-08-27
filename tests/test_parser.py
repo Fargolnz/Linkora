@@ -42,6 +42,18 @@ class TestValidSyntax:
             'Link { title: "B", url: "https://b.com" }\n'
         )
 
+    def test_single_title(self):
+        compile_ok('Title { title: "My Links" }')
+
+    def test_title_compact_multiline(self):
+        compile_ok(
+            'Title {\n'
+            '    title: "My Links"\n'
+            '    textAlign: left\n'
+            '    titleColor: "#c7006e"\n'
+            '}\n'
+        )
+
     def test_comments(self):
         compile_ok(
             '// top-level comment\n'

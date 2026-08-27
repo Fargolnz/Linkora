@@ -108,6 +108,42 @@ class TestLinkRendering:
         assert "Line1\nLine2" in html
 
 
+class TestTitleRendering:
+    def test_renders_heading(self):
+        html = _html('Title { title: "My Links" }')
+        assert (
+            '<h2 class="lk-title" style="color: #000000; '
+            'text-align: center;">My Links</h2>'
+        ) in html
+
+    def test_custom_visual_properties(self):
+        html = _html(
+            'Title { title: "Customized", textAlign: left, titleColor: "#c7006e" }'
+        )
+        assert (
+            '<h2 class="lk-title" style="color: #c7006e; '
+            'text-align: left;">Customized</h2>'
+        ) in html
+
+    def test_html_escaping(self):
+        html = _html('Title { title: "He said \\"Hi & Bye\\"" }')
+        assert "He said &quot;Hi &amp; Bye&quot;" in html
+
+    def test_multiple_titles_rendered_in_order(self):
+        html = _html(
+            'Title { title: "First" }\n'
+            'Title { title: "Second" }\n'
+        )
+        first = html.index(">First</h2>")
+        second = html.index(">Second</h2>")
+        assert first < second
+
+    def test_title_css_present(self):
+        html = _html('Title { title: "My Links" }')
+        assert ".lk-title" in html
+        assert "font-size: 28px" in html
+
+
 PROFILE = (
     'Profile {\n'
     '    Cover { image: "https://x.com/cover.jpg" }\n'

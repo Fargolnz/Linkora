@@ -131,6 +131,52 @@ class TestBlockRules:
         compile_ok(f"{LINK}\n{LINK}")
 
 
+class TestTitle:
+    def _first_title(self, source: str):
+        result = compile_ok(source)
+        assert result.ast is not None
+        return result.ast.blocks[0]
+
+    def test_missing_title(self):
+        from compiler import SemanticError, compile_source
+
+        errors = compile_source("Title {}").errors
+        assert len(errors) == 1
+        assert isinstance(errors[0], SemanticError)
+        assert "required property 'title'" in errors[0].message
+
+    def test_invalid_text_align(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            'Title { title: "x", textAlign: justify }'
+        ).errors
+        assert len(errors) == 1
+        assert "not a valid value" in errors[0].message
+        assert "left, center, right" in errors[0].message
+
+    def test_defaults_applied(self):
+        block = self._first_title('Title { title: "My Links" }')
+        assert block.resolved == {
+            "title": "My Links",
+            "textAlign": "center",
+            "titleColor": "#000000",
+        }
+
+    def test_explicit_values_override_defaults(self):
+        block = self._first_title(
+            'Title { title: "x", textAlign: left, titleColor: "#c7006e" }'
+        )
+        assert block.resolved["textAlign"] == "left"
+        assert block.resolved["titleColor"] == "#c7006e"
+
+    def test_repeatable_titles_allowed(self):
+        compile_ok('Title { title: "A" }\nTitle { title: "B" }')
+
+    def test_title_outside_profile_allowed(self):
+        compile_ok('Title { title: "My Links" }')
+
+
 class TestProfileRules:
     def test_profile_not_repeatable(self):
         from compiler import compile_source
