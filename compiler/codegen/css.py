@@ -153,6 +153,13 @@ def build_css() -> str:
     css += "\n.lk-cover-rounded .lk-cover-img {"
     css += "\n    border-radius: 16px;"
     css += "\n}"
+    css += "\n.lk-title {"
+    css += "\n    margin: 8px 0 0;"
+    css += "\n    font-size: 28px;"
+    css += "\n    font-weight: 700;"
+    css += "\n    line-height: 1.3;"
+    css += "\n    width: 100%;"
+    css += "\n}"
 
     for name, radius in LINK_SHAPES.items():
         css += f"\n.lk-shape-{name} {{ border-radius: {radius}; }}"
