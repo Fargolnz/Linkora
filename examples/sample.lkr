@@ -5,6 +5,9 @@ Profile {
     Bio { bio: "Building Linkora — a DSL for customizable link-in-bio pages." }
 }
 
+Title { title: "My Links" }
+Title { title: "Customized", textAlign: left, titleColor: "#c7006e" }
+
 Link {
     title: "My GitHub"
     url: "https://github.com/Fargolnz"
