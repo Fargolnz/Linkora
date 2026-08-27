@@ -137,7 +137,7 @@ _BIO = BlockDef(
     parent="Profile",
     repeatable=False,
     properties=_properties(
-        PropertyDef("bio", ValueType.STRING, ""),
+        PropertyDef("text", ValueType.STRING, ""),
         PropertyDef(
             "align",
             ValueType.ENUM,

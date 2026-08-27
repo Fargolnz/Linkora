@@ -2,7 +2,7 @@ Profile {
     Cover { image: "./assets/cover.svg" }
     Logo { image: "./assets/logo.jpg" }
     Name { title: "Seyyedeh Fargol Nazemzadeh", subtitle: "Developer & Designer" }
-    Bio { bio: "Building Linkora — a DSL for customizable link-in-bio pages." }
+    Bio { text: "Building Linkora — a DSL for customizable link-in-bio pages." }
 }
 
 Title { title: "My Links" }

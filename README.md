@@ -11,7 +11,7 @@ file and generates a complete, self-contained, mobile-first static HTML page.
 Profile {
     Name { title: "Seyyedeh Fargol Nazemzadeh", subtitle: "Developer" }
     Logo { image: "./assets/logo.jpg" }
-    Bio { bio: "Building cool stuff" }
+    Bio { text: "Building cool stuff" }
 }
 
 Link { title: "GitHub", url: "https://github.com/Fargolnz" }

@@ -203,7 +203,7 @@ class TestProfileRules:
     def test_bio_outside_profile_rejected(self):
         from compiler import SemanticError, compile_source
 
-        errors = compile_source('Bio { bio: "Hello" }').errors
+        errors = compile_source('Bio { text: "Hello" }').errors
         assert len(errors) == 1
         assert "only allowed inside" in errors[0].message
 
@@ -211,6 +211,7 @@ class TestProfileRules:
         from compiler import SemanticError, compile_source
 
         errors = compile_source('Cover { image: "https://x.com/a.jpg" }').errors
+        assert len(errors) == 1
         assert len(errors) == 1
         assert "only allowed inside" in errors[0].message
 

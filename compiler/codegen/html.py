@@ -107,7 +107,7 @@ def render_logo(block: Block) -> str:
 def render_bio(block: Block) -> str:
     """Render a Bio block as a styled paragraph."""
     resolved = block.resolved
-    bio = str(resolved["bio"])
+    text = str(resolved["text"])
     align = str(resolved["align"])
     text_color = str(resolved["textColor"])
     bg_color = str(resolved["backgroundColor"])
@@ -123,7 +123,7 @@ def render_bio(block: Block) -> str:
     )
     return (
         f'    <p class="{classes}" style="{style}">'
-        f"{html.escape(bio)}</p>"
+        f"{html.escape(text)}</p>"
     )
 
 

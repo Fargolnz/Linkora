@@ -77,7 +77,7 @@ class TestValidSyntax:
             'Profile {\n'
             '    Name { title: "Test" }\n'
             '    Logo { image: "https://example.com/photo.jpg" }\n'
-            '    Bio { bio: "Hello" }\n'
+            '    Bio { text: "Hello" }\n'
             '    Cover { image: "https://example.com/cover.jpg" }\n'
             '}\n'
         )

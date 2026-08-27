@@ -86,7 +86,7 @@ Displays a short biography or description.
 
 | Property | Keyword | Type | Default | Allowed Values |
 |----------|---------|------|---------|----------------|
-| Bio Text | `bio` | String | `""` | Any valid string |
+| Bio Text | `text` | String | `""` | Any valid string |
 | Text Alignment | `align` | Enum | `center` | `left`, `center`, `right` |
 | Text Color | `textColor` | Color | `#000000` | Valid Color |
 | Background Color | `backgroundColor` | Color | `transparent` | Valid Color |
@@ -103,7 +103,7 @@ Displays a short biography or description.
 
 ```lkr
 Bio {
-    bio: "Building Linkora — a DSL for customizable link-in-bio pages."
+    text: "Building Linkora — a DSL for customizable link-in-bio pages."
     align: left
     textColor: "#333333"
     shape: rounded
@@ -248,7 +248,7 @@ Profile {
         subColor: "#666666"
     }
     Bio {
-        bio: "Building Linkora — a DSL for customizable link-in-bio pages."
+        text: "Building Linkora — a DSL for customizable link-in-bio pages."
         align: center
         textColor: "#333333"
     }

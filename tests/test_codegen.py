@@ -149,7 +149,7 @@ PROFILE = (
     '    Cover { image: "https://x.com/cover.jpg" }\n'
     '    Logo { image: "https://x.com/photo.jpg" }\n'
     '    Name { title: "Fargol", subtitle: "Dev" }\n'
-    '    Bio { bio: "Building things" }\n'
+    '    Bio { text: "Building things" }\n'
     '}\n'
 )
 
