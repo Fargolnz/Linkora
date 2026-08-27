@@ -82,12 +82,16 @@ body {{
 }}
 
 /* Larger screens: a column slightly wider than a phone, floating on the
-   tinted background as a card. */
+   tinted background as a card, centered with equal space above and below. */
 @media (min-width: {DESKTOP_BREAKPOINT}) {{
+    body {{
+        display: flex;
+    }}
+
     .lk-page {{
         max-width: 560px;
         min-height: 0;
-        margin: 32px auto;
+        margin: auto;
         padding: 24px 24px;
         background-color: #ffffff;
         border-radius: 20px;
