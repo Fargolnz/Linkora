@@ -8,24 +8,24 @@ your page in a single `.lkr` source file. The Linkora compiler validates the
 file and generates a complete, self-contained, mobile-first static HTML page.
 
 ```lkr
-Page {
-
-    Link {
-        title: "GitHub"
-        url: "https://github.com"
-    }
-
-    Link { title: "Portfolio", url: "https://example.com" }
-
+Profile {
+    Name { title: "Seyyedeh Fargol Nazemzadeh", subtitle: "Developer" }
+    Logo { image: "./assets/logo.jpg" }
+    Bio { bio: "Building cool stuff" }
 }
+
+Link { title: "GitHub", url: "https://github.com/Fargolnz" }
+
+Link { title: "Portfolio", url: "https://example.com" }
 ```
 
 ## Features
 
 - Clean, human-readable declarative syntax
-- `Page` block as the root container of every document
+- Profile container block with Name, Logo, Bio, and Cover children
 - Schema-driven semantic validation (types, enums, colors, URLs, required properties)
 - Static HTML + CSS generation, mobile-first and responsive
+- Local image file copying to output directory
 - Deterministic error messages with line and column information
 - Easy to extend: adding a new block requires no grammar or parser changes
 
@@ -106,12 +106,12 @@ compiler/
 main.py                     Command-line interface
 docs/                       Language specification and block reference
 tests/                      Test suite
-examples/                   Sample .lkr files
+examples/                   Sample .lkr files and assets
 ```
 
 ## Language
 
-A Linkora document is a single `Page` block that contains all other blocks.
+A Linkora document is a sequence of top-level blocks.
 
 The full language reference will be available in the
 [`docs/language/LinkoraLanguageSpecification.md`](docs/language/LinkoraLanguageSpecification.md) in the future.
@@ -119,7 +119,11 @@ Blocks implemented so far:
 
 | Block | Documentation |
 |-------|---------------|
-| `Page` | [`docs/language/Page.md`](docs/language/Page.md) |
+| `Profile` | [`docs/language/Profile.md`](docs/language/Profile.md) |
+| `Name` | Part of [`docs/language/Profile.md`](docs/language/Profile.md) |
+| `Bio` | Part of [`docs/language/Profile.md`](docs/language/Profile.md) |
+| `Logo` | Part of [`docs/language/Profile.md`](docs/language/Profile.md) |
+| `Cover` | Part of [`docs/language/Profile.md`](docs/language/Profile.md) |
 | `Link` | [`docs/language/Link.md`](docs/language/Link.md) |
 
 ## Status
