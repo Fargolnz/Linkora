@@ -131,6 +131,8 @@ Blocks implemented so far:
 | `Link` | [`docs/language/Link.md`](docs/language/Link.md) |
 | `Title` | [`docs/language/Title.md`](docs/language/Title.md) |
 | `Text` | [`docs/language/Text.md`](docs/language/Text.md) |
+| `SocialMedia` | [`docs/language/SocialMedia.md`](docs/language/SocialMedia.md) |
+| `SocialMediaItem` | Part of [`docs/language/SocialMedia.md`](docs/language/SocialMedia.md) |
 
 ## Status
 
