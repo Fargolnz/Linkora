@@ -268,8 +268,9 @@ _SOCIALMEDIA_ITEM = BlockDef(
         PropertyDef(
             "platform",
             ValueType.ENUM,
-            "instagram",
+            "",
             enum_values=_SOCIAL_MEDIA_PLATFORMS,
+            required=True,
         ),
         PropertyDef("title", ValueType.STRING, ""),
         PropertyDef("url", ValueType.URL, "", required=True),

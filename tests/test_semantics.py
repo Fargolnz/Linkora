@@ -266,6 +266,17 @@ class TestSocialMedia:
         assert len(errors) == 1
         assert "required property 'url'" in errors[0].message
 
+    def test_item_requires_platform(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "SocialMedia {\n"
+            "    SocialMediaItem { url: \"https://ig/x\" }\n"
+            "}\n"
+        ).errors
+        assert len(errors) == 1
+        assert "required property 'platform'" in errors[0].message
+
     def test_invalid_platform(self):
         from compiler import compile_source
 
