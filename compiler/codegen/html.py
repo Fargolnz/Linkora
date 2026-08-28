@@ -182,6 +182,29 @@ def render_title(block: Block) -> str:
     )
 
 
+def render_text(block: Block) -> str:
+    """Render a Text block as a styled paragraph."""
+    resolved = block.resolved
+    text = str(resolved["text"])
+    align = str(resolved["align"])
+    text_color = str(resolved["textColor"])
+    bg_color = str(resolved["backgroundColor"])
+    border_color = str(resolved["borderColor"])
+    shape = str(resolved["shape"])
+
+    classes = " ".join(["lk-text", f"lk-shape-{shape}"])
+    style = (
+        f"color: {text_color}; "
+        f"background-color: {bg_color}; "
+        f"border-color: {border_color}; "
+        f"text-align: {align};"
+    )
+    return (
+        f'  <p class="{classes}" style="{style}">'
+        f"{html.escape(text)}</p>"
+    )
+
+
 #: Dispatch table mapping block names to their HTML renderers.
 _RENDERERS = {
     "Profile": render_profile,
@@ -191,4 +214,5 @@ _RENDERERS = {
     "Cover": render_cover,
     "Link": render_link,
     "Title": render_title,
+    "Text": render_text,
 }
