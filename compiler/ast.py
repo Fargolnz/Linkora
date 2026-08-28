@@ -68,6 +68,8 @@ class Block:
     position: SourcePosition
     properties: list[Property] = field(default_factory=list)
     children: list["Block"] = field(default_factory=list)
+    #: The enclosing block, or ``None`` for top-level blocks. Set by the builder.
+    parent: Optional["Block"] = None
     #: Filled by the validator with every property resolved to its final value.
     resolved: dict[str, object] = field(default_factory=dict)
 

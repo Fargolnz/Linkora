@@ -58,6 +58,7 @@ class _AstBuilder(LinkoraListener):
         )
         if self.stack:
             self.stack[-1].children.append(block)
+            block.parent = self.stack[-1]
         else:
             self.top_level.append(block)
         self.stack.append(block)
