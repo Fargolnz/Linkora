@@ -245,6 +245,87 @@ class TestText:
         compile_ok('Text { text: "A" }\nText { text: "B" }')
 
 
+class TestSocialMedia:
+    SRC = (
+        "SocialMedia {\n"
+        "    SocialMediaItem { platform: instagram, url: \"https://ig/x\" }\n"
+        "}\n"
+    )
+
+    def test_valid_socialmedia(self):
+        compile_ok(self.SRC)
+
+    def test_item_requires_url(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "SocialMedia {\n"
+            "    SocialMediaItem { platform: instagram }\n"
+            "}\n"
+        ).errors
+        assert len(errors) == 1
+        assert "required property 'url'" in errors[0].message
+
+    def test_invalid_platform(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "SocialMedia {\n"
+            "    SocialMediaItem { platform: myspace, url: \"https://x.com\" }\n"
+            "}\n"
+        ).errors
+        assert len(errors) == 1
+        assert "not a valid value" in errors[0].message
+
+    def test_invalid_columns_value(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "SocialMedia {\n"
+            "    columns: 5\n"
+            "    SocialMediaItem { platform: instagram, url: \"https://ig/x\" }\n"
+            "}\n"
+        ).errors
+        assert len(errors) == 1
+        assert "'columns' must be one of 1, 2, 3, 4" in errors[0].message
+
+    def test_columns_default_is_one(self):
+        result = compile_ok("SocialMedia {\n"
+            "    SocialMediaItem { platform: instagram, url: \"https://ig/x\" }\n"
+            "}\n")
+        assert result.ast is not None
+        assert result.ast.blocks[0].resolved["columns"] == 1
+
+    def test_show_both_false_rejected(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "SocialMedia {\n"
+            "    showTitle: false\n"
+            "    showIcon: false\n"
+            "    SocialMediaItem { platform: instagram, url: \"https://ig/x\" }\n"
+            "}\n"
+        ).errors
+        assert len(errors) == 1
+        assert "'showTitle' and 'showIcon' cannot both be false" in errors[0].message
+
+    def test_empty_socialmedia_rejected(self):
+        from compiler import compile_source
+
+        errors = compile_source("SocialMedia {\n}\n").errors
+        assert len(errors) == 1
+        assert "at least one 'SocialMediaItem'" in errors[0].message
+
+    def test_item_outside_socialmedia_rejected(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "SocialMediaItem { platform: instagram, url: \"https://ig/x\" }\n"
+        ).errors
+        assert len(errors) == 1
+        assert "only allowed inside" in errors[0].message
+
+
 class TestProfileRules:
     def test_profile_not_repeatable(self):
         from compiler import compile_source

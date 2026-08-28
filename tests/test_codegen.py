@@ -238,3 +238,47 @@ class TestProfileRendering:
     def test_empty_profile(self):
         html = _html("Profile {}")
         assert '<section class="lk-profile">' in html
+
+
+SOCIAL = (
+    "SocialMedia {\n"
+    "    SocialMediaItem { platform: instagram, url: \"https://ig/insta\" }\n"
+    "    SocialMediaItem { platform: github, url: \"https://gh/me\" }\n"
+    "}\n"
+)
+
+
+class TestSocialMediaRendering:
+    def test_grid_section(self):
+        html = _html(SOCIAL)
+        assert '<section class="lk-socialmedia"' in html
+        assert 'data-columns="1"' in html
+
+    def test_item_anchor(self):
+        html = _html(SOCIAL)
+        assert 'class="lk-smitem lk-shape-rounded lk-icon-right"' in html
+        assert 'href="https://ig/insta"' in html
+
+    def test_platform_title_defaults_to_name(self):
+        html = _html(SOCIAL)
+        assert ">Instagram</span>" in html
+        assert ">GitHub</span>" in html
+
+    def test_brand_icon_present(self):
+        html = _html(SOCIAL)
+        assert 'class="lk-smitem-icon"' in html
+
+    def test_columns_attribute(self):
+        html = _html(
+            "SocialMedia {\n"
+            "    columns: 2\n"
+            "    SocialMediaItem { platform: x, url: \"https://x.com\" }\n"
+            "    SocialMediaItem { platform: x, url: \"https://x.com\" }\n"
+            "}\n"
+        )
+        assert 'data-columns="2"' in html
+
+    def test_css_styles_present(self):
+        html = _html(SOCIAL)
+        assert ".lk-smitem" in html
+        assert "grid-template-columns: repeat(3, 1fr)" in html
