@@ -27,3 +27,4 @@ Link { title: "لینکدین من", url: "https://www.linkedin.com/in/seyyedeh-
 
 Link { title: "لینکدین من شخصی‌سازی شده", url: "https://www.linkedin.com/in/seyyedeh-fargol-nazemzadeh", align: right, titleColor: "#4F46E5", backgroundColor: "#FFFFFF", borderColor: "#4F46E5", shape: sharp }
 
+Text { text: "A short paragraph describing my work and interests." }
