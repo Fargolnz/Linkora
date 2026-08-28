@@ -5,8 +5,7 @@ Profile {
     Bio { text: "Building Linkora — a DSL for customizable link-in-bio pages." }
 }
 
-Title { title: "My Links" }
-Title { title: "Customized", align: left, titleColor: "#c7006e" }
+Title { title: "My Links Customized", align: left, titleColor: "#c7006e" }
 
 Link {
     title: "My GitHub"
@@ -28,3 +27,21 @@ Link { title: "لینکدین من", url: "https://www.linkedin.com/in/seyyedeh-
 Link { title: "لینکدین من شخصی‌سازی شده", url: "https://www.linkedin.com/in/seyyedeh-fargol-nazemzadeh", align: right, titleColor: "#4F46E5", backgroundColor: "#FFFFFF", borderColor: "#4F46E5", shape: sharp }
 
 Text { text: "A short paragraph describing my work and interests." }
+
+Title { title: "Social Media" }
+
+SocialMedia {
+    columns: 3
+    SocialMediaItem { platform: instagram, url: "https://instagram.com" }
+    SocialMediaItem { platform: telegram, url: "https://t.me/linkora" }
+    SocialMediaItem { platform: youtube, url: "https://youtube.com" }
+    SocialMediaItem { platform: tiktok, url: "https://tiktok.com" }
+    SocialMediaItem { platform: x, url: "https://x.com" }
+    SocialMediaItem { platform: linkedin, url: "https://www.linkedin.com/in/seyyedeh-fargol-nazemzadeh" }
+    SocialMediaItem { platform: github, url: "https://github.com/Fargolnz" }
+    SocialMediaItem { platform: spotify, url: "https://open.spotify.com" }
+    SocialMediaItem { platform: twitch, url: "https://www.twitch.tv" }
+    SocialMediaItem { platform: pinterest, url: "https://www.pinterest.com" }
+    SocialMediaItem { platform: facebook, url: "https://www.facebook.com" }
+    SocialMediaItem { platform: patreon, url: "https://www.patreon.com" }
+}
