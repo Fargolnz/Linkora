@@ -200,6 +200,51 @@ class TestTitle:
         compile_ok('Title { title: "My Links" }')
 
 
+class TestText:
+    def _first_text(self, source: str):
+        result = compile_ok(source)
+        assert result.ast is not None
+        return result.ast.blocks[0]
+
+    def test_missing_text(self):
+        from compiler import SemanticError, compile_source
+
+        errors = compile_source("Text {}").errors
+        assert len(errors) == 1
+        assert isinstance(errors[0], SemanticError)
+        assert "required property 'text'" in errors[0].message
+
+    def test_invalid_shape_value(self):
+        from compiler import compile_source
+
+        errors = compile_source('Text { text: "x", shape: squircle }').errors
+        assert len(errors) == 1
+        assert "not a valid value" in errors[0].message
+        assert "sharp, slightlyRounded, rounded, pill" in errors[0].message
+
+    def test_defaults_applied(self):
+        block = self._first_text('Text { text: "Hello" }')
+        assert block.resolved == {
+            "text": "Hello",
+            "align": "center",
+            "textColor": "#000000",
+            "backgroundColor": "transparent",
+            "borderColor": "transparent",
+            "shape": "slightlyRounded",
+        }
+
+    def test_explicit_values_override_defaults(self):
+        block = self._first_text(
+            'Text { text: "x", align: left, textColor: "#333333", shape: pill }'
+        )
+        assert block.resolved["align"] == "left"
+        assert block.resolved["textColor"] == "#333333"
+        assert block.resolved["shape"] == "pill"
+
+    def test_repeatable_texts_allowed(self):
+        compile_ok('Text { text: "A" }\nText { text: "B" }')
+
+
 class TestProfileRules:
     def test_profile_not_repeatable(self):
         from compiler import compile_source

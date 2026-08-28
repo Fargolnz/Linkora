@@ -146,6 +146,42 @@ class TestTitleRendering:
         assert "font-size: 28px" in html
 
 
+class TestTextRendering:
+    def test_renders_paragraph(self):
+        html = _html('Text { text: "Hello" }')
+        assert (
+            '<p class="lk-text lk-shape-slightlyRounded" '
+            'style="color: #000000; background-color: transparent; '
+            'border-color: transparent; text-align: center;">Hello</p>'
+        ) in html
+
+    def test_custom_visual_properties(self):
+        html = _html(
+            'Text { text: "Custom", align: left, textColor: "#333333", '
+            'backgroundColor: "#F3F4F6", borderColor: "#2563EB", shape: pill }'
+        )
+        assert 'class="lk-text lk-shape-pill"' in html
+        assert (
+            'style="color: #333333; background-color: #F3F4F6; '
+            'border-color: #2563EB; text-align: left;"'
+        ) in html
+
+    def test_html_escaping(self):
+        html = _html('Text { text: "He said \\"Hi & Bye\\"" }')
+        assert "He said &quot;Hi &amp; Bye&quot;" in html
+
+    def test_multiple_texts_rendered_in_order(self):
+        html = _html('Text { text: "First" }\nText { text: "Second" }\n')
+        first = html.index(">First</p>")
+        second = html.index(">Second</p>")
+        assert first < second
+
+    def test_text_css_present(self):
+        html = _html('Text { text: "Hello" }')
+        assert ".lk-text" in html
+        assert "font-size: 14px" in html
+
+
 PROFILE = (
     'Profile {\n'
     '    Cover { image: "https://x.com/cover.jpg" }\n'

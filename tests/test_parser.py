@@ -54,6 +54,19 @@ class TestValidSyntax:
             '}\n'
         )
 
+    def test_single_text(self):
+        compile_ok('Text { text: "Hello" }')
+
+    def test_text_compact_multiline(self):
+        compile_ok(
+            'Text {\n'
+            '    text: "Hello"\n'
+            '    align: left\n'
+            '    textColor: "#333333"\n'
+            '    shape: pill\n'
+            '}\n'
+        )
+
     def test_comments(self):
         compile_ok(
             '// top-level comment\n'
