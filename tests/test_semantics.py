@@ -230,7 +230,7 @@ class TestText:
             "textColor": "#000000",
             "backgroundColor": "transparent",
             "borderColor": "transparent",
-            "shape": "slightlyRounded",
+            "shape": "rounded",
         }
 
     def test_explicit_values_override_defaults(self):

@@ -150,7 +150,7 @@ class TestTextRendering:
     def test_renders_paragraph(self):
         html = _html('Text { text: "Hello" }')
         assert (
-            '<p class="lk-text lk-shape-slightlyRounded" '
+            '<p class="lk-text lk-shape-rounded" '
             'style="color: #000000; background-color: transparent; '
             'border-color: transparent; text-align: center;">Hello</p>'
         ) in html

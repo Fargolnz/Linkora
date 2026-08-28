@@ -205,7 +205,7 @@ _TEXT = BlockDef(
         PropertyDef(
             "shape",
             ValueType.ENUM,
-            "slightlyRounded",
+            "rounded",
             enum_values=("sharp", "slightlyRounded", "rounded", "pill"),
         ),
     )
