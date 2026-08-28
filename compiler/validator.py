@@ -91,10 +91,57 @@ class Validator:
                 )
 
         self._validate_properties(block, block_def, errors)
+        self._validate_specific_rules(block, block_def, errors)
 
         child_counts: dict[str, int] = {}
         for child in block.children:
             self._validate_block(child, block.name, child_counts, errors)
+
+    def _validate_specific_rules(
+        self,
+        block: Block,
+        block_def: BlockDef,
+        errors: list[SemanticError],
+    ) -> None:
+        """Validate block-type-specific rules beyond the generic schema checks."""
+        if block.name != "SocialMedia":
+            return
+
+        def effective(name: str) -> object:
+            prop = block.property(name)
+            if prop is not None:
+                return prop.value
+            return block_def.property(name).default
+
+        columns = effective("columns")
+        if columns not in (1, 2, 3, 4):
+            errors.append(
+                SemanticError(
+                    f"Block '{block.name}': 'columns' must be one of 1, 2, 3, 4, "
+                    f"found {columns}.",
+                    block.position,
+                )
+            )
+
+        show_title = effective("showTitle")
+        show_icon = effective("showIcon")
+        if show_title is False and show_icon is False:
+            errors.append(
+                SemanticError(
+                    f"Block '{block.name}': 'showTitle' and 'showIcon' "
+                    "cannot both be false.",
+                    block.position,
+                )
+            )
+
+        if not block.children:
+            errors.append(
+                SemanticError(
+                    f"Block '{block.name}' must contain at least one "
+                    f"'{block_def.allowed_children[0]}' child.",
+                    block.position,
+                )
+            )
 
     # -- Property-level rules -------------------------------------------------
 
