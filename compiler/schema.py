@@ -208,7 +208,76 @@ _TEXT = BlockDef(
             "rounded",
             enum_values=("sharp", "slightlyRounded", "rounded", "pill"),
         ),
-    )
+    ),
+)
+
+_SOCIAL_MEDIA_PLATFORMS = (
+    "instagram",
+    "telegram",
+    "youtube",
+    "tiktok",
+    "x",
+    "linkedin",
+    "github",
+    "spotify",
+    "twitch",
+    "pinterest",
+    "facebook",
+    "patreon",
+)
+
+_SOCIALMEDIA = BlockDef(
+    name="SocialMedia",
+    parent=None,
+    repeatable=True,
+    allowed_children=("SocialMediaItem",),
+    properties=_properties(
+        PropertyDef("columns", ValueType.NUMBER, 1),
+        PropertyDef("showTitle", ValueType.BOOLEAN, True),
+        PropertyDef("showIcon", ValueType.BOOLEAN, True),
+        PropertyDef(
+            "iconPosition",
+            ValueType.ENUM,
+            "right",
+            enum_values=("left", "right"),
+        ),
+        PropertyDef(
+            "itemsOrder",
+            ValueType.ENUM,
+            "rtl",
+            enum_values=("ltr", "rtl"),
+        ),
+        PropertyDef("titleColor", ValueType.COLOR, "#1A1A1A"),
+        PropertyDef("iconColor", ValueType.COLOR, ""),
+        PropertyDef("backgroundColor", ValueType.COLOR, ""),
+        PropertyDef("borderColor", ValueType.COLOR, "transparent"),
+        PropertyDef(
+            "shape",
+            ValueType.ENUM,
+            "rounded",
+            enum_values=("sharp", "slightlyRounded", "rounded", "pill"),
+        ),
+    ),
+)
+
+_SOCIALMEDIA_ITEM = BlockDef(
+    name="SocialMediaItem",
+    parent="SocialMedia",
+    repeatable=True,
+    properties=_properties(
+        PropertyDef(
+            "platform",
+            ValueType.ENUM,
+            "instagram",
+            enum_values=_SOCIAL_MEDIA_PLATFORMS,
+        ),
+        PropertyDef("title", ValueType.STRING, ""),
+        PropertyDef("url", ValueType.URL, "", required=True),
+        PropertyDef("titleColor", ValueType.COLOR, ""),
+        PropertyDef("iconColor", ValueType.COLOR, ""),
+        PropertyDef("backgroundColor", ValueType.COLOR, ""),
+        PropertyDef("borderColor", ValueType.COLOR, ""),
+    ),
 )
 
 
@@ -222,6 +291,8 @@ BLOCKS: dict[str, BlockDef] = {
     _LINK.name: _LINK,
     _TITLE.name: _TITLE,
     _TEXT.name: _TEXT,
+    _SOCIALMEDIA.name: _SOCIALMEDIA,
+    _SOCIALMEDIA_ITEM.name: _SOCIALMEDIA_ITEM,
 }
 
 
