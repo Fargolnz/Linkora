@@ -282,3 +282,26 @@ class TestSocialMediaRendering:
         html = _html(SOCIAL)
         assert ".lk-smitem" in html
         assert "grid-template-columns: repeat(3, 1fr)" in html
+
+    def test_item_shrinks_in_narrow_grid(self):
+        html = _html(SOCIAL)
+        assert "min-width: 0" in html
+        assert "text-overflow: ellipsis" in html
+        assert "white-space: nowrap" in html
+
+    def test_instagram_icon_uses_gradient_fill(self):
+        html = _html(SOCIAL)
+        assert "linearGradient" in html
+        assert 'fill="url(#ig)"' in html
+
+    def test_brand_icons_use_exact_brand_hex(self):
+        html = _html(
+            "SocialMedia {\n"
+            "    SocialMediaItem { platform: github, url: \"https://gh/me\" }\n"
+            "    SocialMediaItem { platform: pinterest, url: \"https://pin/x\" }\n"
+            "    SocialMediaItem { platform: telegram, url: \"https://t/x\" }\n"
+            "}\n"
+        )
+        assert 'fill="#181717"' in html  # GitHub
+        assert 'fill="#BD081C"' in html  # Pinterest
+        assert 'fill="#26A5E4"' in html  # Telegram
