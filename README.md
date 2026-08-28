@@ -130,6 +130,7 @@ Blocks implemented so far:
 | `Cover` | Part of [`docs/language/Profile.md`](docs/language/Profile.md) |
 | `Link` | [`docs/language/Link.md`](docs/language/Link.md) |
 | `Title` | [`docs/language/Title.md`](docs/language/Title.md) |
+| `Text` | [`docs/language/Text.md`](docs/language/Text.md) |
 
 ## Status
 
