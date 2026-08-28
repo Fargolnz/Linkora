@@ -499,22 +499,21 @@ def _parent_resolved(block: Block) -> dict[str, object]:
 
 
 def _icon_svg(meta: dict[str, str], icon_color: str) -> str:
-    """Wrap a platform's inline SVG, optionally forcing a single icon color."""
+    """Wrap a platform's inline SVG, optionally forcing a single icon color.
+
+    When ``icon_color`` is set, every hex fill, stroke and gradient stop is
+    recolored, so both flat and full-color (gradient / multi-layer) icons are
+    tinted to the requested color.
+    """
     svg = meta["icon"]
     if icon_color:
-        # Tint every flat-color fill/stroke, leaving gradient url(#...) refs
-        # (and other non-hex values) untouched.
         import re
 
+        tint = html.escape(icon_color, quote=True)
+        svg = re.sub(r'fill="#[0-9a-fA-F]{3,8}"', f'fill="{tint}"', svg)
+        svg = re.sub(r'stroke="#[0-9a-fA-F]{3,8}"', f'stroke="{tint}"', svg)
         svg = re.sub(
-            r'fill="#[0-9a-fA-F]{3,8}"',
-            f'fill="{html.escape(icon_color, quote=True)}"',
-            svg,
-        )
-        svg = re.sub(
-            r'stroke="#[0-9a-fA-F]{3,8}"',
-            f'stroke="{html.escape(icon_color, quote=True)}"',
-            svg,
+            r'stop-color="#[0-9a-fA-F]{3,8}"', f'stop-color="{tint}"', svg
         )
     return f'<span class="lk-smitem-icon" aria-hidden="true">{svg}</span>'
 

@@ -305,3 +305,15 @@ class TestSocialMediaRendering:
         assert 'fill="#181717"' in html  # GitHub
         assert 'fill="#BD081C"' in html  # Pinterest
         assert 'fill="#26A5E4"' in html  # Telegram
+
+    def test_icon_color_recolors_gradient_and_flat_fills(self):
+        html = _html(
+            "SocialMedia {\n"
+            "    iconColor: \"#123456\"\n"
+            "    SocialMediaItem { platform: instagram, url: \"https://ig/x\" }\n"
+            "    SocialMediaItem { platform: github, url: \"https://gh/me\" }\n"
+            "}\n"
+        )
+        assert 'stop-color="#123456"' in html  # Instagram gradient stops
+        assert 'fill="url(#ig)"' in html  # gradient fill reference preserved
+        assert 'fill="#123456"' in html  # GitHub flat fill recolored
