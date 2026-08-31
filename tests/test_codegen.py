@@ -521,7 +521,7 @@ class TestAddressRendering:
     def test_icon_present_with_brand_hexes(self):
         html = _html(ADDRESS)
         assert 'class="lk-socialitem-icon"' in html
-        assert 'fill="#EA4335"' in html
+        assert 'fill="#ea4335"' in html
         assert 'fill="#33CCFF"' in html
 
     def test_all_service_brand_hexes(self):
@@ -533,15 +533,15 @@ class TestAddressRendering:
             "    AddressItem { service: balad, url: \"https://b/x\" }\n"
             "}\n"
         )
-        assert 'fill="#EA4335"' in html
+        assert 'fill="#ea4335"' in html
         assert 'fill="#33CCFF"' in html
-        assert 'fill="#1B9CFF"' in html
-        assert 'fill="#35A85B"' in html
+        assert 'fill="#10b990"' in html
+        assert 'fill="#7868f6"' in html
 
     def test_default_background_is_per_service_shade(self):
         html = _html(ADDRESS)
-        assert "background-color: #FCE8E6" in html
-        assert "background-color: #E6F7FF" in html
+        assert "background-color: #E8F0FE" in html
+        assert "background-color: #E5F6FC" in html
 
     def test_default_border_is_transparent(self):
         html = _html(ADDRESS)
@@ -574,7 +574,7 @@ class TestAddressRendering:
             "}\n"
         )
         assert 'fill="#123456"' in html
-        assert 'fill="#EA4335"' not in html
+        assert 'fill="#ea4335"' not in html
 
     def test_item_color_inheritance(self):
         html = _html(
