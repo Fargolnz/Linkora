@@ -307,6 +307,32 @@ class TestSocialMedia:
         assert result.ast is not None
         assert result.ast.blocks[0].resolved["columns"] == 1
 
+    def test_columns_four_rejected_when_icon_and_title_shown(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "SocialMedia {\n"
+            "    columns: 4\n"
+            "    SocialMediaItem { platform: instagram, url: \"https://ig/x\" }\n"
+            "}\n"
+        ).errors
+        assert len(errors) == 1
+        assert "'columns' can only be 4" in errors[0].message
+
+    def test_columns_four_allowed_when_title_hidden(self):
+        compile_ok("SocialMedia {\n"
+            "    columns: 4\n"
+            "    showTitle: false\n"
+            "    SocialMediaItem { platform: instagram, url: \"https://ig/x\" }\n"
+            "}\n")
+
+    def test_columns_four_allowed_when_icon_hidden(self):
+        compile_ok("SocialMedia {\n"
+            "    columns: 4\n"
+            "    showIcon: false\n"
+            "    SocialMediaItem { platform: instagram, url: \"https://ig/x\" }\n"
+            "}\n")
+
     def test_show_both_false_rejected(self):
         from compiler import compile_source
 

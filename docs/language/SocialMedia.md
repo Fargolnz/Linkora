@@ -53,6 +53,8 @@ Controls how many items appear in each row of the grid.
 
 Supported values: `1`, `2`, `3`, `4`.
 
+> ⚠️ `columns` can only be `4` when either `showTitle` or `showIcon` is `false`. With both the title and the icon visible, four columns would overcrowd the grid, so the compiler rejects the combination.
+
 ---
 
 ### `showTitle`
@@ -195,6 +197,7 @@ Supported values:
 The compiler performs the following semantic validations on the `SocialMedia` block:
 
 - `columns` must be one of `1`, `2`, `3`, or `4`.
+- `columns` can only be `4` when either `showTitle` or `showIcon` is `false`.
 - `showTitle` and `showIcon` cannot both be `false`.
 - The block must contain at least one `SocialMediaItem` child.
 - Unknown or duplicate properties are not allowed.
@@ -435,6 +438,19 @@ SocialMedia {
 ```
 
 ❌ `columns` must be one of 1, 2, 3, or 4.
+
+---
+
+Four columns with both the icon and the title visible:
+
+```lkr
+SocialMedia {
+    columns: 4
+    SocialMediaItem { platform: github, url: "https://github.com/me" }
+}
+```
+
+❌ `columns` can only be 4 when either `showTitle` or `showIcon` is false.
 
 ---
 

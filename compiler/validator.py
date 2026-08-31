@@ -134,6 +134,15 @@ class Validator:
                 )
             )
 
+        if columns == 4 and show_title and show_icon:
+            errors.append(
+                SemanticError(
+                    f"Block '{block.name}': 'columns' can only be 4 when either "
+                    "'showTitle' or 'showIcon' is false.",
+                    block.position,
+                )
+            )
+
         if not block.children:
             errors.append(
                 SemanticError(
