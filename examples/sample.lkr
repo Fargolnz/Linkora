@@ -45,3 +45,20 @@ SocialMedia {
     SocialMediaItem { platform: facebook, url: "https://www.facebook.com" }
     SocialMediaItem { platform: patreon, url: "https://www.patreon.com" }
 }
+
+Title { title: "Messaging" }
+
+SocialNetwork {
+    columns: 3
+    SocialNetworkItem { platform: telegram, url: "https://t.me/linkora" }
+    SocialNetworkItem { platform: whatsapp, url: "https://wa.me/1234567890" }
+    SocialNetworkItem { platform: discord, url: "https://discord.gg/linkora" }
+    SocialNetworkItem { platform: skype, url: "https://join.skype.com/linkora" }
+    SocialNetworkItem { platform: line, url: "https://line.me/ti/p/linkora" }
+    SocialNetworkItem { platform: viber, url: "https://viber.me/linkora" }
+    SocialNetworkItem { platform: kik, url: "https://kik.me/linkora" }
+    SocialNetworkItem { platform: facebookMessenger, url: "https://m.me/linkora" }
+    SocialNetworkItem { platform: bale, url: "https://ble.ir/linkora" }
+    SocialNetworkItem { platform: eitaa, url: "https://eitaa.com/linkora" }
+    SocialNetworkItem { platform: rubika, url: "https://rubika.ir/linkora" }
+}
