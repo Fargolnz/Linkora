@@ -350,6 +350,8 @@ _SOCIALNETWORK_ITEM = BlockDef(
     ),
 )
 
+_ADDRESS_PROVIDERS = ("googleMap", "waze", "neshan", "balad")
+
 _CONTACT_TYPES = ("mobile", "phone", "email", "sms", "website")
 
 _CONTACT = BlockDef(
@@ -407,6 +409,63 @@ _CONTACT_ITEM = BlockDef(
     ),
 )
 
+_ADDRESS = BlockDef(
+    name="Address",
+    parent=None,
+    repeatable=True,
+    allowed_children=("AddressItem",),
+    properties=_properties(
+        PropertyDef("address", ValueType.STRING, ""),
+        PropertyDef("addressColor", ValueType.COLOR, "#000000"),
+        PropertyDef("columns", ValueType.NUMBER, 1),
+        PropertyDef("showTitle", ValueType.BOOLEAN, True),
+        PropertyDef("showIcon", ValueType.BOOLEAN, True),
+        PropertyDef(
+            "iconPosition",
+            ValueType.ENUM,
+            "right",
+            enum_values=("left", "right"),
+        ),
+        PropertyDef(
+            "itemsOrder",
+            ValueType.ENUM,
+            "rtl",
+            enum_values=("ltr", "rtl"),
+        ),
+        PropertyDef("titleColor", ValueType.COLOR, "#3B3B3B"),
+        PropertyDef("iconColor", ValueType.COLOR, ""),
+        PropertyDef("backgroundColor", ValueType.COLOR, ""),
+        PropertyDef("borderColor", ValueType.COLOR, "transparent"),
+        PropertyDef(
+            "shape",
+            ValueType.ENUM,
+            "rounded",
+            enum_values=("sharp", "slightlyRounded", "rounded", "pill"),
+        ),
+    ),
+)
+
+_ADDRESS_ITEM = BlockDef(
+    name="AddressItem",
+    parent="Address",
+    repeatable=True,
+    properties=_properties(
+        PropertyDef(
+            "service",
+            ValueType.ENUM,
+            "",
+            enum_values=_ADDRESS_PROVIDERS,
+            required=True,
+        ),
+        PropertyDef("title", ValueType.STRING, ""),
+        PropertyDef("url", ValueType.URL, "", required=True),
+        PropertyDef("titleColor", ValueType.COLOR, ""),
+        PropertyDef("iconColor", ValueType.COLOR, ""),
+        PropertyDef("backgroundColor", ValueType.COLOR, ""),
+        PropertyDef("borderColor", ValueType.COLOR, ""),
+    ),
+)
+
 
 #: The full set of blocks known to the compiler, keyed by block name.
 BLOCKS: dict[str, BlockDef] = {
@@ -424,6 +483,8 @@ BLOCKS: dict[str, BlockDef] = {
     _SOCIALNETWORK_ITEM.name: _SOCIALNETWORK_ITEM,
     _CONTACT.name: _CONTACT,
     _CONTACT_ITEM.name: _CONTACT_ITEM,
+    _ADDRESS.name: _ADDRESS,
+    _ADDRESS_ITEM.name: _ADDRESS_ITEM,
 }
 
 
