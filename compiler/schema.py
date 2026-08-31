@@ -235,6 +235,9 @@ _SOCIAL_NETWORK_PLATFORMS = (
     "viber",
     "kik",
     "facebookMessenger",
+    "bale",
+    "eitaa",
+    "rubika",
 )
 
 _SOCIALMEDIA = BlockDef(

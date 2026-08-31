@@ -490,6 +490,9 @@ class TestSocialNetwork:
             "    SocialNetworkItem { platform: viber, url: \"https://viber.com\" }\n"
             "    SocialNetworkItem { platform: kik, url: \"https://kik.com\" }\n"
             "    SocialNetworkItem { platform: facebookMessenger, url: \"https://m.me/x\" }\n"
+            "    SocialNetworkItem { platform: bale, url: \"https://ble.ir/x\" }\n"
+            "    SocialNetworkItem { platform: eitaa, url: \"https://eitaa.com/x\" }\n"
+            "    SocialNetworkItem { platform: rubika, url: \"https://rubika.ir/x\" }\n"
             "}\n")
 
     def test_socialmedia_platform_rejected_in_socialnetwork(self):

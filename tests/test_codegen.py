@@ -379,6 +379,19 @@ class TestSocialNetworkRendering:
         assert 'fill="#25D366"' in html  # WhatsApp
         assert 'fill="#5865F2"' in html  # Discord
 
+    def test_new_network_platform_brand_hexes(self):
+        html = _html(
+            "SocialNetwork {\n"
+            "    SocialNetworkItem { platform: bale, url: \"https://ble.ir/x\" }\n"
+            "    SocialNetworkItem { platform: eitaa, url: \"https://eitaa.com/x\" }\n"
+            "    SocialNetworkItem { platform: rubika, url: \"https://rubika.ir/x\" }\n"
+            "}\n"
+        )
+        assert 'fill="#0ACA9B"' in html  # Bale
+        assert 'fill="#ee7f22"' in html  # Eitaa
+        assert 'fill="#49BDCA"' in html  # Rubika
+        assert 'fill="#0F68A0"' in html  # Rubika
+
     def test_default_title_color_is_3b3b3b(self):
         html = _html(SOCIAL_NETWORK)
         assert "color: #3B3B3B" in html
