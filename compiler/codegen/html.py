@@ -697,6 +697,63 @@ CONTACT_META: dict[str, dict[str, str]] = {
 }
 
 
+#: Per-service metadata for the Address block: canonical display name, a soft
+#: brand-shade default background, and a full-color 24x24 brand icon (inline
+#: SVG paths). The destination `url` of each item is used verbatim as the href.
+ADDRESS_META: dict[str, dict[str, str]] = {
+    "googleMap": {
+        "name": "Google Maps",
+        "bg": "#FCE8E6",
+        "icon": (
+            '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">'
+            '<g>'
+            '<path fill="#EA4335" d="M12 2a7 7 0 0 0-7 7c0 4.9 7 13 7 13s7-8.1 '
+            '7-13a7 7 0 0 0-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/>'
+            '<path fill="#FFFFFF" d="M12 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5z"/>'
+            "</g></svg>"
+        ),
+    },
+    "waze": {
+        "name": "Waze",
+        "bg": "#E6F7FF",
+        "icon": (
+            '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">'
+            '<g>'
+            '<path fill="#33CCFF" d="M12 2a7 7 0 0 0-7 7c0 4.9 7 13 7 13s7-8.1 '
+            '7-13a7 7 0 0 0-7-7z"/>'
+            '<path fill="#FFFFFF" d="M9.4 7.8l6 2.7-2.6 1.1-1 2.4-1-2.4-2.6-1.1 '
+            '6-2.7-.8-1.6z" transform="translate(0.6 0.6)"/>'
+            "</g></svg>"
+        ),
+    },
+    "neshan": {
+        "name": "Neshan",
+        "bg": "#E6F3FF",
+        "icon": (
+            '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">'
+            '<g>'
+            '<path fill="#1B9CFF" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/>'
+            '<path fill="#FFFFFF" d="M12 6.2l1.5 3.8 3.8 1.5-3.8 1.5L12 16.8l-1.5'
+            '-3.8-3.8-1.5 3.8-1.5L12 6.2z"/>'
+            "</g></svg>"
+        ),
+    },
+    "balad": {
+        "name": "Balad",
+        "bg": "#E8F5EC",
+        "icon": (
+            '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">'
+            '<g>'
+            '<path fill="#35A85B" d="M12 2a7 7 0 0 0-7 7c0 4.9 7 13 7 13s7-8.1 '
+            '7-13a7 7 0 0 0-7-7z"/>'
+            '<path fill="#FFFFFF" d="M9.5 8.5h5l-2.5 2.5-1.2-1.2-1.3 1.2v-2.5zm1'
+            '3.5h3v3h-3v-3z" transform="translate(0 1)"/>'
+            "</g></svg>"
+        ),
+    },
+}
+
+
 def render_html(document: Document) -> str:
     """Render a validated document into a complete HTML page."""
     body = "\n".join(_render_block(block) for block in document.blocks)
@@ -1094,13 +1151,83 @@ def _contact_href(contact_type: str, value: str) -> str:
             return scheme + value
         return value
     return scheme + value
+def render_address(block: Block) -> str:
+    """Render an Address container as an address caption plus a provider grid."""
+    resolved = block.resolved
+    columns = int(resolved["columns"])
+    items_order = str(resolved["itemsOrder"])
+    address = str(resolved["address"])
+    address_color = str(resolved["addressColor"]) or "#000000"
+
+    items = "\n".join(_render_block(child) for child in block.children)
+    caption = ""
+    if address:
+        caption = (
+            f'  <div class="lk-socialitem-title" style="color: {address_color};'
+            f' text-align: center; margin-bottom: 12px;">{html.escape(address)}</div>\n'
+        )
+    return (
+        f'  <section class="lk-social" '
+        f'data-columns="{columns}" data-order="{items_order}">\n'
+        f"{caption}"
+        f"{items}\n"
+        f"  </section>"
+    )
+
+
+def render_address_item(block: Block) -> str:
+    """Render a single Address item as a clickable navigation button."""
+    resolved = block.resolved
+    parent = _parent_resolved(block)
+    service = str(resolved["service"])
+    meta = ADDRESS_META[service]
+
+    def inherit(key: str, parent_key: str, fallback: str = "") -> str:
+        value = str(resolved[key])
+        if value:
+            return value
+        pvalue = str(parent.get(parent_key, ""))
+        if pvalue:
+            return pvalue
+        return fallback
+
+    title = str(resolved["title"]) or meta["name"]
+    url = str(resolved["url"])
+    title_color = inherit("titleColor", "titleColor", "#3B3B3B")
+    background_color = inherit("backgroundColor", "backgroundColor", meta["bg"])
+    border_color = inherit("borderColor", "borderColor", "transparent")
+    icon_color = inherit("iconColor", "iconColor", "")
+
+    show_title = bool(parent.get("showTitle", True))
+    show_icon = bool(parent.get("showIcon", True))
+    icon_position = str(parent.get("iconPosition", "right"))
+    shape = str(parent.get("shape", "rounded"))
+
+    classes = " ".join(
+        ["lk-socialitem", f"lk-shape-{shape}", f"lk-icon-{icon_position}"]
+    )
+    style = (
+        f"color: {title_color}; "
+        f"background-color: {background_color}; "
+        f"border-color: {border_color};"
+    )
+
+    parts = []
+    if show_icon:
+        parts.append(_icon_svg(meta, icon_color))
+    if show_title:
+        parts.append(f'<span class="lk-socialitem-title">{html.escape(title)}</span>')
+
+    inner = "".join(parts)
+    return (
+        f'    <a class="{classes}" style="{style}" '
+        f'href="{html.escape(url, quote=True)}">{inner}</a>'
+    )
 
 
 def _parent_resolved(block: Block) -> dict[str, object]:
     """Return the resolved properties of the nearest ancestor block."""
     return block.parent.resolved if block.parent is not None else {}
-
-
 def _icon_svg(meta: dict[str, str], icon_color: str) -> str:
     """Wrap a platform's inline SVG, optionally forcing a single icon color.
 
@@ -1137,4 +1264,6 @@ _RENDERERS = {
     "SocialNetworkItem": render_socialnetwork_item,
     "Contact": render_contact,
     "ContactItem": render_contact_item,
+    "Address": render_address,
+    "AddressItem": render_address_item,
 }
