@@ -62,3 +62,15 @@ SocialNetwork {
     SocialNetworkItem { platform: eitaa, url: "https://eitaa.com/linkora" }
     SocialNetworkItem { platform: rubika, url: "https://rubika.ir/linkora" }
 }
+
+
+Title { title: "Contact" }
+
+Contact {
+    columns: 3
+    ContactItem { service: mobile, value: "+1 234 567 8901" }
+    ContactItem { service: phone, value: "+1 234 567 8901" }
+    ContactItem { service: email, value: "hi@example.com" }
+    ContactItem { service: sms, value: "+1 234 567 8901" }
+    ContactItem { service: website, value: "https://example.com" }
+}
