@@ -317,3 +317,68 @@ class TestSocialMediaRendering:
         assert 'stop-color="#123456"' in html  # Instagram gradient stops
         assert 'fill="url(#ig)"' in html  # gradient fill reference preserved
         assert 'fill="#123456"' in html  # GitHub flat fill recolored
+
+
+SOCIAL_NETWORK = (
+    "SocialNetwork {\n"
+    "    SocialNetworkItem { platform: whatsapp, url: \"https://wa.me/1\" }\n"
+    "    SocialNetworkItem { platform: discord, url: \"https://discord.gg/x\" }\n"
+    "}\n"
+)
+
+
+class TestSocialNetworkRendering:
+    def test_grid_section(self):
+        html = _html(SOCIAL_NETWORK)
+        assert '<section class="lk-social"' in html
+        assert 'data-columns="1"' in html
+
+    def test_item_anchor(self):
+        html = _html(SOCIAL_NETWORK)
+        assert 'class="lk-socialitem lk-shape-rounded lk-icon-right"' in html
+        assert 'href="https://wa.me/1"' in html
+
+    def test_platform_title_defaults_to_name(self):
+        html = _html(SOCIAL_NETWORK)
+        assert ">WhatsApp</span>" in html
+        assert ">Discord</span>" in html
+
+    def test_brand_icon_present(self):
+        html = _html(SOCIAL_NETWORK)
+        assert 'class="lk-socialitem-icon"' in html
+
+    def test_columns_attribute(self):
+        html = _html(
+            "SocialNetwork {\n"
+            "    columns: 2\n"
+            "    SocialNetworkItem { platform: telegram, url: \"https://t.me/x\" }\n"
+            "    SocialNetworkItem { platform: telegram, url: \"https://t.me/y\" }\n"
+            "}\n"
+        )
+        assert 'data-columns="2"' in html
+
+    def test_css_styles_present(self):
+        html = _html(SOCIAL_NETWORK)
+        assert ".lk-socialitem" in html
+        assert "grid-template-columns: repeat(3, 1fr)" in html
+
+    def test_item_shrinks_in_narrow_grid(self):
+        html = _html(SOCIAL_NETWORK)
+        assert "min-width: 0" in html
+        assert "text-overflow: ellipsis" in html
+
+    def test_brand_icons_use_exact_brand_hex(self):
+        html = _html(
+            "SocialNetwork {\n"
+            "    SocialNetworkItem { platform: telegram, url: \"https://t.me/x\" }\n"
+            "    SocialNetworkItem { platform: whatsapp, url: \"https://wa.me/1\" }\n"
+            "    SocialNetworkItem { platform: discord, url: \"https://d.gg/x\" }\n"
+            "}\n"
+        )
+        assert 'fill="#0088CC"' in html  # Telegram
+        assert 'fill="#25D366"' in html  # WhatsApp
+        assert 'fill="#5865F2"' in html  # Discord
+
+    def test_default_title_color_is_3b3b3b(self):
+        html = _html(SOCIAL_NETWORK)
+        assert "color: #3B3B3B" in html

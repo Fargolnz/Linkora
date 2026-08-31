@@ -363,6 +363,147 @@ class TestSocialMedia:
         assert "only allowed inside" in errors[0].message
 
 
+class TestSocialNetwork:
+    SRC = (
+        "SocialNetwork {\n"
+        "    SocialNetworkItem { platform: whatsapp, url: \"https://wa.me/1\" }\n"
+        "}\n"
+    )
+
+    def test_valid_socialnetwork(self):
+        compile_ok(self.SRC)
+
+    def test_item_requires_url(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "SocialNetwork {\n"
+            "    SocialNetworkItem { platform: whatsapp }\n"
+            "}\n"
+        ).errors
+        assert len(errors) == 1
+        assert "required property 'url'" in errors[0].message
+
+    def test_item_requires_platform(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "SocialNetwork {\n"
+            "    SocialNetworkItem { url: \"https://wa.me/1\" }\n"
+            "}\n"
+        ).errors
+        assert len(errors) == 1
+        assert "required property 'platform'" in errors[0].message
+
+    def test_invalid_platform(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "SocialNetwork {\n"
+            "    SocialNetworkItem { platform: myspace, url: \"https://x.com\" }\n"
+            "}\n"
+        ).errors
+        assert len(errors) == 1
+        assert "not a valid value" in errors[0].message
+
+    def test_invalid_columns_value(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "SocialNetwork {\n"
+            "    columns: 5\n"
+            "    SocialNetworkItem { platform: whatsapp, url: \"https://wa.me/1\" }\n"
+            "}\n"
+        ).errors
+        assert len(errors) == 1
+        assert "'columns' must be one of 1, 2, 3, 4" in errors[0].message
+
+    def test_columns_default_is_one(self):
+        result = compile_ok("SocialNetwork {\n"
+            "    SocialNetworkItem { platform: whatsapp, url: \"https://wa.me/1\" }\n"
+            "}\n")
+        assert result.ast is not None
+        assert result.ast.blocks[0].resolved["columns"] == 1
+
+    def test_columns_four_rejected_when_icon_and_title_shown(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "SocialNetwork {\n"
+            "    columns: 4\n"
+            "    SocialNetworkItem { platform: whatsapp, url: \"https://wa.me/1\" }\n"
+            "}\n"
+        ).errors
+        assert len(errors) == 1
+        assert "'columns' can only be 4" in errors[0].message
+
+    def test_columns_four_allowed_when_title_hidden(self):
+        compile_ok("SocialNetwork {\n"
+            "    columns: 4\n"
+            "    showTitle: false\n"
+            "    SocialNetworkItem { platform: whatsapp, url: \"https://wa.me/1\" }\n"
+            "}\n")
+
+    def test_columns_four_allowed_when_icon_hidden(self):
+        compile_ok("SocialNetwork {\n"
+            "    columns: 4\n"
+            "    showIcon: false\n"
+            "    SocialNetworkItem { platform: whatsapp, url: \"https://wa.me/1\" }\n"
+            "}\n")
+
+    def test_show_both_false_rejected(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "SocialNetwork {\n"
+            "    showTitle: false\n"
+            "    showIcon: false\n"
+            "    SocialNetworkItem { platform: whatsapp, url: \"https://wa.me/1\" }\n"
+            "}\n"
+        ).errors
+        assert len(errors) == 1
+        assert "'showTitle' and 'showIcon' cannot both be false" in errors[0].message
+
+    def test_empty_socialnetwork_rejected(self):
+        from compiler import compile_source
+
+        errors = compile_source("SocialNetwork {\n}\n").errors
+        assert len(errors) == 1
+        assert "at least one 'SocialNetworkItem'" in errors[0].message
+
+    def test_item_outside_socialnetwork_rejected(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "SocialNetworkItem { platform: whatsapp, url: \"https://wa.me/1\" }\n"
+        ).errors
+        assert len(errors) == 1
+        assert "only allowed inside" in errors[0].message
+
+    def test_valid_network_platforms(self):
+        compile_ok("SocialNetwork {\n"
+            "    SocialNetworkItem { platform: telegram, url: \"https://t.me/x\" }\n"
+            "    SocialNetworkItem { platform: whatsapp, url: \"https://wa.me/1\" }\n"
+            "    SocialNetworkItem { platform: discord, url: \"https://d.gg/x\" }\n"
+            "    SocialNetworkItem { platform: skype, url: \"https://skype.com\" }\n"
+            "    SocialNetworkItem { platform: line, url: \"https://line.me\" }\n"
+            "    SocialNetworkItem { platform: viber, url: \"https://viber.com\" }\n"
+            "    SocialNetworkItem { platform: kik, url: \"https://kik.com\" }\n"
+            "    SocialNetworkItem { platform: facebookMessenger, url: \"https://m.me/x\" }\n"
+            "}\n")
+
+    def test_socialmedia_platform_rejected_in_socialnetwork(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "SocialNetwork {\n"
+            "    SocialNetworkItem { platform: instagram, url: \"https://ig/x\" }\n"
+            "}\n"
+        ).errors
+        assert len(errors) == 1
+        assert "not a valid value" in errors[0].message
+
+
 class TestProfileRules:
     def test_profile_not_repeatable(self):
         from compiler import compile_source
