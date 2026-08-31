@@ -350,6 +350,63 @@ _SOCIALNETWORK_ITEM = BlockDef(
     ),
 )
 
+_CONTACT_TYPES = ("mobile", "phone", "email", "sms", "website")
+
+_CONTACT = BlockDef(
+    name="Contact",
+    parent=None,
+    repeatable=True,
+    allowed_children=("ContactItem",),
+    properties=_properties(
+        PropertyDef("columns", ValueType.NUMBER, 1),
+        PropertyDef("showTitle", ValueType.BOOLEAN, True),
+        PropertyDef("showIcon", ValueType.BOOLEAN, True),
+        PropertyDef(
+            "iconPosition",
+            ValueType.ENUM,
+            "right",
+            enum_values=("left", "right"),
+        ),
+        PropertyDef(
+            "itemsOrder",
+            ValueType.ENUM,
+            "rtl",
+            enum_values=("ltr", "rtl"),
+        ),
+        PropertyDef("titleColor", ValueType.COLOR, "#00B4B0"),
+        PropertyDef("iconColor", ValueType.COLOR, "#00B4B0"),
+        PropertyDef("backgroundColor", ValueType.COLOR, "#FFFFFF"),
+        PropertyDef("borderColor", ValueType.COLOR, "#00B4B0"),
+        PropertyDef(
+            "shape",
+            ValueType.ENUM,
+            "rounded",
+            enum_values=("sharp", "slightlyRounded", "rounded", "pill"),
+        ),
+    ),
+)
+
+_CONTACT_ITEM = BlockDef(
+    name="ContactItem",
+    parent="Contact",
+    repeatable=True,
+    properties=_properties(
+        PropertyDef(
+            "service",
+            ValueType.ENUM,
+            "",
+            enum_values=_CONTACT_TYPES,
+            required=True,
+        ),
+        PropertyDef("title", ValueType.STRING, ""),
+        PropertyDef("value", ValueType.STRING, "", required=True),
+        PropertyDef("titleColor", ValueType.COLOR, ""),
+        PropertyDef("iconColor", ValueType.COLOR, ""),
+        PropertyDef("backgroundColor", ValueType.COLOR, ""),
+        PropertyDef("borderColor", ValueType.COLOR, ""),
+    ),
+)
+
 
 #: The full set of blocks known to the compiler, keyed by block name.
 BLOCKS: dict[str, BlockDef] = {
@@ -365,6 +422,8 @@ BLOCKS: dict[str, BlockDef] = {
     _SOCIALMEDIA_ITEM.name: _SOCIALMEDIA_ITEM,
     _SOCIALNETWORK.name: _SOCIALNETWORK,
     _SOCIALNETWORK_ITEM.name: _SOCIALNETWORK_ITEM,
+    _CONTACT.name: _CONTACT,
+    _CONTACT_ITEM.name: _CONTACT_ITEM,
 }
 
 
