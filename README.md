@@ -135,6 +135,8 @@ Blocks implemented so far:
 | `SocialMediaItem` | Part of [`docs/language/SocialMedia.md`](docs/language/SocialMedia.md) |
 | `SocialNetwork` | [`docs/language/SocialNetwork.md`](docs/language/SocialNetwork.md) |
 | `SocialNetworkItem` | Part of [`docs/language/SocialNetwork.md`](docs/language/SocialNetwork.md) |
+| `Contact` | [`docs/language/Contact.md`](docs/language/Contact.md) |
+| `ContactItem` | Part of [`docs/language/Contact.md`](docs/language/Contact.md) |
 
 ## Status
 
