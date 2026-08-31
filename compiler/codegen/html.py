@@ -457,7 +457,7 @@ def render_socialmedia_item(block: Block) -> str:
     shape = str(parent.get("shape", "rounded"))
 
     classes = " ".join(
-        ["lk-smitem", f"lk-shape-{shape}", f"lk-icon-{icon_position}"]
+        ["lk-socialitem", f"lk-shape-{shape}", f"lk-icon-{icon_position}"]
     )
     style = (
         f"color: {title_color}; "
@@ -469,7 +469,7 @@ def render_socialmedia_item(block: Block) -> str:
     if show_icon:
         parts.append(_icon_svg(meta, icon_color))
     if show_title:
-        parts.append(f'<span class="lk-smitem-title">{html.escape(title)}</span>')
+        parts.append(f'<span class="lk-socialitem-title">{html.escape(title)}</span>')
 
     inner = "".join(parts)
     return (
@@ -486,7 +486,7 @@ def render_socialmedia(block: Block) -> str:
 
     items = "\n".join(_render_block(child) for child in block.children)
     return (
-        f'  <section class="lk-socialmedia" '
+        f'  <section class="lk-social" '
         f'data-columns="{columns}" data-order="{items_order}">\n'
         f"{items}\n"
         f"  </section>"
@@ -515,7 +515,7 @@ def _icon_svg(meta: dict[str, str], icon_color: str) -> str:
         svg = re.sub(
             r'stop-color="#[0-9a-fA-F]{3,8}"', f'stop-color="{tint}"', svg
         )
-    return f'<span class="lk-smitem-icon" aria-hidden="true">{svg}</span>'
+    return f'<span class="lk-socialitem-icon" aria-hidden="true">{svg}</span>'
 
 
 #: Dispatch table mapping block names to their HTML renderers.

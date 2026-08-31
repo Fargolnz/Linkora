@@ -251,12 +251,12 @@ SOCIAL = (
 class TestSocialMediaRendering:
     def test_grid_section(self):
         html = _html(SOCIAL)
-        assert '<section class="lk-socialmedia"' in html
+        assert '<section class="lk-social"' in html
         assert 'data-columns="1"' in html
 
     def test_item_anchor(self):
         html = _html(SOCIAL)
-        assert 'class="lk-smitem lk-shape-rounded lk-icon-right"' in html
+        assert 'class="lk-socialitem lk-shape-rounded lk-icon-right"' in html
         assert 'href="https://ig/insta"' in html
 
     def test_platform_title_defaults_to_name(self):
@@ -266,7 +266,7 @@ class TestSocialMediaRendering:
 
     def test_brand_icon_present(self):
         html = _html(SOCIAL)
-        assert 'class="lk-smitem-icon"' in html
+        assert 'class="lk-socialitem-icon"' in html
 
     def test_columns_attribute(self):
         html = _html(
@@ -280,7 +280,7 @@ class TestSocialMediaRendering:
 
     def test_css_styles_present(self):
         html = _html(SOCIAL)
-        assert ".lk-smitem" in html
+        assert ".lk-socialitem" in html
         assert "grid-template-columns: repeat(3, 1fr)" in html
 
     def test_item_shrinks_in_narrow_grid(self):
