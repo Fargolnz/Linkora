@@ -104,7 +104,7 @@ class Validator:
         errors: list[SemanticError],
     ) -> None:
         """Validate block-type-specific rules beyond the generic schema checks."""
-        if block.name != "SocialMedia":
+        if block.name not in ("SocialMedia", "SocialNetwork"):
             return
 
         def effective(name: str) -> object:
