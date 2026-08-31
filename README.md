@@ -133,6 +133,8 @@ Blocks implemented so far:
 | `Text` | [`docs/language/Text.md`](docs/language/Text.md) |
 | `SocialMedia` | [`docs/language/SocialMedia.md`](docs/language/SocialMedia.md) |
 | `SocialMediaItem` | Part of [`docs/language/SocialMedia.md`](docs/language/SocialMedia.md) |
+| `SocialNetwork` | [`docs/language/SocialNetwork.md`](docs/language/SocialNetwork.md) |
+| `SocialNetworkItem` | Part of [`docs/language/SocialNetwork.md`](docs/language/SocialNetwork.md) |
 
 ## Status
 
