@@ -226,6 +226,17 @@ _SOCIAL_MEDIA_PLATFORMS = (
     "patreon",
 )
 
+_SOCIAL_NETWORK_PLATFORMS = (
+    "telegram",
+    "whatsapp",
+    "discord",
+    "skype",
+    "line",
+    "viber",
+    "kik",
+    "facebookMessenger",
+)
+
 _SOCIALMEDIA = BlockDef(
     name="SocialMedia",
     parent=None,
@@ -281,6 +292,61 @@ _SOCIALMEDIA_ITEM = BlockDef(
     ),
 )
 
+_SOCIALNETWORK = BlockDef(
+    name="SocialNetwork",
+    parent=None,
+    repeatable=True,
+    allowed_children=("SocialNetworkItem",),
+    properties=_properties(
+        PropertyDef("columns", ValueType.NUMBER, 1),
+        PropertyDef("showTitle", ValueType.BOOLEAN, True),
+        PropertyDef("showIcon", ValueType.BOOLEAN, True),
+        PropertyDef(
+            "iconPosition",
+            ValueType.ENUM,
+            "right",
+            enum_values=("left", "right"),
+        ),
+        PropertyDef(
+            "itemsOrder",
+            ValueType.ENUM,
+            "rtl",
+            enum_values=("ltr", "rtl"),
+        ),
+        PropertyDef("titleColor", ValueType.COLOR, "#3B3B3B"),
+        PropertyDef("iconColor", ValueType.COLOR, ""),
+        PropertyDef("backgroundColor", ValueType.COLOR, ""),
+        PropertyDef("borderColor", ValueType.COLOR, "transparent"),
+        PropertyDef(
+            "shape",
+            ValueType.ENUM,
+            "rounded",
+            enum_values=("sharp", "slightlyRounded", "rounded", "pill"),
+        ),
+    ),
+)
+
+_SOCIALNETWORK_ITEM = BlockDef(
+    name="SocialNetworkItem",
+    parent="SocialNetwork",
+    repeatable=True,
+    properties=_properties(
+        PropertyDef(
+            "platform",
+            ValueType.ENUM,
+            "",
+            enum_values=_SOCIAL_NETWORK_PLATFORMS,
+            required=True,
+        ),
+        PropertyDef("title", ValueType.STRING, ""),
+        PropertyDef("url", ValueType.URL, "", required=True),
+        PropertyDef("titleColor", ValueType.COLOR, ""),
+        PropertyDef("iconColor", ValueType.COLOR, ""),
+        PropertyDef("backgroundColor", ValueType.COLOR, ""),
+        PropertyDef("borderColor", ValueType.COLOR, ""),
+    ),
+)
+
 
 #: The full set of blocks known to the compiler, keyed by block name.
 BLOCKS: dict[str, BlockDef] = {
@@ -294,6 +360,8 @@ BLOCKS: dict[str, BlockDef] = {
     _TEXT.name: _TEXT,
     _SOCIALMEDIA.name: _SOCIALMEDIA,
     _SOCIALMEDIA_ITEM.name: _SOCIALMEDIA_ITEM,
+    _SOCIALNETWORK.name: _SOCIALNETWORK,
+    _SOCIALNETWORK_ITEM.name: _SOCIALNETWORK_ITEM,
 }
 
 
