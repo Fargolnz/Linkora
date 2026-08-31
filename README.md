@@ -137,6 +137,8 @@ Blocks implemented so far:
 | `SocialNetworkItem` | Part of [`docs/language/SocialNetwork.md`](docs/language/SocialNetwork.md) |
 | `Contact` | [`docs/language/Contact.md`](docs/language/Contact.md) |
 | `ContactItem` | Part of [`docs/language/Contact.md`](docs/language/Contact.md) |
+| `Address` | [`docs/language/Address.md`](docs/language/Address.md) |
+| `AddressItem` | Part of [`docs/language/Address.md`](docs/language/Address.md) |
 
 ## Status
 
