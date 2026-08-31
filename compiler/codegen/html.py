@@ -1210,8 +1210,8 @@ def render_address(block: Block) -> str:
     caption = ""
     if address:
         caption = (
-            f'  <div class="lk-socialitem-title" style="color: {address_color};'
-            f' text-align: center; margin-bottom: 12px;">{html.escape(address)}</div>\n'
+            f'  <div class="lk-address-caption" style="color: {address_color};">'
+            f'{html.escape(address)}</div>\n'
         )
     return (
         f'  <section class="lk-social" '
