@@ -615,12 +615,82 @@ NETWORK_META: dict[str, dict[str, str]] = {
             '<path fill="#7DB425" d="M18.9718 31.3848L18.9718 41.5587C18.1863 '
             '41.4431 17.3304 41.2625 16.6346 40.8637C14.2507 39.5427 11.8629 '
             '38.2294 9.48819 36.8916C12.6453 35.0509 15.8147 33.2255 18.9718 '
-            '31.3848Z"/>'
+             '31.3848Z"/>'
             '<path fill="#B8CE01" d="M18.9718 31.3848C18.9718 31.3848 20.2684 '
             '32.1425 20.9013 32.5023C23.4155 33.9779 25.9481 35.4236 28.4508 '
             '36.9168C26.0094 38.2659 23.5683 39.618 21.1274 40.9732C20.5174 '
             '41.3113 19.8408 41.5121 19.145 41.5617C19.1021 41.5617 18.9718 '
             '41.5617 18.9718 41.5617L18.9718 31.3848Z"/>'
+            "</g></svg>"
+        ),
+    },
+}
+
+#: Per-type metadata for the Contact block: canonical display name, a generic
+#: 24x24 monochrome icon (inline path data), a soft brand-shade default
+#: background, and the URI scheme used to build each item's href.
+CONTACT_META: dict[str, dict[str, str]] = {
+    "mobile": {
+        "name": "Mobile",
+        "bg": "#E4F6F5",
+        "scheme": "tel:",
+        "icon": (
+            '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">'
+            '<path fill="#00B4B0" d="M16 1H8a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2h8a2 '
+            '2 0 0 0 2-2V3a2 2 0 0 0-2-2zm-4 20a1.1 1.1 0 1 1 0-2.2 1.1 1.1 0 0 1 '
+            '0 2.2zM17 18H7V4h10v14z"/>'
+            "</svg>"
+        ),
+    },
+    "phone": {
+        "name": "Phone",
+        "bg": "#E4F6F5",
+        "scheme": "tel:",
+        "icon": (
+            '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">'
+            '<path fill="#00B4B0" d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2'
+            '-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20'
+            'c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 '
+            '1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>'
+            "</svg>"
+        ),
+    },
+    "email": {
+        "name": "Email",
+        "bg": "#E4F6F5",
+        "scheme": "mailto:",
+        "icon": (
+            '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">'
+            '<path fill="#00B4B0" d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 '
+            '2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4.24-8 5.2-8-5.2V6.5l8 5.2 8-5.2v1.74z"/>'
+            "</svg>"
+        ),
+    },
+    "sms": {
+        "name": "SMS",
+        "bg": "#E4F6F5",
+        "scheme": "sms:",
+        "icon": (
+            '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">'
+            '<path fill="#00B4B0" d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 '
+            '2-2V4a2 2 0 0 0-2-2zM7.5 11a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm4.5 '
+            '0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm4.5 0a1.5 1.5 0 1 1 0-3 1.5 '
+            '1.5 0 0 1 0 3z"/>'
+            "</svg>"
+        ),
+    },
+    "website": {
+        "name": "Website",
+        "bg": "#E4F6F5",
+        "scheme": "https://",
+        "icon": (
+            '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">'
+            '<g fill="none" stroke="#00B4B0" stroke-width="1.7" stroke-linecap="round">'
+            '<circle cx="12" cy="12" r="9.5"/>'
+            '<ellipse cx="12" cy="12" rx="9.5" ry="4"/>'
+            '<ellipse cx="12" cy="12" rx="4" ry="9.5"/>'
+            '<path d="M12 2.5a7.2 7.2 0 0 0 0 19"/>'
+            '<path d="M12 2.5a7.2 7.2 0 0 1 0 19"/>'
             "</g></svg>"
         ),
     },
@@ -949,6 +1019,83 @@ def render_socialnetwork(block: Block) -> str:
     )
 
 
+def render_contact(block: Block) -> str:
+    """Render a Contact container as a responsive grid of contact items."""
+    resolved = block.resolved
+    columns = int(resolved["columns"])
+    items_order = str(resolved["itemsOrder"])
+
+    items = "\n".join(_render_block(child) for child in block.children)
+    return (
+        f'  <section class="lk-social" '
+        f'data-columns="{columns}" data-order="{items_order}">\n'
+        f"{items}\n"
+        f"  </section>"
+    )
+
+
+def render_contact_item(block: Block) -> str:
+    """Render a single Contact item as a clickable button with a scheme href."""
+    resolved = block.resolved
+    parent = _parent_resolved(block)
+    service = str(resolved["service"])
+    meta = CONTACT_META[service]
+
+    def inherit(key: str, parent_key: str, fallback: str = "") -> str:
+        value = str(resolved[key])
+        if value:
+            return value
+        pvalue = str(parent.get(parent_key, ""))
+        if pvalue:
+            return pvalue
+        return fallback
+
+    title = str(resolved["title"]) or meta["name"]
+    value = str(resolved["value"])
+    title_color = inherit("titleColor", "titleColor", "#00B4B0")
+    background_color = inherit("backgroundColor", "backgroundColor", meta["bg"])
+    border_color = inherit("borderColor", "borderColor", "#00B4B0")
+    icon_color = inherit("iconColor", "iconColor", "#00B4B0")
+
+    show_title = bool(parent.get("showTitle", True))
+    show_icon = bool(parent.get("showIcon", True))
+    icon_position = str(parent.get("iconPosition", "right"))
+    shape = str(parent.get("shape", "rounded"))
+
+    classes = " ".join(
+        ["lk-socialitem", f"lk-shape-{shape}", f"lk-icon-{icon_position}"]
+    )
+    style = (
+        f"color: {title_color}; "
+        f"background-color: {background_color}; "
+        f"border-color: {border_color};"
+    )
+
+    href = _contact_href(service, value)
+
+    parts = []
+    if show_icon:
+        parts.append(_icon_svg(meta, icon_color))
+    if show_title:
+        parts.append(f'<span class="lk-socialitem-title">{html.escape(title)}</span>')
+
+    inner = "".join(parts)
+    return (
+        f'    <a class="{classes}" style="{style}" '
+        f'href="{html.escape(href, quote=True)}">{inner}</a>'
+    )
+
+
+def _contact_href(contact_type: str, value: str) -> str:
+    """Build the destination href for a contact type from its raw value."""
+    scheme = CONTACT_META[contact_type]["scheme"]
+    if contact_type == "website":
+        if "://" not in value:
+            return scheme + value
+        return value
+    return scheme + value
+
+
 def _parent_resolved(block: Block) -> dict[str, object]:
     """Return the resolved properties of the nearest ancestor block."""
     return block.parent.resolved if block.parent is not None else {}
@@ -988,4 +1135,6 @@ _RENDERERS = {
     "SocialMediaItem": render_socialmedia_item,
     "SocialNetwork": render_socialnetwork,
     "SocialNetworkItem": render_socialnetwork_item,
+    "Contact": render_contact,
+    "ContactItem": render_contact_item,
 }
