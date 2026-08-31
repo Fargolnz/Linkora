@@ -594,3 +594,130 @@ class TestDefaultResolution:
             'Link { title: "He said \\"Hi\\"\\nNext", url: "https://x.com" }'
         )
         assert block.resolved["title"] == 'He said "Hi"\nNext'
+
+
+class TestContact:
+    SRC = (
+        "Contact {\n"
+        "    ContactItem { service: email, value: \"hi@example.com\" }\n"
+        "}\n"
+    )
+
+    def test_valid_contact(self):
+        compile_ok(self.SRC)
+
+    def test_item_requires_value(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "Contact {\n"
+            "    ContactItem { service: email }\n"
+            "}\n"
+        ).errors
+        assert len(errors) == 1
+        assert "required property 'value'" in errors[0].message
+
+    def test_valid_all_types(self):
+        compile_ok("Contact {\n"
+            "    ContactItem { service: mobile, value: \"+1 234 567 8901\" }\n"
+            "    ContactItem { service: phone, value: \"+1 234 567 8901\" }\n"
+            "    ContactItem { service: email, value: \"hi@example.com\" }\n"
+            "    ContactItem { service: sms, value: \"+1 234 567 8901\" }\n"
+            "    ContactItem { service: website, value: \"https://example.com\" }\n"
+            "}\n")
+
+    def test_invalid_type(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "Contact {\n"
+            "    ContactItem { service: fax, value: \"+1 234 567 8901\" }\n"
+            "}\n"
+        ).errors
+        assert len(errors) == 1
+        assert "not a valid value" in errors[0].message
+
+    def test_invalid_columns_value(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "Contact {\n"
+            "    columns: 5\n"
+            "    ContactItem { service: mobile, value: \"+1 234 567 8901\" }\n"
+            "}\n"
+        ).errors
+        assert len(errors) == 1
+        assert "'columns' must be one of 1, 2, 3, 4" in errors[0].message
+
+    def test_columns_default_is_one(self):
+        result = compile_ok("Contact {\n"
+            "    ContactItem { service: mobile, value: \"+1 234 567 8901\" }\n"
+            "}\n")
+        assert result.ast is not None
+        assert result.ast.blocks[0].resolved["columns"] == 1
+
+    def test_columns_four_rejected_when_icon_and_title_shown(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "Contact {\n"
+            "    columns: 4\n"
+            "    ContactItem { service: mobile, value: \"+1 234 567 8901\" }\n"
+            "}\n"
+        ).errors
+        assert len(errors) == 1
+        assert "'columns' can only be 4" in errors[0].message
+
+    def test_columns_four_allowed_when_title_hidden(self):
+        compile_ok("Contact {\n"
+            "    columns: 4\n"
+            "    showTitle: false\n"
+            "    ContactItem { service: mobile, value: \"+1 234 567 8901\" }\n"
+            "}\n")
+
+    def test_columns_four_allowed_when_icon_hidden(self):
+        compile_ok("Contact {\n"
+            "    columns: 4\n"
+            "    showIcon: false\n"
+            "    ContactItem { service: mobile, value: \"+1 234 567 8901\" }\n"
+            "}\n")
+
+    def test_show_both_false_rejected(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "Contact {\n"
+            "    showTitle: false\n"
+            "    showIcon: false\n"
+            "    ContactItem { service: mobile, value: \"+1 234 567 8901\" }\n"
+            "}\n"
+        ).errors
+        assert len(errors) == 1
+        assert "'showTitle' and 'showIcon' cannot both be false" in errors[0].message
+
+    def test_empty_contact_rejected(self):
+        from compiler import compile_source
+
+        errors = compile_source("Contact {\n}\n").errors
+        assert len(errors) == 1
+        assert "at least one 'ContactItem'" in errors[0].message
+
+    def test_item_outside_contact_rejected(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "ContactItem { service: mobile, value: \"+1 234 567 8901\" }\n"
+        ).errors
+        assert len(errors) == 1
+        assert "only allowed inside" in errors[0].message
+
+    def test_item_requires_service(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "Contact {\n"
+            "    ContactItem { value: \"+1 234 567 8901\" }\n"
+            "}\n"
+        ).errors
+        assert len(errors) == 1
+        assert "required property 'service'" in errors[0].message

@@ -395,3 +395,100 @@ class TestSocialNetworkRendering:
     def test_default_title_color_is_3b3b3b(self):
         html = _html(SOCIAL_NETWORK)
         assert "color: #3B3B3B" in html
+
+
+CONTACT = (
+    "Contact {\n"
+    "    ContactItem { service: email, value: \"hi@example.com\" }\n"
+    "    ContactItem { service: mobile, value: \"+1 234 567 8901\" }\n"
+    "}\n"
+)
+
+
+class TestContactRendering:
+    def test_grid_section(self):
+        html = _html(CONTACT)
+        assert '<section class="lk-social"' in html
+        assert 'data-columns="1"' in html
+
+    def test_item_anchor(self):
+        html = _html(CONTACT)
+        assert 'class="lk-socialitem lk-shape-rounded lk-icon-right"' in html
+
+    def test_title_defaults_to_service_name(self):
+        html = _html(CONTACT)
+        assert ">Email</span>" in html
+        assert ">Mobile</span>" in html
+
+    def test_icon_present(self):
+        html = _html(CONTACT)
+        assert 'class="lk-socialitem-icon"' in html
+
+    def test_columns_attribute(self):
+        html = _html(
+            "Contact {\n"
+            "    columns: 2\n"
+            "    ContactItem { service: email, value: \"hi@example.com\" }\n"
+            "    ContactItem { service: mobile, value: \"+1 234 567 8901\" }\n"
+            "}\n"
+        )
+        assert 'data-columns="2"' in html
+
+    def test_css_styles_present(self):
+        html = _html(CONTACT)
+        assert ".lk-socialitem" in html
+
+    def test_href_mailto(self):
+        html = _html(
+            "Contact {\n"
+            "    ContactItem { service: email, value: \"hi@example.com\" }\n"
+            "}\n"
+        )
+        assert 'href="mailto:hi@example.com"' in html
+
+    def test_href_tel(self):
+        html = _html(
+            "Contact {\n"
+            "    ContactItem { service: mobile, value: \"+1 234 567 8901\" }\n"
+            "}\n"
+        )
+        assert 'href="tel:+1 234 567 8901"' in html
+
+    def test_href_sms(self):
+        html = _html(
+            "Contact {\n"
+            "    ContactItem { service: sms, value: \"+1 234 567 8901\" }\n"
+            "}\n"
+        )
+        assert 'href="sms:+1 234 567 8901"' in html
+
+    def test_href_website_with_scheme(self):
+        html = _html(
+            "Contact {\n"
+            "    ContactItem { service: website, value: \"https://example.com\" }\n"
+            "}\n"
+        )
+        assert 'href="https://example.com"' in html
+
+    def test_href_website_without_scheme(self):
+        html = _html(
+            "Contact {\n"
+            "    ContactItem { service: website, value: \"example.org\" }\n"
+            "}\n"
+        )
+        assert 'href="https://example.org"' in html
+
+    def test_default_title_color_is_00b4b0(self):
+        html = _html(CONTACT)
+        assert "color: #00B4B0" in html
+
+    def test_icon_color_recolors_contact_icons(self):
+        html = _html(
+            "Contact {\n"
+            "    iconColor: \"#123456\"\n"
+            "    ContactItem { service: email, value: \"hi@example.com\" }\n"
+            "    ContactItem { service: mobile, value: \"+1 234 567 8901\" }\n"
+            "}\n"
+        )
+        assert 'fill="#123456"' in html
+        assert 'fill="#00B4B0"' not in html
