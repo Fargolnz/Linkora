@@ -492,3 +492,97 @@ class TestContactRendering:
         )
         assert 'fill="#123456"' in html
         assert 'fill="#00B4B0"' not in html
+
+
+ADDRESS = (
+    "Address {\n"
+    "    AddressItem { service: googleMap, url: \"https://maps.google.com/?q=T\" }\n"
+    "    AddressItem { service: waze, url: \"https://waze.com/ul?q=T\" }\n"
+    "}\n"
+)
+
+
+class TestAddressRendering:
+    def test_grid_section(self):
+        html = _html(ADDRESS)
+        assert '<section class="lk-social"' in html
+        assert 'data-columns="1"' in html
+
+    def test_item_anchor_with_url_href(self):
+        html = _html(ADDRESS)
+        assert 'href="https://maps.google.com/?q=T"' in html
+        assert 'href="https://waze.com/ul?q=T"' in html
+
+    def test_title_defaults_to_service_name(self):
+        html = _html(ADDRESS)
+        assert ">Google Maps</span>" in html
+        assert ">Waze</span>" in html
+
+    def test_icon_present_with_brand_hexes(self):
+        html = _html(ADDRESS)
+        assert 'class="lk-socialitem-icon"' in html
+        assert 'fill="#EA4335"' in html
+        assert 'fill="#33CCFF"' in html
+
+    def test_all_service_brand_hexes(self):
+        html = _html(
+            "Address {\n"
+            "    AddressItem { service: googleMap, url: \"https://g/x\" }\n"
+            "    AddressItem { service: waze, url: \"https://w/x\" }\n"
+            "    AddressItem { service: neshan, url: \"https://n/x\" }\n"
+            "    AddressItem { service: balad, url: \"https://b/x\" }\n"
+            "}\n"
+        )
+        assert 'fill="#EA4335"' in html
+        assert 'fill="#33CCFF"' in html
+        assert 'fill="#1B9CFF"' in html
+        assert 'fill="#35A85B"' in html
+
+    def test_default_background_is_per_service_shade(self):
+        html = _html(ADDRESS)
+        assert "background-color: #FCE8E6" in html
+        assert "background-color: #E6F7FF" in html
+
+    def test_default_border_is_transparent(self):
+        html = _html(ADDRESS)
+        assert "border-color: transparent" in html
+
+    def test_default_title_color_is_3b3b3b(self):
+        html = _html(ADDRESS)
+        assert "color: #3B3B3B" in html
+
+    def test_address_caption_rendered(self):
+        html = _html(
+            "Address {\n"
+            "    address: \"Tehran, Iran\"\n"
+            "    addressColor: \"#111111\"\n"
+            "    AddressItem { service: googleMap, url: \"https://g/x\" }\n"
+            "}\n"
+        )
+        assert "Tehran, Iran" in html
+        assert "color: #111111" in html
+
+    def test_no_caption_when_address_empty(self):
+        html = _html(ADDRESS)
+        assert "Tehran, Iran" not in html
+
+    def test_icon_color_recolors_address_icons(self):
+        html = _html(
+            "Address {\n"
+            "    iconColor: \"#123456\"\n"
+            "    AddressItem { service: googleMap, url: \"https://g/x\" }\n"
+            "}\n"
+        )
+        assert 'fill="#123456"' in html
+        assert 'fill="#EA4335"' not in html
+
+    def test_item_color_inheritance(self):
+        html = _html(
+            "Address {\n"
+            "    titleColor: \"#FF0000\"\n"
+            "    backgroundColor: \"#EEEEEE\"\n"
+            "    AddressItem { service: googleMap, url: \"https://g/x\" }\n"
+            "}\n"
+        )
+        assert "color: #FF0000" in html
+        assert "background-color: #EEEEEE" in html

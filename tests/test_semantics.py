@@ -721,3 +721,132 @@ class TestContact:
         ).errors
         assert len(errors) == 1
         assert "required property 'service'" in errors[0].message
+
+
+class TestAddress:
+    SRC = (
+        "Address {\n"
+        "    AddressItem { service: googleMap, url: \"https://maps.google.com/?q=T\" }\n"
+        "}\n"
+    )
+
+    def test_valid_address(self):
+        compile_ok(self.SRC)
+
+    def test_item_requires_url(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "Address {\n"
+            "    AddressItem { service: googleMap }\n"
+            "}\n"
+        ).errors
+        assert len(errors) == 1
+        assert "required property 'url'" in errors[0].message
+
+    def test_valid_all_services(self):
+        compile_ok("Address {\n"
+            "    AddressItem { service: googleMap, url: \"https://g/x\" }\n"
+            "    AddressItem { service: waze, url: \"https://w/x\" }\n"
+            "    AddressItem { service: neshan, url: \"https://n/x\" }\n"
+            "    AddressItem { service: balad, url: \"https://b/x\" }\n"
+            "}\n")
+
+    def test_invalid_service(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "Address {\n"
+            "    AddressItem { service: mapQuest, url: \"https://x.com\" }\n"
+            "}\n"
+        ).errors
+        assert len(errors) == 1
+        assert "not a valid value" in errors[0].message
+
+    def test_address_and_color_accepted(self):
+        compile_ok("Address {\n"
+            "    address: \"Tehran, Iran\"\n"
+            "    addressColor: \"#111111\"\n"
+            "    AddressItem { service: waze, url: \"https://w/x\" }\n"
+            "}\n")
+
+    def test_address_color_default_is_black(self):
+        result = compile_ok(self.SRC)
+        assert result.ast is not None
+        assert result.ast.blocks[0].resolved["addressColor"] == "#000000"
+
+    def test_invalid_columns_value(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "Address {\n"
+            "    columns: 5\n"
+            "    AddressItem { service: googleMap, url: \"https://g/x\" }\n"
+            "}\n"
+        ).errors
+        assert len(errors) == 1
+        assert "'columns' must be one of 1, 2, 3, 4" in errors[0].message
+
+    def test_columns_default_is_one(self):
+        result = compile_ok(self.SRC)
+        assert result.ast is not None
+        assert result.ast.blocks[0].resolved["columns"] == 1
+
+    def test_columns_four_rejected_when_icon_and_title_shown(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "Address {\n"
+            "    columns: 4\n"
+            "    AddressItem { service: googleMap, url: \"https://g/x\" }\n"
+            "}\n"
+        ).errors
+        assert len(errors) == 1
+        assert "'columns' can only be 4" in errors[0].message
+
+    def test_columns_four_allowed_when_title_hidden(self):
+        compile_ok("Address {\n"
+            "    columns: 4\n"
+            "    showTitle: false\n"
+            "    AddressItem { service: googleMap, url: \"https://g/x\" }\n"
+            "}\n")
+
+    def test_show_both_false_rejected(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "Address {\n"
+            "    showTitle: false\n"
+            "    showIcon: false\n"
+            "    AddressItem { service: googleMap, url: \"https://g/x\" }\n"
+            "}\n"
+        ).errors
+        assert len(errors) == 1
+        assert "'showTitle' and 'showIcon' cannot both be false" in errors[0].message
+
+    def test_empty_address_rejected(self):
+        from compiler import compile_source
+
+        errors = compile_source("Address {\n}\n").errors
+        assert len(errors) == 1
+        assert "at least one 'AddressItem'" in errors[0].message
+
+    def test_item_outside_address_rejected(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "AddressItem { service: googleMap, url: \"https://g/x\" }\n"
+        ).errors
+        assert len(errors) == 1
+        assert "only allowed inside" in errors[0].message
+
+    def test_item_requires_service(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "Address {\n"
+            "    AddressItem { url: \"https://g/x\" }\n"
+            "}\n"
+        ).errors
+        assert len(errors) == 1
+        assert "required property 'service'" in errors[0].message
