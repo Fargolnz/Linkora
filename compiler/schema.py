@@ -350,7 +350,7 @@ _SOCIALNETWORK_ITEM = BlockDef(
     ),
 )
 
-_ADDRESS_PROVIDERS = ("googleMap", "waze", "neshan", "balad")
+_ADDRESS_SERVICES = ("googleMap", "waze", "neshan", "balad")
 
 _CONTACT_TYPES = ("mobile", "phone", "email", "sms", "website")
 
@@ -454,7 +454,7 @@ _ADDRESS_ITEM = BlockDef(
             "service",
             ValueType.ENUM,
             "",
-            enum_values=_ADDRESS_PROVIDERS,
+            enum_values=_ADDRESS_SERVICES,
             required=True,
         ),
         PropertyDef("title", ValueType.STRING, ""),
