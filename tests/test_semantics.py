@@ -248,7 +248,7 @@ class TestText:
 class TestSocialMedia:
     SRC = (
         "SocialMedia {\n"
-        "    SocialMediaItem { platform: instagram, url: \"https://ig/x\" }\n"
+        "    SocialMediaItem { service: instagram, url: \"https://ig/x\" }\n"
         "}\n"
     )
 
@@ -260,13 +260,13 @@ class TestSocialMedia:
 
         errors = compile_source(
             "SocialMedia {\n"
-            "    SocialMediaItem { platform: instagram }\n"
+            "    SocialMediaItem { service: instagram }\n"
             "}\n"
         ).errors
         assert len(errors) == 1
         assert "required property 'url'" in errors[0].message
 
-    def test_item_requires_platform(self):
+    def test_item_requires_service(self):
         from compiler import compile_source
 
         errors = compile_source(
@@ -275,14 +275,14 @@ class TestSocialMedia:
             "}\n"
         ).errors
         assert len(errors) == 1
-        assert "required property 'platform'" in errors[0].message
+        assert "required property 'service'" in errors[0].message
 
-    def test_invalid_platform(self):
+    def test_invalid_service(self):
         from compiler import compile_source
 
         errors = compile_source(
             "SocialMedia {\n"
-            "    SocialMediaItem { platform: myspace, url: \"https://x.com\" }\n"
+            "    SocialMediaItem { service: myspace, url: \"https://x.com\" }\n"
             "}\n"
         ).errors
         assert len(errors) == 1
@@ -294,7 +294,7 @@ class TestSocialMedia:
         errors = compile_source(
             "SocialMedia {\n"
             "    columns: 5\n"
-            "    SocialMediaItem { platform: instagram, url: \"https://ig/x\" }\n"
+            "    SocialMediaItem { service: instagram, url: \"https://ig/x\" }\n"
             "}\n"
         ).errors
         assert len(errors) == 1
@@ -302,7 +302,7 @@ class TestSocialMedia:
 
     def test_columns_default_is_one(self):
         result = compile_ok("SocialMedia {\n"
-            "    SocialMediaItem { platform: instagram, url: \"https://ig/x\" }\n"
+            "    SocialMediaItem { service: instagram, url: \"https://ig/x\" }\n"
             "}\n")
         assert result.ast is not None
         assert result.ast.blocks[0].resolved["columns"] == 1
@@ -313,7 +313,7 @@ class TestSocialMedia:
         errors = compile_source(
             "SocialMedia {\n"
             "    columns: 4\n"
-            "    SocialMediaItem { platform: instagram, url: \"https://ig/x\" }\n"
+            "    SocialMediaItem { service: instagram, url: \"https://ig/x\" }\n"
             "}\n"
         ).errors
         assert len(errors) == 1
@@ -323,14 +323,14 @@ class TestSocialMedia:
         compile_ok("SocialMedia {\n"
             "    columns: 4\n"
             "    showTitle: false\n"
-            "    SocialMediaItem { platform: instagram, url: \"https://ig/x\" }\n"
+            "    SocialMediaItem { service: instagram, url: \"https://ig/x\" }\n"
             "}\n")
 
     def test_columns_four_allowed_when_icon_hidden(self):
         compile_ok("SocialMedia {\n"
             "    columns: 4\n"
             "    showIcon: false\n"
-            "    SocialMediaItem { platform: instagram, url: \"https://ig/x\" }\n"
+            "    SocialMediaItem { service: instagram, url: \"https://ig/x\" }\n"
             "}\n")
 
     def test_show_both_false_rejected(self):
@@ -340,7 +340,7 @@ class TestSocialMedia:
             "SocialMedia {\n"
             "    showTitle: false\n"
             "    showIcon: false\n"
-            "    SocialMediaItem { platform: instagram, url: \"https://ig/x\" }\n"
+            "    SocialMediaItem { service: instagram, url: \"https://ig/x\" }\n"
             "}\n"
         ).errors
         assert len(errors) == 1
@@ -357,7 +357,7 @@ class TestSocialMedia:
         from compiler import compile_source
 
         errors = compile_source(
-            "SocialMediaItem { platform: instagram, url: \"https://ig/x\" }\n"
+            "SocialMediaItem { service: instagram, url: \"https://ig/x\" }\n"
         ).errors
         assert len(errors) == 1
         assert "only allowed inside" in errors[0].message
@@ -366,7 +366,7 @@ class TestSocialMedia:
 class TestSocialNetwork:
     SRC = (
         "SocialNetwork {\n"
-        "    SocialNetworkItem { platform: whatsapp, url: \"https://wa.me/1\" }\n"
+        "    SocialNetworkItem { service: whatsapp, url: \"https://wa.me/1\" }\n"
         "}\n"
     )
 
@@ -378,13 +378,13 @@ class TestSocialNetwork:
 
         errors = compile_source(
             "SocialNetwork {\n"
-            "    SocialNetworkItem { platform: whatsapp }\n"
+            "    SocialNetworkItem { service: whatsapp }\n"
             "}\n"
         ).errors
         assert len(errors) == 1
         assert "required property 'url'" in errors[0].message
 
-    def test_item_requires_platform(self):
+    def test_item_requires_service(self):
         from compiler import compile_source
 
         errors = compile_source(
@@ -393,14 +393,14 @@ class TestSocialNetwork:
             "}\n"
         ).errors
         assert len(errors) == 1
-        assert "required property 'platform'" in errors[0].message
+        assert "required property 'service'" in errors[0].message
 
-    def test_invalid_platform(self):
+    def test_invalid_service(self):
         from compiler import compile_source
 
         errors = compile_source(
             "SocialNetwork {\n"
-            "    SocialNetworkItem { platform: myspace, url: \"https://x.com\" }\n"
+            "    SocialNetworkItem { service: myspace, url: \"https://x.com\" }\n"
             "}\n"
         ).errors
         assert len(errors) == 1
@@ -412,7 +412,7 @@ class TestSocialNetwork:
         errors = compile_source(
             "SocialNetwork {\n"
             "    columns: 5\n"
-            "    SocialNetworkItem { platform: whatsapp, url: \"https://wa.me/1\" }\n"
+            "    SocialNetworkItem { service: whatsapp, url: \"https://wa.me/1\" }\n"
             "}\n"
         ).errors
         assert len(errors) == 1
@@ -420,7 +420,7 @@ class TestSocialNetwork:
 
     def test_columns_default_is_one(self):
         result = compile_ok("SocialNetwork {\n"
-            "    SocialNetworkItem { platform: whatsapp, url: \"https://wa.me/1\" }\n"
+            "    SocialNetworkItem { service: whatsapp, url: \"https://wa.me/1\" }\n"
             "}\n")
         assert result.ast is not None
         assert result.ast.blocks[0].resolved["columns"] == 1
@@ -431,7 +431,7 @@ class TestSocialNetwork:
         errors = compile_source(
             "SocialNetwork {\n"
             "    columns: 4\n"
-            "    SocialNetworkItem { platform: whatsapp, url: \"https://wa.me/1\" }\n"
+            "    SocialNetworkItem { service: whatsapp, url: \"https://wa.me/1\" }\n"
             "}\n"
         ).errors
         assert len(errors) == 1
@@ -441,14 +441,14 @@ class TestSocialNetwork:
         compile_ok("SocialNetwork {\n"
             "    columns: 4\n"
             "    showTitle: false\n"
-            "    SocialNetworkItem { platform: whatsapp, url: \"https://wa.me/1\" }\n"
+            "    SocialNetworkItem { service: whatsapp, url: \"https://wa.me/1\" }\n"
             "}\n")
 
     def test_columns_four_allowed_when_icon_hidden(self):
         compile_ok("SocialNetwork {\n"
             "    columns: 4\n"
             "    showIcon: false\n"
-            "    SocialNetworkItem { platform: whatsapp, url: \"https://wa.me/1\" }\n"
+            "    SocialNetworkItem { service: whatsapp, url: \"https://wa.me/1\" }\n"
             "}\n")
 
     def test_show_both_false_rejected(self):
@@ -458,7 +458,7 @@ class TestSocialNetwork:
             "SocialNetwork {\n"
             "    showTitle: false\n"
             "    showIcon: false\n"
-            "    SocialNetworkItem { platform: whatsapp, url: \"https://wa.me/1\" }\n"
+            "    SocialNetworkItem { service: whatsapp, url: \"https://wa.me/1\" }\n"
             "}\n"
         ).errors
         assert len(errors) == 1
@@ -475,32 +475,32 @@ class TestSocialNetwork:
         from compiler import compile_source
 
         errors = compile_source(
-            "SocialNetworkItem { platform: whatsapp, url: \"https://wa.me/1\" }\n"
+            "SocialNetworkItem { service: whatsapp, url: \"https://wa.me/1\" }\n"
         ).errors
         assert len(errors) == 1
         assert "only allowed inside" in errors[0].message
 
-    def test_valid_network_platforms(self):
+    def test_valid_network_services(self):
         compile_ok("SocialNetwork {\n"
-            "    SocialNetworkItem { platform: telegram, url: \"https://t.me/x\" }\n"
-            "    SocialNetworkItem { platform: whatsapp, url: \"https://wa.me/1\" }\n"
-            "    SocialNetworkItem { platform: discord, url: \"https://d.gg/x\" }\n"
-            "    SocialNetworkItem { platform: skype, url: \"https://skype.com\" }\n"
-            "    SocialNetworkItem { platform: line, url: \"https://line.me\" }\n"
-            "    SocialNetworkItem { platform: viber, url: \"https://viber.com\" }\n"
-            "    SocialNetworkItem { platform: kik, url: \"https://kik.com\" }\n"
-            "    SocialNetworkItem { platform: facebookMessenger, url: \"https://m.me/x\" }\n"
-            "    SocialNetworkItem { platform: bale, url: \"https://ble.ir/x\" }\n"
-            "    SocialNetworkItem { platform: eitaa, url: \"https://eitaa.com/x\" }\n"
-            "    SocialNetworkItem { platform: rubika, url: \"https://rubika.ir/x\" }\n"
+            "    SocialNetworkItem { service: telegram, url: \"https://t.me/x\" }\n"
+            "    SocialNetworkItem { service: whatsapp, url: \"https://wa.me/1\" }\n"
+            "    SocialNetworkItem { service: discord, url: \"https://d.gg/x\" }\n"
+            "    SocialNetworkItem { service: skype, url: \"https://skype.com\" }\n"
+            "    SocialNetworkItem { service: line, url: \"https://line.me\" }\n"
+            "    SocialNetworkItem { service: viber, url: \"https://viber.com\" }\n"
+            "    SocialNetworkItem { service: kik, url: \"https://kik.com\" }\n"
+            "    SocialNetworkItem { service: facebookMessenger, url: \"https://m.me/x\" }\n"
+            "    SocialNetworkItem { service: bale, url: \"https://ble.ir/x\" }\n"
+            "    SocialNetworkItem { service: eitaa, url: \"https://eitaa.com/x\" }\n"
+            "    SocialNetworkItem { service: rubika, url: \"https://rubika.ir/x\" }\n"
             "}\n")
 
-    def test_socialmedia_platform_rejected_in_socialnetwork(self):
+    def test_socialmedia_service_rejected_in_socialnetwork(self):
         from compiler import compile_source
 
         errors = compile_source(
             "SocialNetwork {\n"
-            "    SocialNetworkItem { platform: instagram, url: \"https://ig/x\" }\n"
+            "    SocialNetworkItem { service: instagram, url: \"https://ig/x\" }\n"
             "}\n"
         ).errors
         assert len(errors) == 1

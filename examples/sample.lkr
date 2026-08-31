@@ -32,35 +32,35 @@ Title { title: "Social Media" }
 
 SocialMedia {
     columns: 3
-    SocialMediaItem { platform: instagram, url: "https://instagram.com" }
-    SocialMediaItem { platform: telegram, url: "https://t.me/linkora" }
-    SocialMediaItem { platform: youtube, url: "https://youtube.com" }
-    SocialMediaItem { platform: tiktok, url: "https://tiktok.com" }
-    SocialMediaItem { platform: x, url: "https://x.com" }
-    SocialMediaItem { platform: linkedin, url: "https://www.linkedin.com/in/seyyedeh-fargol-nazemzadeh" }
-    SocialMediaItem { platform: github, url: "https://github.com/Fargolnz" }
-    SocialMediaItem { platform: spotify, url: "https://open.spotify.com" }
-    SocialMediaItem { platform: twitch, url: "https://www.twitch.tv" }
-    SocialMediaItem { platform: pinterest, url: "https://www.pinterest.com" }
-    SocialMediaItem { platform: facebook, url: "https://www.facebook.com" }
-    SocialMediaItem { platform: patreon, url: "https://www.patreon.com" }
+    SocialMediaItem { service: instagram, url: "https://instagram.com" }
+    SocialMediaItem { service: telegram, url: "https://t.me/linkora" }
+    SocialMediaItem { service: youtube, url: "https://youtube.com" }
+    SocialMediaItem { service: tiktok, url: "https://tiktok.com" }
+    SocialMediaItem { service: x, url: "https://x.com" }
+    SocialMediaItem { service: linkedin, url: "https://www.linkedin.com/in/seyyedeh-fargol-nazemzadeh" }
+    SocialMediaItem { service: github, url: "https://github.com/Fargolnz" }
+    SocialMediaItem { service: spotify, url: "https://open.spotify.com" }
+    SocialMediaItem { service: twitch, url: "https://www.twitch.tv" }
+    SocialMediaItem { service: pinterest, url: "https://www.pinterest.com" }
+    SocialMediaItem { service: facebook, url: "https://www.facebook.com" }
+    SocialMediaItem { service: patreon, url: "https://www.patreon.com" }
 }
 
 Title { title: "Messaging" }
 
 SocialNetwork {
     columns: 3
-    SocialNetworkItem { platform: telegram, url: "https://t.me/linkora" }
-    SocialNetworkItem { platform: whatsapp, url: "https://wa.me/1234567890" }
-    SocialNetworkItem { platform: discord, url: "https://discord.gg/linkora" }
-    SocialNetworkItem { platform: skype, url: "https://join.skype.com/linkora" }
-    SocialNetworkItem { platform: line, url: "https://line.me/ti/p/linkora" }
-    SocialNetworkItem { platform: viber, url: "https://viber.me/linkora" }
-    SocialNetworkItem { platform: kik, url: "https://kik.me/linkora" }
-    SocialNetworkItem { platform: facebookMessenger, url: "https://m.me/linkora" }
-    SocialNetworkItem { platform: bale, url: "https://ble.ir/linkora" }
-    SocialNetworkItem { platform: eitaa, url: "https://eitaa.com/linkora" }
-    SocialNetworkItem { platform: rubika, url: "https://rubika.ir/linkora" }
+    SocialNetworkItem { service: telegram, url: "https://t.me/linkora" }
+    SocialNetworkItem { service: whatsapp, url: "https://wa.me/1234567890" }
+    SocialNetworkItem { service: discord, url: "https://discord.gg/linkora" }
+    SocialNetworkItem { service: skype, url: "https://join.skype.com/linkora" }
+    SocialNetworkItem { service: line, url: "https://line.me/ti/p/linkora" }
+    SocialNetworkItem { service: viber, url: "https://viber.me/linkora" }
+    SocialNetworkItem { service: kik, url: "https://kik.me/linkora" }
+    SocialNetworkItem { service: facebookMessenger, url: "https://m.me/linkora" }
+    SocialNetworkItem { service: bale, url: "https://ble.ir/linkora" }
+    SocialNetworkItem { service: eitaa, url: "https://eitaa.com/linkora" }
+    SocialNetworkItem { service: rubika, url: "https://rubika.ir/linkora" }
 }
 
 

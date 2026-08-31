@@ -242,8 +242,8 @@ class TestProfileRendering:
 
 SOCIAL = (
     "SocialMedia {\n"
-    "    SocialMediaItem { platform: instagram, url: \"https://ig/insta\" }\n"
-    "    SocialMediaItem { platform: github, url: \"https://gh/me\" }\n"
+    "    SocialMediaItem { service: instagram, url: \"https://ig/insta\" }\n"
+    "    SocialMediaItem { service: github, url: \"https://gh/me\" }\n"
     "}\n"
 )
 
@@ -259,7 +259,7 @@ class TestSocialMediaRendering:
         assert 'class="lk-socialitem lk-shape-rounded lk-icon-right"' in html
         assert 'href="https://ig/insta"' in html
 
-    def test_platform_title_defaults_to_name(self):
+    def test_service_title_defaults_to_name(self):
         html = _html(SOCIAL)
         assert ">Instagram</span>" in html
         assert ">GitHub</span>" in html
@@ -272,8 +272,8 @@ class TestSocialMediaRendering:
         html = _html(
             "SocialMedia {\n"
             "    columns: 2\n"
-            "    SocialMediaItem { platform: x, url: \"https://x.com\" }\n"
-            "    SocialMediaItem { platform: x, url: \"https://x.com\" }\n"
+            "    SocialMediaItem { service: x, url: \"https://x.com\" }\n"
+            "    SocialMediaItem { service: x, url: \"https://x.com\" }\n"
             "}\n"
         )
         assert 'data-columns="2"' in html
@@ -297,9 +297,9 @@ class TestSocialMediaRendering:
     def test_brand_icons_use_exact_brand_hex(self):
         html = _html(
             "SocialMedia {\n"
-            "    SocialMediaItem { platform: github, url: \"https://gh/me\" }\n"
-            "    SocialMediaItem { platform: pinterest, url: \"https://pin/x\" }\n"
-            "    SocialMediaItem { platform: telegram, url: \"https://t/x\" }\n"
+            "    SocialMediaItem { service: github, url: \"https://gh/me\" }\n"
+            "    SocialMediaItem { service: pinterest, url: \"https://pin/x\" }\n"
+            "    SocialMediaItem { service: telegram, url: \"https://t/x\" }\n"
             "}\n"
         )
         assert 'fill="#181717"' in html  # GitHub
@@ -310,8 +310,8 @@ class TestSocialMediaRendering:
         html = _html(
             "SocialMedia {\n"
             "    iconColor: \"#123456\"\n"
-            "    SocialMediaItem { platform: instagram, url: \"https://ig/x\" }\n"
-            "    SocialMediaItem { platform: github, url: \"https://gh/me\" }\n"
+            "    SocialMediaItem { service: instagram, url: \"https://ig/x\" }\n"
+            "    SocialMediaItem { service: github, url: \"https://gh/me\" }\n"
             "}\n"
         )
         assert 'stop-color="#123456"' in html  # Instagram gradient stops
@@ -321,8 +321,8 @@ class TestSocialMediaRendering:
 
 SOCIAL_NETWORK = (
     "SocialNetwork {\n"
-    "    SocialNetworkItem { platform: whatsapp, url: \"https://wa.me/1\" }\n"
-    "    SocialNetworkItem { platform: discord, url: \"https://discord.gg/x\" }\n"
+    "    SocialNetworkItem { service: whatsapp, url: \"https://wa.me/1\" }\n"
+    "    SocialNetworkItem { service: discord, url: \"https://discord.gg/x\" }\n"
     "}\n"
 )
 
@@ -338,7 +338,7 @@ class TestSocialNetworkRendering:
         assert 'class="lk-socialitem lk-shape-rounded lk-icon-right"' in html
         assert 'href="https://wa.me/1"' in html
 
-    def test_platform_title_defaults_to_name(self):
+    def test_service_title_defaults_to_name(self):
         html = _html(SOCIAL_NETWORK)
         assert ">WhatsApp</span>" in html
         assert ">Discord</span>" in html
@@ -351,8 +351,8 @@ class TestSocialNetworkRendering:
         html = _html(
             "SocialNetwork {\n"
             "    columns: 2\n"
-            "    SocialNetworkItem { platform: telegram, url: \"https://t.me/x\" }\n"
-            "    SocialNetworkItem { platform: telegram, url: \"https://t.me/y\" }\n"
+            "    SocialNetworkItem { service: telegram, url: \"https://t.me/x\" }\n"
+            "    SocialNetworkItem { service: telegram, url: \"https://t.me/y\" }\n"
             "}\n"
         )
         assert 'data-columns="2"' in html
@@ -370,21 +370,21 @@ class TestSocialNetworkRendering:
     def test_brand_icons_use_exact_brand_hex(self):
         html = _html(
             "SocialNetwork {\n"
-            "    SocialNetworkItem { platform: telegram, url: \"https://t.me/x\" }\n"
-            "    SocialNetworkItem { platform: whatsapp, url: \"https://wa.me/1\" }\n"
-            "    SocialNetworkItem { platform: discord, url: \"https://d.gg/x\" }\n"
+            "    SocialNetworkItem { service: telegram, url: \"https://t.me/x\" }\n"
+            "    SocialNetworkItem { service: whatsapp, url: \"https://wa.me/1\" }\n"
+            "    SocialNetworkItem { service: discord, url: \"https://d.gg/x\" }\n"
             "}\n"
         )
         assert 'fill="#0088CC"' in html  # Telegram
         assert 'fill="#25D366"' in html  # WhatsApp
         assert 'fill="#5865F2"' in html  # Discord
 
-    def test_new_network_platform_brand_hexes(self):
+    def test_new_network_service_brand_hexes(self):
         html = _html(
             "SocialNetwork {\n"
-            "    SocialNetworkItem { platform: bale, url: \"https://ble.ir/x\" }\n"
-            "    SocialNetworkItem { platform: eitaa, url: \"https://eitaa.com/x\" }\n"
-            "    SocialNetworkItem { platform: rubika, url: \"https://rubika.ir/x\" }\n"
+            "    SocialNetworkItem { service: bale, url: \"https://ble.ir/x\" }\n"
+            "    SocialNetworkItem { service: eitaa, url: \"https://eitaa.com/x\" }\n"
+            "    SocialNetworkItem { service: rubika, url: \"https://rubika.ir/x\" }\n"
             "}\n"
         )
         assert 'fill="#0ACA9B"' in html  # Bale

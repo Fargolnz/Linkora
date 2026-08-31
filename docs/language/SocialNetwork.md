@@ -223,8 +223,8 @@ A `SocialNetworkItem` renders a single clickable messaging-platform button insid
 
 | Property | Keyword | Type | Default | Allowed Values |
 |----------|---------|------|---------|----------------|
-| Platform | `platform` | Enum | `""` (required) | See Supported Platforms |
-| Title | `title` | String | `""` (platform name) | Any valid string |
+| Service | `service` | Enum | `""` (required) | See Supported Services |
+| Title | `title` | String | `""` (service name) | Any valid string |
 | URL | `url` | URL | `""` (required) | Valid URL |
 | Title Color | `titleColor` | Color | `""` (inherited) | Valid Color |
 | Icon Color | `iconColor` | Color | `""` (inherited) | Valid Color |
@@ -237,14 +237,14 @@ Item-level properties that are omitted inherit their value from the parent `Soci
 
 The following properties are mandatory on every `SocialNetworkItem`:
 
-- `platform`
+- `service`
 - `url`
 
 Failure to provide either of these results in a semantic validation error.
 
-#### Supported Platforms
+#### Supported Services
 
-The `platform` property accepts one of the following values:
+The `service` property accepts one of the following values:
 
 | Value | Brand |
 |-------|-------|
@@ -262,7 +262,7 @@ The `platform` property accepts one of the following values:
 
 #### Property Details
 
-##### `platform`
+##### `service`
 
 Selects the brand of the item. The selected platform determines the official brand icon shown on the button and the default soft background shade.
 
@@ -339,8 +339,8 @@ The `SocialNetwork` block is rendered as a responsive CSS grid containing the it
 ```lkr
 SocialNetwork {
 
-    SocialNetworkItem { platform: telegram, url: "https://t.me/me" }
-    SocialNetworkItem { platform: whatsapp, url: "https://wa.me/1234567890" }
+    SocialNetworkItem { service: telegram, url: "https://t.me/me" }
+    SocialNetworkItem { service: whatsapp, url: "https://wa.me/1234567890" }
 
 }
 ```
@@ -372,9 +372,9 @@ SocialNetwork {
 
     shape: pill
 
-    SocialNetworkItem { platform: telegram, url: "https://t.me/me" }
-    SocialNetworkItem { platform: discord, url: "https://discord.gg/me" }
-    SocialNetworkItem { platform: facebookMessenger, url: "https://m.me/me" }
+    SocialNetworkItem { service: telegram, url: "https://t.me/me" }
+    SocialNetworkItem { service: discord, url: "https://discord.gg/me" }
+    SocialNetworkItem { service: facebookMessenger, url: "https://m.me/me" }
 
 }
 ```
@@ -385,7 +385,7 @@ SocialNetwork {
 
 ```lkr
 SocialNetwork {
-    SocialNetworkItem { platform: whatsapp, title: "Chat With Me", url: "https://wa.me/1234567890" }
+    SocialNetworkItem { service: whatsapp, title: "Chat With Me", url: "https://wa.me/1234567890" }
 }
 ```
 
@@ -393,7 +393,7 @@ SocialNetwork {
 
 ## Invalid Examples
 
-Missing required `platform` property:
+Missing required `service` property:
 
 ```lkr
 SocialNetwork {
@@ -401,7 +401,7 @@ SocialNetwork {
 }
 ```
 
-❌ Missing required property `platform`.
+❌ Missing required property `service`.
 
 ---
 
@@ -409,7 +409,7 @@ Missing required `url` property:
 
 ```lkr
 SocialNetwork {
-    SocialNetworkItem { platform: telegram }
+    SocialNetworkItem { service: telegram }
 }
 ```
 
@@ -417,15 +417,15 @@ SocialNetwork {
 
 ---
 
-Unsupported platform value:
+Unsupported service value:
 
 ```lkr
 SocialNetwork {
-    SocialNetworkItem { platform: instagram, url: "https://instagram.com/me" }
+    SocialNetworkItem { service: instagram, url: "https://instagram.com/me" }
 }
 ```
 
-❌ `instagram` is not a valid value for `platform`.
+❌ `instagram` is not a valid value for `service`.
 
 ---
 
@@ -434,7 +434,7 @@ Invalid `columns` value:
 ```lkr
 SocialNetwork {
     columns: 5
-    SocialNetworkItem { platform: telegram, url: "https://t.me/me" }
+    SocialNetworkItem { service: telegram, url: "https://t.me/me" }
 }
 ```
 
@@ -447,7 +447,7 @@ Four columns with both the icon and the title visible:
 ```lkr
 SocialNetwork {
     columns: 4
-    SocialNetworkItem { platform: telegram, url: "https://t.me/me" }
+    SocialNetworkItem { service: telegram, url: "https://t.me/me" }
 }
 ```
 
@@ -472,7 +472,7 @@ Both `showTitle` and `showIcon` disabled:
 SocialNetwork {
     showTitle: false
     showIcon: false
-    SocialNetworkItem { platform: telegram, url: "https://t.me/me" }
+    SocialNetworkItem { service: telegram, url: "https://t.me/me" }
 }
 ```
 

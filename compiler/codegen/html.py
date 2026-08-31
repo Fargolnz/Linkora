@@ -893,8 +893,8 @@ def render_socialmedia_item(block: Block) -> str:
     """Render a single SocialMedia item as a clickable styled button."""
     resolved = block.resolved
     parent = _parent_resolved(block)
-    platform = str(resolved["platform"])
-    meta = PLATFORM_META[platform]
+    service = str(resolved["service"])
+    meta = PLATFORM_META[service]
 
     def inherit(key: str, parent_key: str, fallback: str = "") -> str:
         value = str(resolved[key])
@@ -958,8 +958,8 @@ def render_socialnetwork_item(block: Block) -> str:
     """Render a single SocialNetwork item as a clickable styled button."""
     resolved = block.resolved
     parent = _parent_resolved(block)
-    platform = str(resolved["platform"])
-    meta = NETWORK_META[platform]
+    service = str(resolved["service"])
+    meta = NETWORK_META[service]
 
     def inherit(key: str, parent_key: str, fallback: str = "") -> str:
         value = str(resolved[key])

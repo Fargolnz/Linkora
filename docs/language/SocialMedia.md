@@ -223,8 +223,8 @@ A `SocialMediaItem` renders a single clickable platform button inside the grid.
 
 | Property | Keyword | Type | Default | Allowed Values |
 |----------|---------|------|---------|----------------|
-| Platform | `platform` | Enum | `""` (required) | See Supported Platforms |
-| Title | `title` | String | `""` (platform name) | Any valid string |
+| Service | `service` | Enum | `""` (required) | See Supported Services |
+| Title | `title` | String | `""` (service name) | Any valid string |
 | URL | `url` | URL | `""` (required) | Valid URL |
 | Title Color | `titleColor` | Color | `""` (inherited) | Valid Color |
 | Icon Color | `iconColor` | Color | `""` (inherited) | Valid Color |
@@ -237,14 +237,14 @@ Item-level properties that are omitted inherit their value from the parent `Soci
 
 The following properties are mandatory on every `SocialMediaItem`:
 
-- `platform`
+- `service`
 - `url`
 
 Failure to provide either of these results in a semantic validation error.
 
-#### Supported Platforms
+#### Supported Services
 
-The `platform` property accepts one of the following values:
+The `service` property accepts one of the following values:
 
 | Value | Brand |
 |-------|-------|
@@ -263,7 +263,7 @@ The `platform` property accepts one of the following values:
 
 #### Property Details
 
-##### `platform`
+##### `service`
 
 Selects the brand of the item. The selected platform determines the official brand icon shown on the button and the default soft background shade.
 
@@ -338,8 +338,8 @@ The `SocialMedia` block is rendered as a responsive CSS grid containing the item
 ```lkr
 SocialMedia {
 
-    SocialMediaItem { platform: github, url: "https://github.com/me" }
-    SocialMediaItem { platform: telegram, url: "https://t.me/linkora" }
+    SocialMediaItem { service: github, url: "https://github.com/me" }
+    SocialMediaItem { service: telegram, url: "https://t.me/linkora" }
 
 }
 ```
@@ -371,9 +371,9 @@ SocialMedia {
 
     shape: pill
 
-    SocialMediaItem { platform: instagram, url: "https://instagram.com/me" }
-    SocialMediaItem { platform: youtube, url: "https://youtube.com/@me" }
-    SocialMediaItem { platform: linkedin, url: "https://www.linkedin.com/in/me" }
+    SocialMediaItem { service: instagram, url: "https://instagram.com/me" }
+    SocialMediaItem { service: youtube, url: "https://youtube.com/@me" }
+    SocialMediaItem { service: linkedin, url: "https://www.linkedin.com/in/me" }
 
 }
 ```
@@ -384,7 +384,7 @@ SocialMedia {
 
 ```lkr
 SocialMedia {
-    SocialMediaItem { platform: patreon, title: "Support Me", url: "https://patreon.com/me" }
+    SocialMediaItem { service: patreon, title: "Support Me", url: "https://patreon.com/me" }
 }
 ```
 
@@ -392,7 +392,7 @@ SocialMedia {
 
 ## Invalid Examples
 
-Missing required `platform` property:
+Missing required `service` property:
 
 ```lkr
 SocialMedia {
@@ -400,7 +400,7 @@ SocialMedia {
 }
 ```
 
-❌ Missing required property `platform`.
+❌ Missing required property `service`.
 
 ---
 
@@ -408,7 +408,7 @@ Missing required `url` property:
 
 ```lkr
 SocialMedia {
-    SocialMediaItem { platform: github }
+    SocialMediaItem { service: github }
 }
 ```
 
@@ -416,15 +416,15 @@ SocialMedia {
 
 ---
 
-Unsupported platform value:
+Unsupported service value:
 
 ```lkr
 SocialMedia {
-    SocialMediaItem { platform: snapchat, url: "https://snapchat.com/me" }
+    SocialMediaItem { service: snapchat, url: "https://snapchat.com/me" }
 }
 ```
 
-❌ `snapchat` is not a valid value for `platform`.
+❌ `snapchat` is not a valid value for `service`.
 
 ---
 
@@ -433,7 +433,7 @@ Invalid `columns` value:
 ```lkr
 SocialMedia {
     columns: 5
-    SocialMediaItem { platform: github, url: "https://github.com/me" }
+    SocialMediaItem { service: github, url: "https://github.com/me" }
 }
 ```
 
@@ -446,7 +446,7 @@ Four columns with both the icon and the title visible:
 ```lkr
 SocialMedia {
     columns: 4
-    SocialMediaItem { platform: github, url: "https://github.com/me" }
+    SocialMediaItem { service: github, url: "https://github.com/me" }
 }
 ```
 
@@ -471,7 +471,7 @@ Both `showTitle` and `showIcon` disabled:
 SocialMedia {
     showTitle: false
     showIcon: false
-    SocialMediaItem { platform: github, url: "https://github.com/me" }
+    SocialMediaItem { service: github, url: "https://github.com/me" }
 }
 ```
 

@@ -280,7 +280,7 @@ _SOCIALMEDIA_ITEM = BlockDef(
     repeatable=True,
     properties=_properties(
         PropertyDef(
-            "platform",
+            "service",
             ValueType.ENUM,
             "",
             enum_values=_SOCIAL_MEDIA_PLATFORMS,
@@ -335,7 +335,7 @@ _SOCIALNETWORK_ITEM = BlockDef(
     repeatable=True,
     properties=_properties(
         PropertyDef(
-            "platform",
+            "service",
             ValueType.ENUM,
             "",
             enum_values=_SOCIAL_NETWORK_PLATFORMS,
