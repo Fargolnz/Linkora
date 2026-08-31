@@ -74,3 +74,16 @@ Contact {
     ContactItem { service: sms, value: "+1 234 567 8901" }
     ContactItem { service: website, value: "https://example.com" }
 }
+
+
+Title { title: "Address" }
+
+Address {
+    columns: 2
+    address: "Tehran, Iran"
+    addressColor: "#111111"
+    AddressItem { service: googleMap, url: "https://maps.google.com/?q=Tehran" }
+    AddressItem { service: waze, url: "https://waze.com/ul?q=Tehran" }
+    AddressItem { service: neshan, url: "https://neshan.org/maps/@35.689,51.389" }
+    AddressItem { service: balad, url: "https://balad.ir/place?q=Tehran" }
+}
