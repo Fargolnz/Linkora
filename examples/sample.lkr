@@ -67,7 +67,7 @@ SocialNetwork {
 Title { title: "Contact" }
 
 Contact {
-    columns: 3
+    columns: 1
     ContactItem { service: mobile, value: "+1 234 567 8901" }
     ContactItem { service: phone, value: "+1 234 567 8901" }
     ContactItem { service: email, value: "hi@example.com" }
@@ -86,4 +86,26 @@ Address {
     AddressItem { service: waze, url: "https://waze.com/ul?q=Tehran" }
     AddressItem { service: neshan, url: "https://neshan.org/maps/@35.689,51.389" }
     AddressItem { service: balad, url: "https://balad.ir/place?q=Tehran" }
+}
+
+
+Title { title: "Gallery" }
+
+Image {
+    columns: 2
+    shape: rounded
+    imageShadow: true
+    ImageItem { image: "./assets/single-1.jpg", title: "Scenery", description: "A scenery image." }
+    ImageItem { image: "./assets/single-2.jpg", title: "Scenery" }
+}
+
+
+Title { title: "Highlights" }
+
+Image {
+    displayMode: slider
+    shape: slightlyRounded
+    ImageItem { image: "./assets/slider-1.jpg", title: "Slide One", description: "First highlight slide." }
+    ImageItem { image: "./assets/slider-2.jpg", title: "Slide Two" }
+    ImageItem { image: "./assets/slider-3.jpg" }
 }
