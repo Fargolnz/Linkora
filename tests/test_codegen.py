@@ -728,6 +728,18 @@ class TestImageRendering:
         assert "pointer-events: none" in html
         assert "pointer-events: auto" in html
 
+    def test_last_slide_fills_viewport(self):
+        html = _html(
+            "Image {\n"
+            "    displayMode: slider\n"
+            "    ImageItem { image: \"./a.jpg\" }\n"
+            "    ImageItem { image: \"./b.jpg\" }\n"
+            "    ImageItem { image: \"./c.jpg\" }\n"
+            "}\n"
+        )
+        assert "lk-image-slider-track .lk-imagecard:last-child" in html
+        assert "flex-basis: 100%" in html
+
     def test_slider_slides_have_unique_ids(self):
         html = _html(
             "Image {\n"
