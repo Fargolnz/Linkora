@@ -139,6 +139,8 @@ Blocks implemented so far:
 | `ContactItem` | Part of [`docs/language/Contact.md`](docs/language/Contact.md) |
 | `Address` | [`docs/language/Address.md`](docs/language/Address.md) |
 | `AddressItem` | Part of [`docs/language/Address.md`](docs/language/Address.md) |
+| `Image` | [`docs/language/Image.md`](docs/language/Image.md) |
+| `ImageItem` | Part of [`docs/language/Image.md`](docs/language/Image.md) |
 
 ## Status
 
