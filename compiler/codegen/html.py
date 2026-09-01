@@ -801,9 +801,52 @@ ADDRESS_META: dict[str, dict[str, str]] = {
 }
 
 
+#: Counter used to give each slider block a unique HTML element id.
+_slider_counter = 0
+
+#: Inline script driving the Image slider dots: highlights the dot of the
+#: slide currently in view and makes each dot jump to its slide.
+SLIDER_JS = """<script>
+(function () {
+  var sliders = document.querySelectorAll('.lk-image-slider');
+  if (!sliders.length) return;
+  sliders.forEach(function (slider) {
+    var track = slider.querySelector('.lk-image-slider-track');
+    var dots = slider.querySelectorAll('.lk-image-slider-dot');
+    if (!track || !dots.length) return;
+    var current = -1;
+    function slideIndex() {
+      var width = track.clientWidth || 1;
+      return Math.max(0, Math.min(dots.length - 1, Math.round(track.scrollLeft / width)));
+    }
+    function update() {
+      var index = slideIndex();
+      if (index === current) return;
+      current = index;
+      dots.forEach(function (dot, i) {
+        dot.classList.toggle('is-active', i === current);
+      });
+    }
+    dots.forEach(function (dot) {
+      dot.addEventListener('click', function () {
+        var i = Number(dot.getAttribute('data-slide'));
+        track.scrollTo({ left: i * track.clientWidth, behavior: 'smooth' });
+      });
+    });
+    track.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  });
+})();
+</script>"""
+
+
 def render_html(document: Document) -> str:
     """Render a validated document into a complete HTML page."""
+    global _slider_counter
+    _slider_counter = 0
     body = "\n".join(_render_block(block) for block in document.blocks)
+    script = SLIDER_JS if _slider_counter > 0 else ""
 
     return (
         "<!DOCTYPE html>\n"
@@ -821,6 +864,7 @@ def render_html(document: Document) -> str:
         "</head>\n"
         "<body>\n"
         f"  <main class=\"lk-page\">\n{body}\n  </main>\n"
+        f"{script}"
         "</body>\n"
         "</html>\n"
     )
@@ -1279,12 +1323,31 @@ def render_image(block: Block) -> str:
     items = list(block.children)
 
     if display_mode == "slider":
-        cards = "\n".join(_render_block(child) for child in items)
+        slider_id = _new_slider_id()
+        cards = []
+        for i, child in enumerate(items):
+            cards.append(
+                _render_image_item(
+                    child, reserve_caption=False, card_id=f"{slider_id}-slide-{i}"
+                )
+            )
+        dots = []
+        for i, child in enumerate(items):
+            active = " is-active" if i == 0 else ""
+            dots.append(
+                f'      <button type="button" class="lk-image-slider-dot{active}" '
+                f'data-slide="{i}" aria-label="Go to slide {i + 1}"></button>'
+            )
         return (
-            f'  <section class="lk-image lk-image-slider">\n'
+            f'  <section class="lk-image lk-image-slider" id="{slider_id}">\n'
             f'    <div class="lk-image-slider-track">\n'
-            f"{cards}\n"
-            f"    </div>\n"
+            + "\n".join(cards)
+            + "\n"
+            f'    </div>\n'
+            f'    <div class="lk-image-slider-dots">\n'
+            + "\n".join(dots)
+            + "\n"
+            f'    </div>\n'
             f"  </section>"
         )
 
@@ -1318,11 +1381,19 @@ def render_image_item(block: Block) -> str:
     return _render_image_item(block, reserve_caption=False)
 
 
-def _render_image_item(block: Block, reserve_caption: bool) -> str:
+def _new_slider_id() -> str:
+    """Return a page-unique element id for a slider block."""
+    global _slider_counter
+    _slider_counter += 1
+    return f"lk-slider-{_slider_counter}"
+
+
+def _render_image_item(block: Block, reserve_caption: bool, card_id: str | None = None) -> str:
     """Render a single Image item as a display card.
 
     When ``reserve_caption`` is True the caption area is emitted even for
     cards without their own caption, reserving equal space across the row.
+    ``card_id`` optionally adds an element id (used by slider slides).
     """
     resolved = block.resolved
     parent = _parent_resolved(block)
@@ -1389,8 +1460,9 @@ def _render_image_item(block: Block, reserve_caption: bool) -> str:
         f'src="{html.escape(image, quote=True)}" '
         f'alt="{html.escape(alt, quote=True)}">'
     )
+    id_attr = f' id="{html.escape(card_id, quote=True)}"' if card_id else ""
     return (
-        f'      <figure class="{" ".join(classes)}" style="{style}">'
+        f'      <figure class="{" ".join(classes)}"{id_attr} style="{style}">'
         f"{media}{caption}"
         f"\n      </figure>"
     )

@@ -685,10 +685,94 @@ class TestImageRendering:
             "    ImageItem { image: \"./b.jpg\" }\n"
             "}\n"
         )
-        assert '<section class="lk-image lk-image-slider">' in html
-        assert 'class="lk-image-slider-track"' in html
+        assert 'class="lk-image lk-image-slider"' in html
         assert 'class="lk-image-slider-track"' in html
         assert "lk-imagecard" in html
+
+    def test_slider_dots_per_slide(self):
+        html = _html(
+            "Image {\n"
+            "    displayMode: slider\n"
+            "    ImageItem { image: \"./a.jpg\" }\n"
+            "    ImageItem { image: \"./b.jpg\" }\n"
+            "    ImageItem { image: \"./c.jpg\" }\n"
+            "}\n"
+        )
+        assert 'class="lk-image-slider-dots"' in html
+        assert html.count('data-slide="') == 3
+        assert 'data-slide="0"' in html
+        assert 'data-slide="2"' in html
+        assert "Go to slide 3" in html
+
+    def test_first_dot_active_then_styles(self):
+        html = _html(
+            "Image {\n"
+            "    displayMode: slider\n"
+            "    ImageItem { image: \"./a.jpg\" }\n"
+            "    ImageItem { image: \"./b.jpg\" }\n"
+            "}\n"
+        )
+        assert 'class="lk-image-slider-dot is-active"' in html
+        assert 'class="lk-image-slider-dot"' in html
+        assert ".lk-image-slider-dot" in html
+        assert "border-radius: 50%" in html
+
+    def test_dots_overlay_image_region(self):
+        html = _html(
+            "Image {\n"
+            "    displayMode: slider\n"
+            "    ImageItem { image: \"./a.jpg\" }\n"
+            "}\n"
+        )
+        assert "aspect-ratio: 4 / 3" in html
+        assert "pointer-events: none" in html
+        assert "pointer-events: auto" in html
+
+    def test_slider_slides_have_unique_ids(self):
+        html = _html(
+            "Image {\n"
+            "    displayMode: slider\n"
+            "    ImageItem { image: \"./a.jpg\" }\n"
+            "    ImageItem { image: \"./b.jpg\" }\n"
+            "}\n"
+        )
+        assert 'id="lk-slider-1"' in html
+        assert 'id="lk-slider-1-slide-0"' in html
+        assert 'id="lk-slider-1-slide-1"' in html
+
+    def test_slider_js_embedded(self):
+        html = _html(
+            "Image {\n"
+            "    displayMode: slider\n"
+            "    ImageItem { image: \"./a.jpg\" }\n"
+            "}\n"
+        )
+        assert "<script>" in html
+        assert "lk-image-slider-dot" in html
+        assert "classList.toggle('is-active'" in html
+        assert "track.scrollTo" in html
+
+    def test_no_slider_means_no_script(self):
+        html = _html(
+            "Image {\n"
+            "    ImageItem { image: \"./a.jpg\" }\n"
+            "}\n"
+        )
+        assert "<script>" not in html
+
+    def test_multiple_sliders_unique_ids(self):
+        html = _html(
+            "Image {\n"
+            "    displayMode: slider\n"
+            "    ImageItem { image: \"./a.jpg\" }\n"
+            "}\n"
+            "Image {\n"
+            "    displayMode: slider\n"
+            "    ImageItem { image: \"./b.jpg\" }\n"
+            "}\n"
+        )
+        assert 'id="lk-slider-1"' in html
+        assert 'id="lk-slider-2"' in html
 
     def test_image_shadow_class(self):
         html = _html(
