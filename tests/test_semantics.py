@@ -850,3 +850,105 @@ class TestAddress:
         ).errors
         assert len(errors) == 1
         assert "required property 'service'" in errors[0].message
+
+
+class TestImage:
+    SRC = (
+        "Image {\n"
+        "    ImageItem { image: \"./assets/one.jpg\" }\n"
+        "}\n"
+    )
+
+    def test_valid_image(self):
+        compile_ok(self.SRC)
+
+    def test_item_requires_image(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "Image {\n"
+            "    ImageItem { }\n"
+            "}\n"
+        ).errors
+        assert len(errors) == 1
+        assert "required property 'image'" in errors[0].message
+
+    def test_requires_at_least_one_child(self):
+        from compiler import compile_source
+
+        errors = compile_source("Image { }\n").errors
+        assert len(errors) == 1
+        assert "at least one 'ImageItem'" in errors[0].message
+
+    def test_defaults(self):
+        result = compile_ok(self.SRC)
+        assert result.ast is not None
+        block = result.ast.blocks[0]
+        assert block.resolved["displayMode"] == "single"
+        assert block.resolved["columns"] == 1
+        assert block.resolved["titleColor"] == "#000000"
+        assert block.resolved["descriptionColor"] == "#3B3B3B"
+        assert block.resolved["backgroundColor"] == "#FFFFFF"
+        assert block.resolved["borderColor"] == "transparent"
+        assert block.resolved["shape"] == "rounded"
+        assert block.resolved["imageShadow"] is False
+
+    def test_item_color_defaults_inherit(self):
+        result = compile_ok(self.SRC)
+        assert result.ast is not None
+        item = result.ast.blocks[0].children[0]
+        assert item.resolved["titleColor"] == ""
+        assert item.resolved["descriptionColor"] == ""
+        assert item.resolved["backgroundColor"] == ""
+        assert item.resolved["borderColor"] == ""
+
+    def test_single_mode_valid_columns_one_and_two(self):
+        compile_ok("Image {\n"
+            "    columns: 1\n"
+            "    ImageItem { image: \"./a.jpg\" }\n"
+            "    ImageItem { image: \"./b.jpg\" }\n"
+            "}\n")
+        compile_ok("Image {\n"
+            "    columns: 2\n"
+            "    ImageItem { image: \"./a.jpg\" }\n"
+            "    ImageItem { image: \"./b.jpg\" }\n"
+            "}\n")
+
+    def test_single_mode_invalid_columns_three_or_more(self):
+        from compiler import compile_source
+
+        for columns in (3, 4, 5):
+            errors = compile_source(
+                f"Image {{\n"
+                f"    columns: {columns}\n"
+                f"    ImageItem {{ image: \"./a.jpg\" }}\n"
+                f"}}\n"
+            ).errors
+            assert len(errors) == 1
+            assert "columns" in errors[0].message
+
+    def test_columns_ignored_in_slider_mode(self):
+        compile_ok("Image {\n"
+            "    displayMode: slider\n"
+            "    columns: 4\n"
+            "    ImageItem { image: \"./a.jpg\" }\n"
+            "}\n")
+
+    def test_invalid_display_mode(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "Image {\n"
+            "    displayMode: carousel\n"
+            "    ImageItem { image: \"./a.jpg\" }\n"
+            "}\n"
+        ).errors
+        assert len(errors) == 1
+        assert "not a valid value" in errors[0].message
+
+    def test_imageitem_only_allowed_inside_image(self):
+        from compiler import compile_source
+
+        errors = compile_source("ImageItem { image: \"./a.jpg\" }\n").errors
+        assert len(errors) == 1
+        assert "only allowed inside" in errors[0].message

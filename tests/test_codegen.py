@@ -586,3 +586,122 @@ class TestAddressRendering:
         )
         assert "color: #FF0000" in html
         assert "background-color: #EEEEEE" in html
+
+
+class TestImageRendering:
+    SRC = (
+        "Image {\n"
+        "    ImageItem { image: \"./assets/one.jpg\" }\n"
+        "    ImageItem { image: \"./assets/two.jpg\", title: \"Two\" }\n"
+        "}\n"
+    )
+
+    def test_grid_section_and_rows(self):
+        html = _html(self.SRC)
+        assert '<section class="lk-image lk-image-grid">' in html
+        assert 'class="lk-image-row lk-image-row--caption"' in html
+
+    def test_card_and_image_alt(self):
+        html = _html(self.SRC)
+        assert 'class="lk-imagecard lk-shape-rounded lk-imagecard--has-caption"' in html
+        assert 'src="./assets/one.jpg"' in html
+        assert 'alt="Two"' in html
+        assert 'alt="Image"' in html
+
+    def test_caption_reserved_across_caption_row(self):
+        html = _html(
+            "Image {\n"
+            "    columns: 2\n"
+            "    ImageItem { image: \"./assets/one.jpg\" }\n"
+            "    ImageItem { image: \"./assets/two.jpg\", title: \"Two\" }\n"
+            "}\n"
+        )
+        assert 'class="lk-imagecard-caption lk-imagecard-caption--empty"' in html
+        assert ">Two</div>" in html
+
+    def test_captions_absent_in_plain_row(self):
+        html = _html(
+            "Image {\n"
+            "    columns: 2\n"
+            "    ImageItem { image: \"./assets/one.jpg\" }\n"
+            "    ImageItem { image: \"./assets/two.jpg\" }\n"
+            "}\n"
+        )
+        assert "<figcaption" not in html
+
+    def test_default_colors(self):
+        html = _html(
+            "Image {\n"
+            "    ImageItem { image: \"./a.jpg\", title: \"T\", description: \"D\" }\n"
+            "}\n"
+        )
+        assert "background-color: #FFFFFF" in html
+        assert "border-color: transparent" in html
+        assert "color: #000000" in html
+        assert "color: #3B3B3B" in html
+
+    def test_item_color_inherited_from_container(self):
+        html = _html(
+            "Image {\n"
+            "    titleColor: \"#112233\"\n"
+            "    descriptionColor: \"#445566\"\n"
+            "    backgroundColor: \"#EEEEEE\"\n"
+            "    borderColor: \"#FF0000\"\n"
+            "    ImageItem { image: \"./a.jpg\", title: \"T\", description: \"D\" }\n"
+            "}\n"
+        )
+        assert "color: #112233" in html
+        assert "color: #445566" in html
+        assert "background-color: #EEEEEE" in html
+        assert "border-color: #FF0000" in html
+
+    def test_item_color_overrides_container(self):
+        html = _html(
+            "Image {\n"
+            "    titleColor: \"#112233\"\n"
+            "    ImageItem { image: \"./a.jpg\", title: \"T\", titleColor: \"#FF0000\" }\n"
+            "}\n"
+        )
+        assert "color: #FF0000" in html
+        assert "color: #112233" not in html
+
+    def test_single_mode_columns_produces_rows(self):
+        html = _html(
+            "Image {\n"
+            "    columns: 2\n"
+            "    ImageItem { image: \"./a.jpg\" }\n"
+            "    ImageItem { image: \"./b.jpg\" }\n"
+            "    ImageItem { image: \"./c.jpg\" }\n"
+            "}\n"
+        )
+        assert 'class="lk-image-row lk-image-row--plain"' in html
+        assert html.count('class="lk-image-row') == 2
+
+    def test_slider_mode(self):
+        html = _html(
+            "Image {\n"
+            "    displayMode: slider\n"
+            "    ImageItem { image: \"./a.jpg\", title: \"One\" }\n"
+            "    ImageItem { image: \"./b.jpg\" }\n"
+            "}\n"
+        )
+        assert '<section class="lk-image lk-image-slider">' in html
+        assert 'class="lk-image-slider-track"' in html
+        assert 'class="lk-image-slider-track"' in html
+        assert "lk-imagecard" in html
+
+    def test_image_shadow_class(self):
+        html = _html(
+            "Image {\n"
+            "    imageShadow: true\n"
+            "    ImageItem { image: \"./a.jpg\" }\n"
+            "}\n"
+        )
+        assert "lk-imagecard--shadow" in html
+
+    def test_css_includes_image_styles(self):
+        html = _html(self.SRC)
+        assert ".lk-image-row" in html
+        assert ".lk-imagecard-img" in html
+        assert ".lk-image-slider-track" in html
+        assert "scroll-snap-type: x mandatory" in html
