@@ -260,6 +260,8 @@ def build_css() -> str:
     css += "\n.lk-image-row .lk-imagecard {"
     css += "\n    flex: 1 1 0;"
     css += "\n    min-width: 0;"
+    css += "\n    margin: 0;"
+    css += "\n    padding: 0;"
     css += "\n    display: flex;"
     css += "\n    flex-direction: column;"
     css += "\n    background-color: #FFFFFF;"
@@ -313,6 +315,7 @@ def build_css() -> str:
     css += "\n}"
     css += "\n.lk-image-slider .lk-imagecard {"
     css += "\n    flex: 0 0 calc(100% - 12px);"
+    css += "\n    margin: 0;"
     css += "\n    scroll-snap-align: center;"
     css += "\n}"
 
