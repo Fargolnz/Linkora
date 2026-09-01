@@ -1272,6 +1272,130 @@ def render_address_item(block: Block) -> str:
     )
 
 
+def render_image(block: Block) -> str:
+    """Render an Image container as a grid of cards or a slider carousel."""
+    resolved = block.resolved
+    display_mode = str(resolved["displayMode"])
+    items = list(block.children)
+
+    if display_mode == "slider":
+        cards = "\n".join(_render_block(child) for child in items)
+        return (
+            f'  <section class="lk-image lk-image-slider">\n'
+            f'    <div class="lk-image-slider-track">\n'
+            f"{cards}\n"
+            f"    </div>\n"
+            f"  </section>"
+        )
+
+    columns = int(resolved["columns"])
+    rows = []
+    for i in range(0, len(items), columns):
+        row_items = items[i : i + columns]
+        has_caption = any(
+            str(child.resolved.get("title") or "")
+            or str(child.resolved.get("description") or "")
+            for child in row_items
+        )
+        row_class = "lk-image-row--caption" if has_caption else "lk-image-row--plain"
+        cards = "\n".join(
+            _render_image_item(child, reserve_caption=has_caption)
+            for child in row_items
+        )
+        rows.append(
+            f'    <div class="lk-image-row {row_class}">\n{cards}\n    </div>'
+        )
+    body = "\n".join(rows)
+    return (
+        f'  <section class="lk-image lk-image-grid">\n'
+        f"{body}\n"
+        f"  </section>"
+    )
+
+
+def render_image_item(block: Block) -> str:
+    """Render a single Image item as a display card (image + optional caption)."""
+    return _render_image_item(block, reserve_caption=False)
+
+
+def _render_image_item(block: Block, reserve_caption: bool) -> str:
+    """Render a single Image item as a display card.
+
+    When ``reserve_caption`` is True the caption area is emitted even for
+    cards without their own caption, reserving equal space across the row.
+    """
+    resolved = block.resolved
+    parent = _parent_resolved(block)
+    image = str(resolved["image"])
+    title = str(resolved["title"])
+    description = str(resolved["description"])
+    alt = str(resolved["alt"]) or title or description or "Image"
+    shape = str(parent.get("shape", "rounded"))
+    image_shadow = bool(parent.get("imageShadow", False))
+
+    def inherit(key: str, parent_key: str) -> str:
+        value = str(resolved[key])
+        if value:
+            return value
+        return str(parent.get(parent_key, ""))
+
+    background_color = inherit("backgroundColor", "backgroundColor") or "#FFFFFF"
+    border_color = inherit("borderColor", "borderColor") or "transparent"
+    title_color = (
+        inherit("titleColor", "titleColor") or str(parent.get("titleColor", "#000000"))
+    )
+    description_color = (
+        inherit("descriptionColor", "descriptionColor")
+        or str(parent.get("descriptionColor", "#3B3B3B"))
+    )
+
+    has_caption = bool(title or description)
+    classes = ["lk-imagecard", f"lk-shape-{shape}"]
+    if has_caption:
+        classes.append("lk-imagecard--has-caption")
+    if image_shadow:
+        classes.append("lk-imagecard--shadow")
+
+    style = (
+        f"background-color: {background_color}; "
+        f"border-color: {border_color};"
+    )
+
+    caption = ""
+    if has_caption or reserve_caption:
+        cap_parts = []
+        if title:
+            cap_parts.append(
+                f'<div class="lk-imagecard-title" style="color: {title_color};">'
+                f"{html.escape(title)}</div>"
+            )
+        if description:
+            cap_parts.append(
+                f'<div class="lk-imagecard-desc" style="color: {description_color};">'
+                f"{html.escape(description)}</div>"
+            )
+        if cap_parts:
+            inner = "\n        ".join(cap_parts)
+            caption = (
+                "\n      <figcaption class=\"lk-imagecard-caption\">\n        "
+                + inner
+                + "\n      </figcaption>"
+            )
+        else:
+            caption = '\n      <figcaption class="lk-imagecard-caption lk-imagecard-caption--empty"></figcaption>'
+
+    media = (
+        f'\n      <img class="lk-imagecard-img lk-shape-{shape}" '
+        f'src="{html.escape(image, quote=True)}" '
+        f'alt="{html.escape(alt, quote=True)}">'
+    )
+    return (
+        f'      <figure class="{" ".join(classes)}" style="{style}">'
+        f"{media}{caption}"
+        f"\n      </figure>"
+    )
+
+
 def _parent_resolved(block: Block) -> dict[str, object]:
     """Return the resolved properties of the nearest ancestor block."""
     return block.parent.resolved if block.parent is not None else {}
@@ -1313,4 +1437,6 @@ _RENDERERS = {
     "ContactItem": render_contact_item,
     "Address": render_address,
     "AddressItem": render_address_item,
+    "Image": render_image,
+    "ImageItem": render_image_item,
 }
