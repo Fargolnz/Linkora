@@ -104,6 +104,32 @@ class Validator:
         errors: list[SemanticError],
     ) -> None:
         """Validate block-type-specific rules beyond the generic schema checks."""
+        if block.name == "Image":
+            def effective(name: str) -> object:
+                prop = block.property(name)
+                if prop is not None:
+                    return prop.value
+                return block_def.property(name).default
+
+            display_mode = effective("displayMode")
+            columns = effective("columns")
+            if display_mode == "single" and columns not in (1, 2):
+                errors.append(
+                    SemanticError(
+                        f"Block 'Image': in single display mode 'columns' must be "
+                        f"one of 1, 2, found {columns}.",
+                        block.position,
+                    )
+                )
+            if not block.children:
+                errors.append(
+                    SemanticError(
+                        "Block 'Image' must contain at least one 'ImageItem' child.",
+                        block.position,
+                    )
+                )
+            return
+
         if block.name not in ("SocialMedia", "SocialNetwork", "Contact", "Address"):
             return
 
