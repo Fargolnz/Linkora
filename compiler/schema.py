@@ -466,6 +466,49 @@ _ADDRESS_ITEM = BlockDef(
     ),
 )
 
+_IMAGE = BlockDef(
+    name="Image",
+    parent=None,
+    repeatable=True,
+    allowed_children=("ImageItem",),
+    properties=_properties(
+        PropertyDef(
+            "displayMode",
+            ValueType.ENUM,
+            "single",
+            enum_values=("single", "slider"),
+        ),
+        PropertyDef("columns", ValueType.NUMBER, 1),
+        PropertyDef("titleColor", ValueType.COLOR, "#000000"),
+        PropertyDef("descriptionColor", ValueType.COLOR, "#3B3B3B"),
+        PropertyDef("backgroundColor", ValueType.COLOR, "#FFFFFF"),
+        PropertyDef("borderColor", ValueType.COLOR, "transparent"),
+        PropertyDef(
+            "shape",
+            ValueType.ENUM,
+            "rounded",
+            enum_values=("sharp", "slightlyRounded", "rounded", "pill"),
+        ),
+        PropertyDef("imageShadow", ValueType.BOOLEAN, False),
+    ),
+)
+
+_IMAGE_ITEM = BlockDef(
+    name="ImageItem",
+    parent="Image",
+    repeatable=True,
+    properties=_properties(
+        PropertyDef("image", ValueType.IMAGE, "", required=True),
+        PropertyDef("title", ValueType.STRING, ""),
+        PropertyDef("description", ValueType.STRING, ""),
+        PropertyDef("alt", ValueType.STRING, ""),
+        PropertyDef("titleColor", ValueType.COLOR, ""),
+        PropertyDef("descriptionColor", ValueType.COLOR, ""),
+        PropertyDef("backgroundColor", ValueType.COLOR, ""),
+        PropertyDef("borderColor", ValueType.COLOR, ""),
+    ),
+)
+
 
 #: The full set of blocks known to the compiler, keyed by block name.
 BLOCKS: dict[str, BlockDef] = {
@@ -485,6 +528,8 @@ BLOCKS: dict[str, BlockDef] = {
     _CONTACT_ITEM.name: _CONTACT_ITEM,
     _ADDRESS.name: _ADDRESS,
     _ADDRESS_ITEM.name: _ADDRESS_ITEM,
+    _IMAGE.name: _IMAGE,
+    _IMAGE_ITEM.name: _IMAGE_ITEM,
 }
 
 
