@@ -109,3 +109,29 @@ Image {
     ImageItem { image: "./assets/slider-2.jpg", title: "Slide Two" }
     ImageItem { image: "./assets/slider-3.jpg" }
 }
+
+
+Title { title: "Promotions" }
+
+Banner {
+    columns: 2
+    shape: rounded
+    BannerItem {
+        image: "./assets/banner-1.png"
+        url: "https://example.com/banner-1"
+        title: "Summer Sale"
+        description: "Up to 50% off on selected items."
+    }
+    BannerItem {
+        image: "./assets/slider-2.jpg"
+        url: "https://example.com/banner-2"
+        title: "New Collection"
+        description: "Check out the latest arrivals."
+    }
+    BannerItem {
+        image: "./assets/banner-2.jpg"
+        url: "https://example.com/banner-3"
+        title: "Featured"
+    }
+}
+
