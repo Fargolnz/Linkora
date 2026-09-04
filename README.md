@@ -144,6 +144,8 @@ Blocks implemented so far:
 | `Banner` | [`docs/language/Banner.md`](docs/language/Banner.md) |
 | `BannerItem` | Part of [`docs/language/Banner.md`](docs/language/Banner.md) |
 | `Video` | [`docs/language/Video.md`](docs/language/Video.md) |
+| `FAQ` | [`docs/language/FAQ.md`](docs/language/FAQ.md) |
+| `FAQItem` | Part of [`docs/language/FAQ.md`](docs/language/FAQ.md) |
 
 ## Status
 
