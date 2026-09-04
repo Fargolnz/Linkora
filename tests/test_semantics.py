@@ -1118,3 +1118,91 @@ class TestVideo:
         ).errors
         assert len(errors) == 1
         assert "valid Color" in errors[0].message
+
+
+class TestFAQ:
+    SRC = (
+        "FAQ {\n"
+        '    FAQItem { question: "Q1", answer: "A1" }\n'
+        '    FAQItem { question: "Q2", answer: "A2" }\n'
+        "}\n"
+    )
+
+    def test_valid_faq(self):
+        compile_ok(self.SRC)
+
+    def test_item_requires_question(self):
+        from compiler import compile_source
+
+        errors = compile_source('FAQ { FAQItem { answer: "A" } }\n').errors
+        assert len(errors) == 1
+        assert "required property 'question'" in errors[0].message
+
+    def test_item_requires_answer(self):
+        from compiler import compile_source
+
+        errors = compile_source('FAQ { FAQItem { question: "Q" } }\n').errors
+        assert len(errors) == 1
+        assert "required property 'answer'" in errors[0].message
+
+    def test_requires_at_least_one_child(self):
+        from compiler import compile_source
+
+        errors = compile_source("FAQ { }\n").errors
+        assert len(errors) == 1
+        assert "at least one 'FAQItem'" in errors[0].message
+
+    def test_defaults(self):
+        result = compile_ok(self.SRC)
+        assert result.ast is not None
+        block = result.ast.blocks[0]
+        assert block.resolved["questionColor"] == "#00B4B0"
+        assert block.resolved["answerColor"] == "#3B3B3B"
+        assert block.resolved["iconColor"] == "#00B4B0"
+        assert block.resolved["backgroundColor"] == "#FFFFFF"
+        assert block.resolved["borderColor"] == "#00B4B0"
+        assert block.resolved["shape"] == "rounded"
+
+    def test_item_color_defaults_inherit(self):
+        result = compile_ok(self.SRC)
+        assert result.ast is not None
+        item = result.ast.blocks[0].children[0]
+        assert item.resolved["questionColor"] == ""
+        assert item.resolved["answerColor"] == ""
+        assert item.resolved["iconColor"] == ""
+        assert item.resolved["backgroundColor"] == ""
+        assert item.resolved["borderColor"] == ""
+        assert item.resolved["shape"] == ""
+
+    def test_repeatable(self):
+        compile_ok(
+            "FAQ {\n"
+            '    FAQItem { question: "Q1", answer: "A1" }\n'
+            "}\n"
+            "FAQ {\n"
+            '    FAQItem { question: "Q2", answer: "A2" }\n'
+            "}\n"
+        )
+
+    def test_item_color_override(self):
+        compile_ok(
+            "FAQ {\n"
+            '    FAQItem { question: "Q", answer: "A", questionColor: "#FF0000", iconColor: "#00FF00", backgroundColor: "#000000", borderColor: "#111111", shape: pill }\n'
+            "}\n"
+        )
+
+    def test_faqitem_only_allowed_inside_faq(self):
+        from compiler import compile_source
+
+        errors = compile_source('FAQItem { question: "Q", answer: "A" }\n').errors
+        assert len(errors) == 1
+        assert "only allowed inside" in errors[0].message
+
+    def test_invalid_shape(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            'FAQ { FAQItem { question: "Q", answer: "A", shape: circle } }\n'
+        ).errors
+        assert len(errors) == 1
+        assert "not a valid value" in errors[0].message

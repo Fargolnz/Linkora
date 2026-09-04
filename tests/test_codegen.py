@@ -980,3 +980,110 @@ class TestVideoRendering:
         assert ".lk-video-play" in html
         assert ".lk-video-play-triangle" in html
         assert "aspect-ratio: 16 / 9" in html
+
+
+class TestFAQRendering:
+    SRC = (
+        "FAQ {\n"
+        '    FAQItem { question: "Q1", answer: "A1" }\n'
+        '    FAQItem { question: "Q2", answer: "A2" }\n'
+        "}\n"
+    )
+
+    def test_container(self):
+        html = _html(self.SRC)
+        assert '<div class="lk-faq">' in html
+
+    def test_items_are_divs_with_button_summary(self):
+        html = _html(self.SRC)
+        assert '<div class="lk-faqitem lk-shape-rounded"' in html
+        assert '<button type="button" class="lk-faqitem-summary"' in html
+        assert 'aria-expanded="false"' in html
+        assert 'aria-controls="lk-faqitem-answer-1"' in html
+
+    def test_answer_wrap_structure(self):
+        html = _html(self.SRC)
+        assert '<div class="lk-faqitem-answer-wrap" id="lk-faqitem-answer-1">' in html
+
+    def test_question_and_answer(self):
+        html = _html(self.SRC)
+        assert 'class="lk-faqitem-question" style="color: #00B4B0;">Q1</span>' in html
+        assert 'class="lk-faqitem-answer" style="color: #3B3B3B;">A1</div>' in html
+
+    def test_arrow_svg_with_icon_color(self):
+        html = _html(self.SRC)
+        assert 'class="lk-faqitem-arrow"' in html
+        assert 'fill="#00B4B0"' in html
+
+    def test_default_colors(self):
+        html = _html(self.SRC)
+        assert "background-color: #FFFFFF" in html
+        assert "border-color: #00B4B0" in html
+
+    def test_item_color_inherited_from_container(self):
+        html = _html(
+            "FAQ {\n"
+            '    questionColor: "#FF0000"\n'
+            '    answerColor: "#00FF00"\n'
+            '    iconColor: "#111111"\n'
+            '    backgroundColor: "#000000"\n'
+            '    borderColor: "#222222"\n'
+            '    FAQItem { question: "Q", answer: "A" }\n'
+            "}\n"
+        )
+        assert "color: #FF0000" in html
+        assert "color: #00FF00" in html
+        assert "fill=\"#111111\"" in html
+        assert "background-color: #000000" in html
+        assert "border-color: #222222" in html
+
+    def test_item_color_overrides_container(self):
+        html = _html(
+            "FAQ {\n"
+            '    questionColor: "#FF0000"\n'
+            '    FAQItem { question: "Q", answer: "A", questionColor: "#00FF00" }\n'
+            "}\n"
+        )
+        assert "color: #00FF00" in html
+        assert "color: #FF0000" not in html
+
+    def test_item_shape_inherits(self):
+        html = _html(
+            "FAQ {\n"
+            "    shape: pill\n"
+            '    FAQItem { question: "Q", answer: "A" }\n'
+            "}\n"
+        )
+        assert "lk-shape-pill" in html
+
+    def test_items_not_open_by_default(self):
+        html = _html(self.SRC)
+        assert 'aria-expanded="false"' in html
+
+    def test_faq_js_embedded(self):
+        html = _html(self.SRC)
+        assert "<script>" in html
+        assert "querySelectorAll('.lk-faqitem')" in html
+
+    def test_no_faq_js_without_faq(self):
+        html = _html('Video { url: "./assets/intro.mp4" }\n')
+        assert "querySelectorAll('.lk-faqitem')" not in html
+
+    def test_multiple_faq_blocks_still_embeds_js_once(self):
+        src = (
+            "FAQ {\n"
+            '    FAQItem { question: "Q", answer: "A" }\n'
+            "}\n"
+            "FAQ {\n"
+            '    FAQItem { question: "Q2", answer: "A2" }\n'
+            "}\n"
+        )
+        html = _html(src)
+        assert html.count("querySelectorAll('.lk-faqitem')") == 1
+
+    def test_css_includes_faq_styles(self):
+        html = _html(self.SRC)
+        assert ".lk-faqitem-summary" in html
+        assert ".lk-faqitem-answer" in html
+        assert ".lk-faqitem-arrow" in html
+        assert "rotate(180deg)" in html
