@@ -12,6 +12,7 @@ import html
 
 from compiler.ast import Block, Document
 from compiler.codegen.css import build_css
+from compiler.types import jalali_to_gregorian
 
 
 #: Per-platform metadata for the SocialMedia block: canonical display name,
@@ -888,13 +889,20 @@ FAQ_JS = """<script>
 #: Inline script driving live Countdown timers. Each countdown carries its
 #: target epoch in a ``data-target`` attribute; a timer ticks every second,
 #: updates the four digit boxes, freezes the boxes at zero on expiry, and then
-#: reveals the optional ``expiredText`` message.
+#: reveals the optional ``expiredText`` message. Countdowns marked
+#: ``data-digits="fa"`` render their numbers using Persian digits.
 COUNTDOWN_JS = """<script>
 (function () {
+  var FA = {'0':'۰','1':'۱','2':'۲','3':'۳','4':'۴','5':'۵','6':'۶','7':'۷','8':'۸','9':'۹'};
   function pad(n, digits) {
     n = String(n);
     while (n.length < digits) n = '0' + n;
     return n;
+  }
+  function toPersian(s) {
+    var out = '';
+    for (var i = 0; i < s.length; i++) out += FA[s[i]] || s[i];
+    return out;
   }
   function update(root) {
     var target = Number(root.getAttribute('data-target'));
@@ -906,10 +914,11 @@ COUNTDOWN_JS = """<script>
     var minutes = Math.floor(diff % 3600000 / 60000);
     var seconds = Math.floor(diff % 60000 / 1000);
     var vals = [pad(days, 2), pad(hours, 2), pad(minutes, 2), pad(seconds, 2)];
+    var fa = root.getAttribute('data-digits') === 'fa';
     var boxes = root.querySelectorAll('.lk-countdown-digit');
     if (boxes.length === 4) {
       boxes.forEach(function (box, i) {
-        box.textContent = vals[i];
+        box.textContent = fa ? toPersian(vals[i]) : vals[i];
       });
     }
     if (diff === 0) {
@@ -1750,15 +1759,18 @@ def render_countdown(block: Block) -> str:
     time = str(resolved["time"])
     expired_text = str(resolved["expiredText"])
     language = str(resolved["language"])
+    calendar_name = str(resolved["calendar"])
     text_color = str(resolved["textColor"])
     background_color = str(resolved["backgroundColor"])
     border_color = str(resolved["borderColor"])
     shape = str(resolved["shape"])
 
-    year, month, day = date.split("/")
-    hour, minute = time.split(":")
+    year, month, day = (int(part) for part in date.split("/"))
+    hour, minute = (int(part) for part in time.split(":"))
+    if calendar_name == "jalali":
+        year, month, day = jalali_to_gregorian(year, month, day)
     target_ms = calendar.timegm(
-        (int(year), int(month), int(day), int(hour), int(minute), 0, 0, 0, -1)
+        (year, month, day, hour, minute, 0, 0, 0, -1)
     ) * 1000
 
     style_parts = []
@@ -1771,9 +1783,12 @@ def render_countdown(block: Block) -> str:
     style = " ".join(style_parts)
 
     units = _COUNTDOWN_UNITS.get(language, _COUNTDOWN_UNITS["en"])
+    persian_digits = language == "fa"
+    initial_digit = "۰۰" if persian_digits else "00"
+    digits_attr = ' data-digits="fa"' if persian_digits else ""
     boxes = "\n".join(
         '      <div class="lk-countdown-box">\n'
-        f'        <span class="lk-countdown-digit">00</span>\n'
+        f'        <span class="lk-countdown-digit">{initial_digit}</span>\n'
         f'        <span class="lk-countdown-label">{html.escape(label)}</span>\n'
         "      </div>"
         for label in units
@@ -1792,7 +1807,7 @@ def render_countdown(block: Block) -> str:
 
     return (
         f'  <div class="{card_class} lk-shape-{shape}" '
-        f'data-target="{target_ms}"'
+        f'data-target="{target_ms}"{digits_attr}'
         f'{f" style=\"{style}\"" if style else ""}>'
         f'\n    <div class="lk-countdown-row">\n{boxes}\n    </div>'
         f"{expired}\n  </div>"

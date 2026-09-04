@@ -570,6 +570,12 @@ _COUNTDOWN = BlockDef(
     properties=_properties(
         PropertyDef("date", ValueType.DATE, "", required=True),
         PropertyDef("time", ValueType.TIME, "", required=True),
+        PropertyDef(
+            "calendar",
+            ValueType.ENUM,
+            "jalali",
+            enum_values=("gregorian", "jalali"),
+        ),
         PropertyDef("expiredText", ValueType.STRING, ""),
         PropertyDef(
             "language",

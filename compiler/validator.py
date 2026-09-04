@@ -303,11 +303,14 @@ class Validator:
                     f"video extension (.mp4, .webm, .mov), found {_describe(prop)}."
                 )
         elif expected is ValueType.DATE:
-            if not types.is_date(value):
-                fail(
-                    "expected a valid date in yyyy/mm/dd form, "
-                    f"found {_describe(prop)}."
-                )
+            if _uses_jalali(block):
+                valid = types.is_jalali_date(value)
+                hint = "a valid Jalali (Shamsi) date in yyyy/mm/dd form"
+            else:
+                valid = types.is_date(value)
+                hint = "a valid date in yyyy/mm/dd form"
+            if not valid:
+                fail(f"expected {hint}, found {_describe(prop)}.")
         elif expected is ValueType.TIME:
             if not types.is_time(value):
                 fail(
@@ -346,6 +349,16 @@ class Validator:
 
         for child in block.children:
             self._resolve_block(child)
+
+
+def _uses_jalali(block: Block) -> bool:
+    """True when a Countdown block resolves its date to the Jalali calendar."""
+    if block.name != "Countdown":
+        return False
+    prop = block.property("calendar")
+    if prop is None:
+        return True
+    return prop.kind == KIND_IDENTIFIER and prop.value == "jalali"
 
 
 def _describe(prop: Property) -> str:

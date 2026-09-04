@@ -161,8 +161,15 @@ FAQ {
 Title { title: "Launch Countdown" }
 
 Countdown {
+    date: "1405/07/13"
+    time: "23:59"
+    expiredText: "لینکورا منتشر شد!"
+}
+
+Countdown {
     date: "2026/10/05"
     time: "23:59"
+    calendar: gregorian
     language: en
     expiredText: "Linkora is live!"
 }

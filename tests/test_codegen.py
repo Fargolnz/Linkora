@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+import calendar
+
+from compiler.types import jalali_to_gregorian
 from tests.helpers import compile_ok
 
 LINK = 'Link { title: "GitHub", url: "https://github.com" }'
@@ -1090,7 +1093,7 @@ class TestFAQRendering:
 
 
 class TestCountdownRendering:
-    SRC = 'Countdown { date: "2026/12/31", time: "23:59" }\n'
+    SRC = 'Countdown { date: "2026/12/31", time: "23:59", calendar: gregorian }\n'
 
     def test_container(self):
         html = _html(self.SRC)
@@ -1106,8 +1109,28 @@ class TestCountdownRendering:
         for label in ("روز", "ساعت", "دقیقه", "ثانیه"):
             assert f'class="lk-countdown-label">{label}</span>' in html
 
+    def test_fa_mode_uses_persian_digits(self):
+        html = _html(self.SRC)
+        assert 'data-digits="fa"' in html
+        assert html.count('class="lk-countdown-digit">۰۰</span>') == 4
+
+    def test_english_mode_uses_ascii_digits(self):
+        html = _html(
+            'Countdown { date: "2026/12/31", time: "23:59", language: en, calendar: gregorian }\n'
+        )
+        assert 'data-digits="fa"' not in html
+        assert html.count('class="lk-countdown-digit">00</span>') == 4
+
+    def test_js_converts_persian_digits(self):
+        html = _html(self.SRC)
+        assert "data-digits" in html
+        assert "'۰'" in html
+        assert "toPersian" in html
+
     def test_english_labels(self):
-        html = _html('Countdown { date: "2026/12/31", time: "23:59", language: en }\n')
+        html = _html(
+            'Countdown { date: "2026/12/31", time: "23:59", language: en, calendar: gregorian }\n'
+        )
         for label in ("Days", "Hours", "Minutes", "Seconds"):
             assert f'class="lk-countdown-label">{label}</span>' in html
 
@@ -1116,19 +1139,39 @@ class TestCountdownRendering:
         assert 'data-target="' in html
 
     def test_data_target_utc_value(self):
-        import calendar
-
         html = _html(self.SRC)
         expected = calendar.timegm((2026, 12, 31, 23, 59, 0, 0, 0, -1)) * 1000
         assert f'data-target="{expected}"' in html
 
+    def test_jalali_date_converts_to_utc_target(self):
+        src = 'Countdown { date: "1404/09/15", time: "12:00", calendar: jalali }\n'
+        html = _html(src)
+        gy, gm, gd = jalali_to_gregorian(1404, 9, 15)
+        expected = calendar.timegm((gy, gm, gd, 12, 0, 0, 0, -1)) * 1000
+        assert f'data-target="{expected}"' in html
+
+    def test_jalali_default_sets_utc_target(self):
+        html = _html('Countdown { date: "1404/09/15", time: "12:00" }\n')
+        gy, gm, gd = jalali_to_gregorian(1404, 9, 15)
+        expected = calendar.timegm((gy, gm, gd, 12, 0, 0, 0, -1)) * 1000
+        assert f'data-target="{expected}"' in html
+
+    def test_explicit_gregorian_sets_utc_target(self):
+        html = _html(
+            'Countdown { date: "2026/12/31", time: "23:59", calendar: gregorian }\n'
+        )
+        expected = calendar.timegm((2026, 12, 31, 23, 59, 0, 0, 0, -1)) * 1000
+        assert f'data-target="{expected}"' in html
+
     def test_custom_text_color(self):
-        html = _html('Countdown { date: "2026/12/31", time: "23:59", textColor: "#FF0000" }\n')
+        html = _html(
+            'Countdown { date: "2026/12/31", time: "23:59", textColor: "#FF0000", calendar: gregorian }\n'
+        )
         assert "color: #FF0000" in html
 
     def test_custom_background_color(self):
         html = _html(
-            'Countdown { date: "2026/12/31", time: "23:59", backgroundColor: "#000000" }\n'
+            'Countdown { date: "2026/12/31", time: "23:59", backgroundColor: "#000000", calendar: gregorian }\n'
         )
         assert "background: #000000" in html
 
@@ -1141,17 +1184,19 @@ class TestCountdownRendering:
 
     def test_custom_border_color(self):
         html = _html(
-            'Countdown { date: "2026/12/31", time: "23:59", borderColor: "#111111" }\n'
+            'Countdown { date: "2026/12/31", time: "23:59", borderColor: "#111111", calendar: gregorian }\n'
         )
         assert "border-color: #111111" in html
 
     def test_custom_shape(self):
-        html = _html('Countdown { date: "2026/12/31", time: "23:59", shape: pill }\n')
+        html = _html(
+            'Countdown { date: "2026/12/31", time: "23:59", shape: pill, calendar: gregorian }\n'
+        )
         assert "lk-shape-pill" in html
 
     def test_expired_text_rendered_hidden(self):
         html = _html(
-            'Countdown { date: "2026/12/31", time: "23:59", expiredText: "Started!" }\n'
+            'Countdown { date: "2026/12/31", time: "23:59", expiredText: "Started!", calendar: gregorian }\n'
         )
         assert 'class="lk-countdown-expired" style="display:none;">Started!</div>' in html
 
@@ -1170,8 +1215,8 @@ class TestCountdownRendering:
 
     def test_multiple_countdowns_still_embed_js_once(self):
         src = (
-            'Countdown { date: "2026/12/31", time: "23:59" }\n'
-            'Countdown { date: "2026/01/01", time: "00:00" }\n'
+            'Countdown { date: "2026/12/31", time: "23:59", calendar: gregorian }\n'
+            'Countdown { date: "2026/01/01", time: "00:00", calendar: gregorian }\n'
         )
         html = _html(src)
         assert html.count("querySelectorAll('.lk-countdown')") == 1

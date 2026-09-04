@@ -1121,7 +1121,7 @@ class TestVideo:
 
 
 class TestCountdown:
-    SRC = 'Countdown { date: "2026/12/31", time: "23:59" }\n'
+    SRC = 'Countdown { date: "2026/12/31", time: "23:59", calendar: gregorian }\n'
 
     def test_valid(self):
         compile_ok(self.SRC)
@@ -1136,7 +1136,7 @@ class TestCountdown:
     def test_requires_time(self):
         from compiler import compile_source
 
-        errors = compile_source('Countdown { date: "2026/12/31" }\n').errors
+        errors = compile_source('Countdown { date: "1404/09/15" }\n').errors
         assert len(errors) == 1
         assert "required property 'time'" in errors[0].message
 
@@ -1152,76 +1152,148 @@ class TestCountdown:
     def test_invalid_date_format(self):
         from compiler import compile_source
 
-        errors = compile_source('Countdown { date: "hello", time: "23:59" }\n').errors
+        errors = compile_source(
+            'Countdown { date: "hello", time: "23:59", calendar: gregorian }\n'
+        ).errors
         assert len(errors) == 1
         assert "valid date" in errors[0].message
 
     def test_invalid_date_no_slashes(self):
         from compiler import compile_source
 
-        errors = compile_source('Countdown { date: "31122026", time: "23:59" }\n').errors
+        errors = compile_source(
+            'Countdown { date: "31122026", time: "23:59", calendar: gregorian }\n'
+        ).errors
         assert len(errors) == 1
         assert "valid date" in errors[0].message
 
     def test_invalid_date_impossible(self):
         from compiler import compile_source
 
-        errors = compile_source('Countdown { date: "2026/13/40", time: "23:59" }\n').errors
+        errors = compile_source(
+            'Countdown { date: "2026/13/40", time: "23:59", calendar: gregorian }\n'
+        ).errors
         assert len(errors) == 1
         assert "valid date" in errors[0].message
 
     def test_invalid_date_leap_year(self):
         from compiler import compile_source
 
-        errors = compile_source('Countdown { date: "2025/02/29", time: "00:00" }\n').errors
+        errors = compile_source(
+            'Countdown { date: "2025/02/29", time: "00:00", calendar: gregorian }\n'
+        ).errors
         assert len(errors) == 1
         assert "valid date" in errors[0].message
 
     def test_valid_leap_year(self):
-        compile_ok('Countdown { date: "2024/02/29", time: "00:00" }\n')
+        compile_ok('Countdown { date: "2024/02/29", time: "00:00", calendar: gregorian }\n')
 
     def test_invalid_time_format(self):
         from compiler import compile_source
 
-        errors = compile_source('Countdown { date: "2026/12/31", time: "noon" }\n').errors
+        errors = compile_source(
+            'Countdown { date: "2026/12/31", time: "noon", calendar: gregorian }\n'
+        ).errors
         assert len(errors) == 1
         assert "valid time" in errors[0].message
 
     def test_invalid_time_out_of_range(self):
         from compiler import compile_source
 
-        errors = compile_source('Countdown { date: "2026/12/31", time: "25:00" }\n').errors
+        errors = compile_source(
+            'Countdown { date: "2026/12/31", time: "25:00", calendar: gregorian }\n'
+        ).errors
         assert len(errors) == 1
         assert "valid time" in errors[0].message
 
     def test_invalid_minute_out_of_range(self):
         from compiler import compile_source
 
-        errors = compile_source('Countdown { date: "2026/12/31", time: "12:61" }\n').errors
+        errors = compile_source(
+            'Countdown { date: "2026/12/31", time: "12:61", calendar: gregorian }\n'
+        ).errors
         assert len(errors) == 1
         assert "valid time" in errors[0].message
 
     def test_defaults(self):
-        result = compile_ok(self.SRC)
+        result = compile_ok('Countdown { date: "1404/09/15", time: "23:59" }\n')
         block = result.ast.blocks[0]
         assert block.resolved["expiredText"] == ""
         assert block.resolved["language"] == "fa"
+        assert block.resolved["calendar"] == "jalali"
         assert block.resolved["textColor"] == "#00B4B0"
         assert block.resolved["backgroundColor"] == "transparent"
         assert block.resolved["borderColor"] == "transparent"
         assert block.resolved["shape"] == "rounded"
 
+    def test_calendar_valid_gregorian(self):
+        compile_ok('Countdown { date: "2026/12/31", time: "23:59", calendar: gregorian }\n')
+
+    def test_calendar_valid_jalali(self):
+        compile_ok('Countdown { date: "1404/09/15", time: "23:59", calendar: jalali }\n')
+
+    def test_calendar_invalid(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            'Countdown { date: "2026/12/31", time: "23:59", calendar: lunar }\n'
+        ).errors
+        assert len(errors) == 1
+        assert "not a valid value" in errors[0].message
+
+    def test_calendar_quoted_rejected(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            'Countdown { date: "2026/12/31", time: "23:59", calendar: "jalali" }\n'
+        ).errors
+        assert len(errors) == 1
+        assert "quotation marks" in errors[0].message
+
+    def test_jalali_date_accepted_with_jalali_calendar(self):
+        compile_ok('Countdown { date: "1404/09/15", time: "12:00", calendar: jalali }\n')
+
+    def test_jalali_leap_day_accepted(self):
+        compile_ok('Countdown { date: "1399/12/30", time: "00:00", calendar: jalali }\n')
+
+    def test_gregorian_date_rejected_under_jalali_calendar(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            'Countdown { date: "2026/13/40", time: "23:59", calendar: jalali }\n'
+        ).errors
+        assert len(errors) == 1
+        assert "Jalali" in errors[0].message
+
+    def test_jalali_impossible_day_rejected(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            'Countdown { date: "1404/07/31", time: "23:59", calendar: jalali }\n'
+        ).errors
+        assert len(errors) == 1
+        assert "Jalali" in errors[0].message
+
+    def test_jalali_non_leap_esfand_rejected(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            'Countdown { date: "1400/12/30", time: "00:00", calendar: jalali }\n'
+        ).errors
+        assert len(errors) == 1
+        assert "Jalali" in errors[0].message
+
     def test_language_valid_fa(self):
-        compile_ok('Countdown { date: "2026/12/31", time: "23:59", language: fa }\n')
+        compile_ok('Countdown { date: "1404/09/15", time: "23:59", language: fa }\n')
 
     def test_language_valid_en(self):
-        compile_ok('Countdown { date: "2026/12/31", time: "23:59", language: en }\n')
+        compile_ok('Countdown { date: "1404/09/15", time: "23:59", language: en }\n')
 
     def test_language_invalid(self):
         from compiler import compile_source
 
         errors = compile_source(
-            'Countdown { date: "2026/12/31", time: "23:59", language: de }\n'
+            'Countdown { date: "1404/09/15", time: "23:59", language: de }\n'
         ).errors
         assert len(errors) == 1
         assert "not a valid value" in errors[0].message
@@ -1230,22 +1302,22 @@ class TestCountdown:
         from compiler import compile_source
 
         errors = compile_source(
-            'Countdown { date: "2026/12/31", time: "23:59", language: "fa" }\n'
+            'Countdown { date: "1404/09/15", time: "23:59", language: "fa" }\n'
         ).errors
         assert len(errors) == 1
         assert "quotation marks" in errors[0].message
 
     def test_repeatable(self):
         compile_ok(
-            'Countdown { date: "2026/12/31", time: "23:59" }\n'
-            'Countdown { date: "2026/01/01", time: "00:00" }\n'
+            'Countdown { date: "2026/12/31", time: "23:59", calendar: gregorian }\n'
+            'Countdown { date: "2026/01/01", time: "00:00", calendar: gregorian }\n'
         )
 
     def test_invalid_shape(self):
         from compiler import compile_source
 
         errors = compile_source(
-            'Countdown { date: "2026/12/31", time: "23:59", shape: circle }\n'
+            'Countdown { date: "2026/12/31", time: "23:59", shape: circle, calendar: gregorian }\n'
         ).errors
         assert len(errors) == 1
         assert "not a valid value" in errors[0].message
@@ -1254,7 +1326,7 @@ class TestCountdown:
         from compiler import compile_source
 
         errors = compile_source(
-            'Countdown { date: "2026/12/31", time: "23:59", textColor: "red" }\n'
+            'Countdown { date: "2026/12/31", time: "23:59", textColor: "red", calendar: gregorian }\n'
         ).errors
         assert len(errors) == 1
         assert "valid Color" in errors[0].message
