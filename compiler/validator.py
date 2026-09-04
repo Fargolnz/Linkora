@@ -152,6 +152,16 @@ class Validator:
         if block.name == "Video":
             return
 
+        if block.name == "FAQ":
+            if not block.children:
+                errors.append(
+                    SemanticError(
+                        "Block 'FAQ' must contain at least one 'FAQItem' child.",
+                        block.position,
+                    )
+                )
+            return
+
         if block.name not in ("SocialMedia", "SocialNetwork", "Contact", "Address"):
             return
 
