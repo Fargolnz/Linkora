@@ -1468,6 +1468,85 @@ def _render_image_item(block: Block, reserve_caption: bool, card_id: str | None 
     )
 
 
+def render_banner(block: Block) -> str:
+    """Render a Banner container as a grid of linked image cards."""
+    resolved = block.resolved
+    columns = int(resolved["columns"])
+    items = list(block.children)
+
+    rows = []
+    for i in range(0, len(items), columns):
+        row_items = items[i : i + columns]
+        cards = "\n".join(_render_banner_item(child) for child in row_items)
+        rows.append(f'    <div class="lk-banner-row">\n{cards}\n    </div>')
+    body = "\n".join(rows)
+    return (
+        f'  <section class="lk-banner">\n'
+        f"{body}\n"
+        f"  </section>"
+    )
+
+
+def _render_banner_item(block: Block) -> str:
+    """Render a single Banner item as a linked image card with overlay."""
+    resolved = block.resolved
+    parent = _parent_resolved(block)
+    image = str(resolved["image"])
+    url = str(resolved["url"])
+    title = str(resolved["title"])
+    description = str(resolved["description"])
+    alt = title or description or "Banner"
+    shape = str(parent.get("shape", "rounded"))
+
+    def inherit(key: str, parent_key: str) -> str:
+        value = str(resolved[key])
+        if value:
+            return value
+        return str(parent.get(parent_key, ""))
+
+    border_color = inherit("borderColor", "borderColor") or "transparent"
+    title_color = inherit("titleColor", "titleColor") or "#FFFFFF"
+    description_color = (
+        inherit("descriptionColor", "descriptionColor") or "#FFFFFF"
+    )
+
+    classes = " ".join(["lk-banneritem", f"lk-shape-{shape}"])
+    style = f"border-color: {border_color};"
+
+    title_html = ""
+    if title:
+        title_html = (
+            f'\n      <div class="lk-banneritem-title" '
+            f'style="color: {title_color};">'
+            f"{html.escape(title)}</div>"
+        )
+    desc_html = ""
+    if description:
+        desc_html = (
+            f'\n      <div class="lk-banneritem-desc" '
+            f'style="color: {description_color};">'
+            f"{html.escape(description)}</div>"
+        )
+
+    mask = f'\n    <div class="lk-banneritem-mask">{title_html}{desc_html}\n    </div>'
+    img = (
+        f'\n    <img class="lk-banneritem-img" '
+        f'src="{html.escape(image, quote=True)}" '
+        f'alt="{html.escape(alt, quote=True)}">'
+    )
+    return (
+        f'    <a class="{classes}" href="{html.escape(url, quote=True)}" '
+        f'style="{style}">'
+        f"{img}{mask}"
+        f"\n    </a>"
+    )
+
+
+def render_banner_item(block: Block) -> str:
+    """Render a BannerItem — always rendered inside its container."""
+    return _render_banner_item(block)
+
+
 def _parent_resolved(block: Block) -> dict[str, object]:
     """Return the resolved properties of the nearest ancestor block."""
     return block.parent.resolved if block.parent is not None else {}
@@ -1511,4 +1590,6 @@ _RENDERERS = {
     "AddressItem": render_address_item,
     "Image": render_image,
     "ImageItem": render_image_item,
+    "Banner": render_banner,
+    "BannerItem": render_banner_item,
 }
