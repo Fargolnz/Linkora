@@ -1604,6 +1604,8 @@ def render_video(block: Block) -> str:
         f'alt="{html.escape(alt, quote=True)}">'
     ) if thumbnail else ""
 
+    card_class = "lk-video" if thumbnail else "lk-video lk-video-no-thumbnail"
+
     play_icon = (
         '\n    <div class="lk-video-play">'
         '<div class="lk-video-play-triangle"></div>'
@@ -1614,7 +1616,7 @@ def render_video(block: Block) -> str:
 
     if is_local:
         tag_open = (
-            f'  <div class="lk-video lk-shape-{shape}"'
+            f'  <div class="{card_class} lk-shape-{shape}"'
             f'{f" style=\"{style}\"" if style else ""}>'
         )
         tag_close = "  </div>"
@@ -1625,7 +1627,7 @@ def render_video(block: Block) -> str:
         return f"{tag_open}{inner}{video_el}\n{tag_close}"
 
     tag_open = (
-        f'  <a class="lk-video lk-shape-{shape}" '
+        f'  <a class="{card_class} lk-shape-{shape}" '
         f'href="{html.escape(url, quote=True)}" '
         f'target="_blank" rel="noopener"'
         f'{f" style=\"{style}\"" if style else ""}>'

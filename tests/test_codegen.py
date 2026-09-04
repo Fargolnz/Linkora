@@ -920,7 +920,7 @@ class TestVideoRendering:
 
     def test_aparat_links_to_watch_page(self):
         html = _html('Video { url: "https://www.aparat.com/v/abc123" }\n')
-        assert '<a class="lk-video lk-shape-rounded"' in html
+        assert '<a class="lk-video lk-video-no-thumbnail lk-shape-rounded"' in html
         assert 'href="https://www.aparat.com/v/abc123"' in html
         assert 'target="_blank"' in html
 
@@ -931,7 +931,7 @@ class TestVideoRendering:
 
     def test_local_video_embeds_player(self):
         html = _html('Video { url: "./assets/intro.mp4" }\n')
-        assert '<div class="lk-video lk-shape-rounded">' in html
+        assert '<div class="lk-video lk-video-no-thumbnail lk-shape-rounded">' in html
         assert '<video class="lk-video-player" controls' in html
         assert 'src="./assets/intro.mp4"' in html
 
@@ -943,6 +943,18 @@ class TestVideoRendering:
         html = _html('Video { url: "https://www.youtube.com/watch?v=abc123" }\n')
         assert 'class="lk-video-play"' in html
         assert 'class="lk-video-play-triangle"' in html
+
+    def test_no_thumbnail_uses_placeholder_class(self):
+        html = _html('Video { url: "https://www.aparat.com/v/abc123" }\n')
+        assert "lk-video-no-thumbnail" in html
+        assert "aspect-ratio: 16 / 9" in html
+
+    def test_with_thumbnail_uses_image_class_only(self):
+        html = _html(
+            'Video { url: "https://www.aparat.com/v/abc123", thumbnail: "./thumb.jpg" }\n'
+        )
+        assert '<a class="lk-video lk-shape-rounded"' in html
+        assert 'class="lk-video-img"' in html
 
     def test_custom_thumbnail_used(self):
         html = _html(
