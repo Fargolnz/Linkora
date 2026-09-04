@@ -899,3 +899,72 @@ class TestBannerRendering:
         assert "aspect-ratio: 16 / 9" in html
         assert "linear-gradient" in html
         assert "transform: translateY(-2px)" in html
+
+
+class TestVideoRendering:
+    def test_youtube_links_to_watch_page(self):
+        html = _html('Video { url: "https://www.youtube.com/watch?v=abc123" }\n')
+        assert '<a class="lk-video lk-shape-rounded"' in html
+        assert 'href="https://www.youtube.com/watch?v=abc123"' in html
+        assert 'target="_blank"' in html
+        assert 'rel="noopener"' in html
+
+    def test_youtube_auto_generates_thumbnail(self):
+        html = _html('Video { url: "https://www.youtube.com/watch?v=abc123" }\n')
+        assert 'src="https://img.youtube.com/vi/abc123/maxresdefault.jpg"' in html
+
+    def test_youtube_short_url(self):
+        html = _html('Video { url: "https://youtu.be/abc123" }\n')
+        assert 'href="https://youtu.be/abc123"' in html
+        assert 'src="https://img.youtube.com/vi/abc123/maxresdefault.jpg"' in html
+
+    def test_aparat_links_to_watch_page(self):
+        html = _html('Video { url: "https://www.aparat.com/v/abc123" }\n')
+        assert '<a class="lk-video lk-shape-rounded"' in html
+        assert 'href="https://www.aparat.com/v/abc123"' in html
+        assert 'target="_blank"' in html
+
+    def test_aparat_no_auto_thumbnail(self):
+        html = _html('Video { url: "https://www.aparat.com/v/abc123" }\n')
+        assert "<img" not in html
+        assert "lk-video-play" in html
+
+    def test_local_video_embeds_player(self):
+        html = _html('Video { url: "./assets/intro.mp4" }\n')
+        assert '<div class="lk-video lk-shape-rounded">' in html
+        assert '<video class="lk-video-player" controls' in html
+        assert 'src="./assets/intro.mp4"' in html
+
+    def test_local_video_no_link_tag(self):
+        html = _html('Video { url: "./assets/intro.mp4" }\n')
+        assert "<a " not in html
+
+    def test_play_icon_always_present(self):
+        html = _html('Video { url: "https://www.youtube.com/watch?v=abc123" }\n')
+        assert 'class="lk-video-play"' in html
+        assert 'class="lk-video-play-triangle"' in html
+
+    def test_custom_thumbnail_used(self):
+        html = _html(
+            'Video { url: "https://www.youtube.com/watch?v=abc123", thumbnail: "./thumb.jpg" }\n'
+        )
+        assert 'src="./thumb.jpg"' in html
+        assert "img.youtube.com" not in html
+
+    def test_custom_shape(self):
+        html = _html('Video { url: "https://www.youtube.com/watch?v=abc123", shape: pill }\n')
+        assert "lk-shape-pill" in html
+
+    def test_border_color(self):
+        html = _html(
+            'Video { url: "https://www.youtube.com/watch?v=abc123", borderColor: "#FF0000" }\n'
+        )
+        assert "border-color: #FF0000" in html
+
+    def test_css_includes_video_styles(self):
+        html = _html('Video { url: "https://www.youtube.com/watch?v=abc123" }\n')
+        assert ".lk-video" in html
+        assert ".lk-video-img" in html
+        assert ".lk-video-play" in html
+        assert ".lk-video-play-triangle" in html
+        assert "aspect-ratio: 16 / 9" in html

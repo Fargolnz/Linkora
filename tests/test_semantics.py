@@ -1042,3 +1042,79 @@ class TestBanner:
         ).errors
         assert len(errors) == 1
         assert "only allowed inside" in errors[0].message
+
+
+class TestVideo:
+    def test_valid_youtube(self):
+        compile_ok('Video { url: "https://www.youtube.com/watch?v=abc123" }\n')
+
+    def test_valid_youtube_short(self):
+        compile_ok('Video { url: "https://youtu.be/abc123" }\n')
+
+    def test_valid_aparat(self):
+        compile_ok('Video { url: "https://www.aparat.com/v/abc123" }\n')
+
+    def test_valid_local_mp4(self):
+        compile_ok('Video { url: "./assets/intro.mp4" }\n')
+
+    def test_valid_local_webm(self):
+        compile_ok('Video { url: "./assets/intro.webm" }\n')
+
+    def test_valid_local_mov(self):
+        compile_ok('Video { url: "./assets/intro.mov" }\n')
+
+    def test_requires_url(self):
+        from compiler import compile_source
+
+        errors = compile_source("Video { }\n").errors
+        assert len(errors) == 1
+        assert "required property 'url'" in errors[0].message
+
+    def test_invalid_url(self):
+        from compiler import compile_source
+
+        errors = compile_source('Video { url: "not-a-url" }\n').errors
+        assert len(errors) == 1
+        assert "expected a YouTube URL" in errors[0].message
+
+    def test_defaults(self):
+        result = compile_ok('Video { url: "https://www.youtube.com/watch?v=abc123" }\n')
+        assert result.ast is not None
+        block = result.ast.blocks[0]
+        assert block.resolved["thumbnail"] == ""
+        assert block.resolved["shape"] == "rounded"
+        assert block.resolved["borderColor"] == "transparent"
+
+    def test_repeatable(self):
+        compile_ok(
+            'Video { url: "https://www.youtube.com/watch?v=abc123" }\n'
+            'Video { url: "https://www.youtube.com/watch?v=def456" }\n'
+        )
+
+    def test_custom_thumbnail(self):
+        compile_ok(
+            'Video { url: "https://www.youtube.com/watch?v=abc123", thumbnail: "./thumb.jpg" }\n'
+        )
+
+    def test_custom_shape(self):
+        compile_ok(
+            'Video { url: "https://www.youtube.com/watch?v=abc123", shape: pill }\n'
+        )
+
+    def test_invalid_shape(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            'Video { url: "https://www.youtube.com/watch?v=abc123", shape: circle }\n'
+        ).errors
+        assert len(errors) == 1
+        assert "not a valid value" in errors[0].message
+
+    def test_invalid_border_color(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            'Video { url: "https://www.youtube.com/watch?v=abc123", borderColor: "red" }\n'
+        ).errors
+        assert len(errors) == 1
+        assert "valid Color" in errors[0].message
