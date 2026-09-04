@@ -141,6 +141,8 @@ Blocks implemented so far:
 | `AddressItem` | Part of [`docs/language/Address.md`](docs/language/Address.md) |
 | `Image` | [`docs/language/Image.md`](docs/language/Image.md) |
 | `ImageItem` | Part of [`docs/language/Image.md`](docs/language/Image.md) |
+| `Banner` | [`docs/language/Banner.md`](docs/language/Banner.md) |
+| `BannerItem` | Part of [`docs/language/Banner.md`](docs/language/Banner.md) |
 
 ## Status
 
