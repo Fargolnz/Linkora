@@ -149,6 +149,9 @@ class Validator:
                 )
             return
 
+        if block.name == "Video":
+            return
+
         if block.name not in ("SocialMedia", "SocialNetwork", "Contact", "Address"):
             return
 
@@ -282,6 +285,12 @@ class Validator:
                 fail(
                     "expected an image URL or a relative file path with an image "
                     f"extension (.jpg, .png, .svg, .gif, .webp), found {_describe(prop)}."
+                )
+        elif expected is ValueType.VIDEO:
+            if not types.is_video_url(value):
+                fail(
+                    "expected a YouTube URL, Aparat URL, or a relative file path with a "
+                    f"video extension (.mp4, .webm, .mov), found {_describe(prop)}."
                 )
         elif expected is ValueType.ENUM:
             if prop.kind == KIND_IDENTIFIER and value in prop_def.enum_values:

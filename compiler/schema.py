@@ -28,6 +28,7 @@ class ValueType(Enum):
     URL = "URL"
     FILE = "File"
     IMAGE = "Image"
+    VIDEO = "Video"
     ENUM = "Enum"
 
 
@@ -543,6 +544,23 @@ _BANNER_ITEM = BlockDef(
     ),
 )
 
+_VIDEO = BlockDef(
+    name="Video",
+    parent=None,
+    repeatable=True,
+    properties=_properties(
+        PropertyDef("url", ValueType.VIDEO, "", required=True),
+        PropertyDef("thumbnail", ValueType.IMAGE, ""),
+        PropertyDef(
+            "shape",
+            ValueType.ENUM,
+            "rounded",
+            enum_values=("sharp", "slightlyRounded", "rounded", "pill"),
+        ),
+        PropertyDef("borderColor", ValueType.COLOR, "transparent"),
+    ),
+)
+
 
 #: The full set of blocks known to the compiler, keyed by block name.
 BLOCKS: dict[str, BlockDef] = {
@@ -566,6 +584,7 @@ BLOCKS: dict[str, BlockDef] = {
     _IMAGE_ITEM.name: _IMAGE_ITEM,
     _BANNER.name: _BANNER,
     _BANNER_ITEM.name: _BANNER_ITEM,
+    _VIDEO.name: _VIDEO,
 }
 
 
