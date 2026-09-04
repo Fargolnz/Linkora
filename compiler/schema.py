@@ -561,6 +561,47 @@ _VIDEO = BlockDef(
     ),
 )
 
+_FAQ = BlockDef(
+    name="FAQ",
+    parent=None,
+    repeatable=True,
+    allowed_children=("FAQItem",),
+    properties=_properties(
+        PropertyDef("questionColor", ValueType.COLOR, "#00B4B0"),
+        PropertyDef("answerColor", ValueType.COLOR, "#3B3B3B"),
+        PropertyDef("iconColor", ValueType.COLOR, "#00B4B0"),
+        PropertyDef("backgroundColor", ValueType.COLOR, "#FFFFFF"),
+        PropertyDef("borderColor", ValueType.COLOR, "#00B4B0"),
+        PropertyDef(
+            "shape",
+            ValueType.ENUM,
+            "rounded",
+            enum_values=("sharp", "slightlyRounded", "rounded", "pill"),
+        ),
+    ),
+)
+
+_FAQ_ITEM = BlockDef(
+    name="FAQItem",
+    parent="FAQ",
+    repeatable=True,
+    properties=_properties(
+        PropertyDef("question", ValueType.STRING, "", required=True),
+        PropertyDef("answer", ValueType.STRING, "", required=True),
+        PropertyDef("questionColor", ValueType.COLOR, ""),
+        PropertyDef("answerColor", ValueType.COLOR, ""),
+        PropertyDef("iconColor", ValueType.COLOR, ""),
+        PropertyDef("backgroundColor", ValueType.COLOR, ""),
+        PropertyDef("borderColor", ValueType.COLOR, ""),
+        PropertyDef(
+            "shape",
+            ValueType.ENUM,
+            "",
+            enum_values=("sharp", "slightlyRounded", "rounded", "pill"),
+        ),
+    ),
+)
+
 
 #: The full set of blocks known to the compiler, keyed by block name.
 BLOCKS: dict[str, BlockDef] = {
@@ -585,6 +626,8 @@ BLOCKS: dict[str, BlockDef] = {
     _BANNER.name: _BANNER,
     _BANNER_ITEM.name: _BANNER_ITEM,
     _VIDEO.name: _VIDEO,
+    _FAQ.name: _FAQ,
+    _FAQ_ITEM.name: _FAQ_ITEM,
 }
 
 
