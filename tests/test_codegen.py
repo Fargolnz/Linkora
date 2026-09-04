@@ -1087,3 +1087,101 @@ class TestFAQRendering:
         assert ".lk-faqitem-answer" in html
         assert ".lk-faqitem-arrow" in html
         assert "rotate(180deg)" in html
+
+
+class TestCountdownRendering:
+    SRC = 'Countdown { date: "2026/12/31", time: "23:59" }\n'
+
+    def test_container(self):
+        html = _html(self.SRC)
+        assert '<div class="lk-countdown lk-countdown-transparent lk-shape-rounded"' in html
+
+    def test_four_boxes(self):
+        html = _html(self.SRC)
+        assert html.count('class="lk-countdown-box"') == 4
+        assert html.count('class="lk-countdown-digit"') == 4
+
+    def test_default_persian_labels(self):
+        html = _html(self.SRC)
+        for label in ("روز", "ساعت", "دقیقه", "ثانیه"):
+            assert f'class="lk-countdown-label">{label}</span>' in html
+
+    def test_english_labels(self):
+        html = _html('Countdown { date: "2026/12/31", time: "23:59", language: en }\n')
+        for label in ("Days", "Hours", "Minutes", "Seconds"):
+            assert f'class="lk-countdown-label">{label}</span>' in html
+
+    def test_data_target_present(self):
+        html = _html(self.SRC)
+        assert 'data-target="' in html
+
+    def test_data_target_utc_value(self):
+        import calendar
+
+        html = _html(self.SRC)
+        expected = calendar.timegm((2026, 12, 31, 23, 59, 0, 0, 0, -1)) * 1000
+        assert f'data-target="{expected}"' in html
+
+    def test_custom_text_color(self):
+        html = _html('Countdown { date: "2026/12/31", time: "23:59", textColor: "#FF0000" }\n')
+        assert "color: #FF0000" in html
+
+    def test_custom_background_color(self):
+        html = _html(
+            'Countdown { date: "2026/12/31", time: "23:59", backgroundColor: "#000000" }\n'
+        )
+        assert "background: #000000" in html
+
+    def test_transparent_default_omits_background(self):
+        html = _html(self.SRC)
+        start = html.find('<div class="lk-countdown')
+        end = html.find('>', start)
+        card_tag = html[start:end]
+        assert "background:" not in card_tag
+
+    def test_custom_border_color(self):
+        html = _html(
+            'Countdown { date: "2026/12/31", time: "23:59", borderColor: "#111111" }\n'
+        )
+        assert "border-color: #111111" in html
+
+    def test_custom_shape(self):
+        html = _html('Countdown { date: "2026/12/31", time: "23:59", shape: pill }\n')
+        assert "lk-shape-pill" in html
+
+    def test_expired_text_rendered_hidden(self):
+        html = _html(
+            'Countdown { date: "2026/12/31", time: "23:59", expiredText: "Started!" }\n'
+        )
+        assert 'class="lk-countdown-expired" style="display:none;">Started!</div>' in html
+
+    def test_no_expired_text_by_default(self):
+        html = _html(self.SRC)
+        assert 'class="lk-countdown-expired"' not in html
+
+    def test_js_embedded_once(self):
+        html = _html(self.SRC)
+        assert "querySelectorAll('.lk-countdown')" in html
+        assert html.count("querySelectorAll('.lk-countdown')") == 1
+
+    def test_js_absent_without_countdown(self):
+        html = _html()
+        assert "querySelectorAll('.lk-countdown')" not in html
+
+    def test_multiple_countdowns_still_embed_js_once(self):
+        src = (
+            'Countdown { date: "2026/12/31", time: "23:59" }\n'
+            'Countdown { date: "2026/01/01", time: "00:00" }\n'
+        )
+        html = _html(src)
+        assert html.count("querySelectorAll('.lk-countdown')") == 1
+        assert html.count('class="lk-countdown lk-countdown-transparent') == 2
+
+    def test_css_includes_countdown_styles(self):
+        html = _html(self.SRC)
+        assert ".lk-countdown" in html
+        assert ".lk-countdown-row" in html
+        assert ".lk-countdown-box" in html
+        assert ".lk-countdown-digit" in html
+        assert ".lk-countdown-label" in html
+        assert ".lk-countdown-expired" in html

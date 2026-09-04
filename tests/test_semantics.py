@@ -1120,6 +1120,160 @@ class TestVideo:
         assert "valid Color" in errors[0].message
 
 
+class TestCountdown:
+    SRC = 'Countdown { date: "2026/12/31", time: "23:59" }\n'
+
+    def test_valid(self):
+        compile_ok(self.SRC)
+
+    def test_requires_date(self):
+        from compiler import compile_source
+
+        errors = compile_source('Countdown { time: "23:59" }\n').errors
+        assert len(errors) == 1
+        assert "required property 'date'" in errors[0].message
+
+    def test_requires_time(self):
+        from compiler import compile_source
+
+        errors = compile_source('Countdown { date: "2026/12/31" }\n').errors
+        assert len(errors) == 1
+        assert "required property 'time'" in errors[0].message
+
+    def test_empty_block_requires_both(self):
+        from compiler import compile_source
+
+        errors = compile_source("Countdown { }\n").errors
+        assert len(errors) == 2
+        messages = [e.message for e in errors]
+        assert any("required property 'date'" in m for m in messages)
+        assert any("required property 'time'" in m for m in messages)
+
+    def test_invalid_date_format(self):
+        from compiler import compile_source
+
+        errors = compile_source('Countdown { date: "hello", time: "23:59" }\n').errors
+        assert len(errors) == 1
+        assert "valid date" in errors[0].message
+
+    def test_invalid_date_no_slashes(self):
+        from compiler import compile_source
+
+        errors = compile_source('Countdown { date: "31122026", time: "23:59" }\n').errors
+        assert len(errors) == 1
+        assert "valid date" in errors[0].message
+
+    def test_invalid_date_impossible(self):
+        from compiler import compile_source
+
+        errors = compile_source('Countdown { date: "2026/13/40", time: "23:59" }\n').errors
+        assert len(errors) == 1
+        assert "valid date" in errors[0].message
+
+    def test_invalid_date_leap_year(self):
+        from compiler import compile_source
+
+        errors = compile_source('Countdown { date: "2025/02/29", time: "00:00" }\n').errors
+        assert len(errors) == 1
+        assert "valid date" in errors[0].message
+
+    def test_valid_leap_year(self):
+        compile_ok('Countdown { date: "2024/02/29", time: "00:00" }\n')
+
+    def test_invalid_time_format(self):
+        from compiler import compile_source
+
+        errors = compile_source('Countdown { date: "2026/12/31", time: "noon" }\n').errors
+        assert len(errors) == 1
+        assert "valid time" in errors[0].message
+
+    def test_invalid_time_out_of_range(self):
+        from compiler import compile_source
+
+        errors = compile_source('Countdown { date: "2026/12/31", time: "25:00" }\n').errors
+        assert len(errors) == 1
+        assert "valid time" in errors[0].message
+
+    def test_invalid_minute_out_of_range(self):
+        from compiler import compile_source
+
+        errors = compile_source('Countdown { date: "2026/12/31", time: "12:61" }\n').errors
+        assert len(errors) == 1
+        assert "valid time" in errors[0].message
+
+    def test_defaults(self):
+        result = compile_ok(self.SRC)
+        block = result.ast.blocks[0]
+        assert block.resolved["expiredText"] == ""
+        assert block.resolved["language"] == "fa"
+        assert block.resolved["textColor"] == "#00B4B0"
+        assert block.resolved["backgroundColor"] == "transparent"
+        assert block.resolved["borderColor"] == "transparent"
+        assert block.resolved["shape"] == "rounded"
+
+    def test_language_valid_fa(self):
+        compile_ok('Countdown { date: "2026/12/31", time: "23:59", language: fa }\n')
+
+    def test_language_valid_en(self):
+        compile_ok('Countdown { date: "2026/12/31", time: "23:59", language: en }\n')
+
+    def test_language_invalid(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            'Countdown { date: "2026/12/31", time: "23:59", language: de }\n'
+        ).errors
+        assert len(errors) == 1
+        assert "not a valid value" in errors[0].message
+
+    def test_language_quoted_rejected(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            'Countdown { date: "2026/12/31", time: "23:59", language: "fa" }\n'
+        ).errors
+        assert len(errors) == 1
+        assert "quotation marks" in errors[0].message
+
+    def test_repeatable(self):
+        compile_ok(
+            'Countdown { date: "2026/12/31", time: "23:59" }\n'
+            'Countdown { date: "2026/01/01", time: "00:00" }\n'
+        )
+
+    def test_invalid_shape(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            'Countdown { date: "2026/12/31", time: "23:59", shape: circle }\n'
+        ).errors
+        assert len(errors) == 1
+        assert "not a valid value" in errors[0].message
+
+    def test_invalid_text_color(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            'Countdown { date: "2026/12/31", time: "23:59", textColor: "red" }\n'
+        ).errors
+        assert len(errors) == 1
+        assert "valid Color" in errors[0].message
+
+    def test_all_explicit_values(self):
+        compile_ok(
+            'Countdown {\n'
+            '  date: "2026/07/04"\n'
+            '  time: "14:00"\n'
+            '  expiredText: "Started!"\n'
+            '  language: en\n'
+            '  textColor: "#FFFFFF"\n'
+            '  backgroundColor: "#000000"\n'
+            '  borderColor: "#111111"\n'
+            '  shape: sharp\n'
+            '}\n'
+        )
+
+
 class TestFAQ:
     SRC = (
         "FAQ {\n"
