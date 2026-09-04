@@ -157,3 +157,13 @@ FAQ {
     FAQItem { question: "Can I customize each block?", answer: "Yes — every block supports colors, shapes, and layout options so your page matches your style." }
 }
 
+
+Title { title: "Launch Countdown" }
+
+Countdown {
+    date: "2026/10/05"
+    time: "23:59"
+    language: en
+    expiredText: "Linkora is live!"
+}
+
