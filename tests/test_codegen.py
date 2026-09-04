@@ -801,3 +801,101 @@ class TestImageRendering:
         assert ".lk-imagecard-img" in html
         assert ".lk-image-slider-track" in html
         assert "scroll-snap-type: x mandatory" in html
+
+
+class TestBannerRendering:
+    SRC = (
+        "Banner {\n"
+        '    BannerItem { image: "./a.jpg", url: "https://example.com", title: "A", description: "Desc A" }\n'
+        '    BannerItem { image: "./b.jpg", url: "https://b.com", title: "B" }\n'
+        "}\n"
+    )
+
+    def test_grid_section_and_rows(self):
+        html = _html(self.SRC)
+        assert '<section class="lk-banner">' in html
+        assert 'class="lk-banner-row"' in html
+
+    def test_card_is_link_with_href(self):
+        html = _html(self.SRC)
+        assert 'class="lk-banneritem lk-shape-rounded"' in html
+        assert 'href="https://example.com"' in html
+        assert 'href="https://b.com"' in html
+
+    def test_image_and_alt(self):
+        html = _html(self.SRC)
+        assert 'src="./a.jpg"' in html
+        assert 'alt="A"' in html
+        assert 'alt="B"' in html
+
+    def test_mask_always_visible(self):
+        html = _html(self.SRC)
+        assert 'class="lk-banneritem-mask"' in html
+        assert ">A</div>" in html
+        assert ">Desc A</div>" in html
+
+    def test_empty_title_and_description(self):
+        html = _html(
+            "Banner {\n"
+            '    BannerItem { image: "./a.jpg", url: "https://example.com" }\n'
+            "}\n"
+        )
+        assert 'alt="Banner"' in html
+        assert 'class="lk-banneritem-mask"' in html
+        assert "<img" in html
+
+    def test_default_colors(self):
+        html = _html(self.SRC)
+        assert "color: #FFFFFF" in html
+
+    def test_item_color_inherited_from_container(self):
+        html = _html(
+            "Banner {\n"
+            '    titleColor: "#FF0000"\n'
+            '    descriptionColor: "#00FF00"\n'
+            '    borderColor: "#111111"\n'
+            '    BannerItem { image: "./a.jpg", url: "https://example.com", title: "T", description: "D" }\n'
+            "}\n"
+        )
+        assert "color: #FF0000" in html
+        assert "color: #00FF00" in html
+        assert "border-color: #111111" in html
+
+    def test_item_color_overrides_container(self):
+        html = _html(
+            "Banner {\n"
+            '    titleColor: "#FF0000"\n'
+            '    BannerItem { image: "./a.jpg", url: "https://example.com", title: "T", titleColor: "#00FF00" }\n'
+            "}\n"
+        )
+        assert "color: #00FF00" in html
+        assert "color: #FF0000" not in html
+
+    def test_single_mode_columns_produces_rows(self):
+        html = _html(
+            "Banner {\n"
+            "    columns: 2\n"
+            '    BannerItem { image: "./a.jpg", url: "https://a.com" }\n'
+            '    BannerItem { image: "./b.jpg", url: "https://b.com" }\n'
+            "}\n"
+        )
+        assert html.count('class="lk-banner-row"') == 1
+
+    def test_two_rows(self):
+        html = _html(
+            "Banner {\n"
+            "    columns: 2\n"
+            '    BannerItem { image: "./a.jpg", url: "https://a.com" }\n'
+            '    BannerItem { image: "./b.jpg", url: "https://b.com" }\n'
+            '    BannerItem { image: "./c.jpg", url: "https://c.com" }\n'
+            "}\n"
+        )
+        assert html.count('class="lk-banner-row"') == 2
+
+    def test_css_includes_banner_styles(self):
+        html = _html(self.SRC)
+        assert ".lk-banneritem-mask" in html
+        assert ".lk-banneritem-img" in html
+        assert "aspect-ratio: 16 / 9" in html
+        assert "linear-gradient" in html
+        assert "transform: translateY(-2px)" in html
