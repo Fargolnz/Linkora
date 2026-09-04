@@ -29,6 +29,8 @@ class ValueType(Enum):
     FILE = "File"
     IMAGE = "Image"
     VIDEO = "Video"
+    DATE = "Date"
+    TIME = "Time"
     ENUM = "Enum"
 
 
@@ -561,6 +563,32 @@ _VIDEO = BlockDef(
     ),
 )
 
+_COUNTDOWN = BlockDef(
+    name="Countdown",
+    parent=None,
+    repeatable=True,
+    properties=_properties(
+        PropertyDef("date", ValueType.DATE, "", required=True),
+        PropertyDef("time", ValueType.TIME, "", required=True),
+        PropertyDef("expiredText", ValueType.STRING, ""),
+        PropertyDef(
+            "language",
+            ValueType.ENUM,
+            "fa",
+            enum_values=("fa", "en"),
+        ),
+        PropertyDef("textColor", ValueType.COLOR, "#00B4B0"),
+        PropertyDef("backgroundColor", ValueType.COLOR, "transparent"),
+        PropertyDef("borderColor", ValueType.COLOR, "transparent"),
+        PropertyDef(
+            "shape",
+            ValueType.ENUM,
+            "rounded",
+            enum_values=("sharp", "slightlyRounded", "rounded", "pill"),
+        ),
+    ),
+)
+
 _FAQ = BlockDef(
     name="FAQ",
     parent=None,
@@ -620,6 +648,7 @@ BLOCKS: dict[str, BlockDef] = {
     _BANNER.name: _BANNER,
     _BANNER_ITEM.name: _BANNER_ITEM,
     _VIDEO.name: _VIDEO,
+    _COUNTDOWN.name: _COUNTDOWN,
     _FAQ.name: _FAQ,
     _FAQ_ITEM.name: _FAQ_ITEM,
 }

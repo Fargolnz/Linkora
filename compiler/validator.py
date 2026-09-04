@@ -302,6 +302,18 @@ class Validator:
                     "expected a YouTube URL, Aparat URL, or a relative file path with a "
                     f"video extension (.mp4, .webm, .mov), found {_describe(prop)}."
                 )
+        elif expected is ValueType.DATE:
+            if not types.is_date(value):
+                fail(
+                    "expected a valid date in yyyy/mm/dd form, "
+                    f"found {_describe(prop)}."
+                )
+        elif expected is ValueType.TIME:
+            if not types.is_time(value):
+                fail(
+                    "expected a valid time in hh:mm form (24-hour), "
+                    f"found {_describe(prop)}."
+                )
         elif expected is ValueType.ENUM:
             if prop.kind == KIND_IDENTIFIER and value in prop_def.enum_values:
                 return
