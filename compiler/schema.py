@@ -593,12 +593,6 @@ _FAQ_ITEM = BlockDef(
         PropertyDef("iconColor", ValueType.COLOR, ""),
         PropertyDef("backgroundColor", ValueType.COLOR, ""),
         PropertyDef("borderColor", ValueType.COLOR, ""),
-        PropertyDef(
-            "shape",
-            ValueType.ENUM,
-            "",
-            enum_values=("sharp", "slightlyRounded", "rounded", "pill"),
-        ),
     ),
 )
 

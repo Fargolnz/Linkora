@@ -1172,7 +1172,6 @@ class TestFAQ:
         assert item.resolved["iconColor"] == ""
         assert item.resolved["backgroundColor"] == ""
         assert item.resolved["borderColor"] == ""
-        assert item.resolved["shape"] == ""
 
     def test_repeatable(self):
         compile_ok(
@@ -1187,7 +1186,7 @@ class TestFAQ:
     def test_item_color_override(self):
         compile_ok(
             "FAQ {\n"
-            '    FAQItem { question: "Q", answer: "A", questionColor: "#FF0000", iconColor: "#00FF00", backgroundColor: "#000000", borderColor: "#111111", shape: pill }\n'
+            '    FAQItem { question: "Q", answer: "A", questionColor: "#FF0000", iconColor: "#00FF00", backgroundColor: "#000000", borderColor: "#111111" }\n'
             "}\n"
         )
 
@@ -1198,11 +1197,11 @@ class TestFAQ:
         assert len(errors) == 1
         assert "only allowed inside" in errors[0].message
 
-    def test_invalid_shape(self):
+    def test_unknown_shape_property(self):
         from compiler import compile_source
 
         errors = compile_source(
-            'FAQ { FAQItem { question: "Q", answer: "A", shape: circle } }\n'
+            'FAQ { FAQItem { question: "Q", answer: "A", shape: pill } }\n'
         ).errors
         assert len(errors) == 1
-        assert "not a valid value" in errors[0].message
+        assert "Unknown property 'shape'" in errors[0].message

@@ -1721,7 +1721,7 @@ def _render_faq_item(block: Block) -> str:
     icon_color = inherit("iconColor", "iconColor", "#00B4B0")
     background_color = inherit("backgroundColor", "backgroundColor", "#FFFFFF")
     border_color = inherit("borderColor", "borderColor", "#00B4B0")
-    shape = str(resolved["shape"]) or str(parent.get("shape", "rounded")) or "rounded"
+    shape = str(parent.get("shape", "rounded")) or "rounded"
 
     style = (
         f"background-color: {background_color}; "
