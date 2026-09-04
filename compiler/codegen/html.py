@@ -841,12 +841,32 @@ SLIDER_JS = """<script>
 </script>"""
 
 
+#: Inline script driving the FAQ accordion chevrons: rotates each item's
+#: arrow to match its open/closed state via the native <details> toggle event.
+FAQ_JS = """<script>
+(function () {
+  document.querySelectorAll('details.lk-faqitem').forEach(function (item) {
+    function sync() {
+      item.classList.toggle('is-open', item.open);
+    }
+    item.addEventListener('toggle', sync);
+    sync();
+  });
+})();
+</script>"""
+
+
 def render_html(document: Document) -> str:
     """Render a validated document into a complete HTML page."""
-    global _slider_counter
+    global _slider_counter, _faq_counter
     _slider_counter = 0
+    _faq_counter = 0
     body = "\n".join(_render_block(block) for block in document.blocks)
-    script = SLIDER_JS if _slider_counter > 0 else ""
+    scripts = ""
+    if _slider_counter > 0:
+        scripts += SLIDER_JS + "\n"
+    if _faq_counter > 0:
+        scripts += FAQ_JS + "\n"
 
     return (
         "<!DOCTYPE html>\n"
@@ -864,7 +884,7 @@ def render_html(document: Document) -> str:
         "</head>\n"
         "<body>\n"
         f"  <main class=\"lk-page\">\n{body}\n  </main>\n"
-        f"{script}"
+        f"{scripts}"
         "</body>\n"
         "</html>\n"
     )
@@ -1636,6 +1656,63 @@ def render_video(block: Block) -> str:
     return f"{tag_open}{inner}\n{tag_close}"
 
 
+def render_faq(block: Block) -> str:
+    """Render an FAQ container as a list of accordion items."""
+    global _faq_counter
+    _faq_counter += 1
+    items = "\n".join(_render_faq_item(child) for child in block.children)
+    return f'  <div class="lk-faq">\n{items}\n  </div>'
+
+
+def render_faq_item(block: Block) -> str:
+    """Render a single FAQ item as a native <details> accordion entry."""
+    return _render_faq_item(block)
+
+
+def _render_faq_item(block: Block) -> str:
+    """Render a single FAQ item, inheriting colors from its container."""
+    resolved = block.resolved
+    parent = _parent_resolved(block)
+    question = str(resolved["question"])
+    answer = str(resolved["answer"])
+
+    def inherit(key: str, parent_key: str, default: str = "") -> str:
+        value = str(resolved[key])
+        if value:
+            return value
+        return str(parent.get(parent_key, default)) or default
+
+    question_color = inherit("questionColor", "questionColor", "#00B4B0")
+    answer_color = inherit("answerColor", "answerColor", "#3B3B3B")
+    icon_color = inherit("iconColor", "iconColor", "#00B4B0")
+    background_color = inherit("backgroundColor", "backgroundColor", "#FFFFFF")
+    border_color = inherit("borderColor", "borderColor", "#00B4B0")
+    shape = str(resolved["shape"]) or str(parent.get("shape", "rounded")) or "rounded"
+
+    style = (
+        f"background-color: {background_color}; "
+        f"border-color: {border_color};"
+    )
+
+    arrow_svg = (
+        '<svg class="lk-faqitem-arrow" viewBox="0 0 24 24" aria-hidden="true">'
+        f'<path fill="{html.escape(icon_color, quote=True)}" '
+        'd="M5.59 7.41 10 11.83l4.41-4.42L16 8.83 10 14.83 4 8.83z"/>'
+        "</svg>"
+    )
+
+    return (
+        f'    <details class="lk-faqitem lk-shape-{shape}" style="{style}">\n'
+        f'      <summary class="lk-faqitem-summary">'
+        f'<span class="lk-faqitem-question" style="color: {question_color};">'
+        f"{html.escape(question)}</span>{arrow_svg}"
+        f"</summary>\n"
+        f'      <div class="lk-faqitem-answer" style="color: {answer_color};">'
+        f"{html.escape(answer)}</div>\n"
+        f"    </details>"
+    )
+
+
 def _parent_resolved(block: Block) -> dict[str, object]:
     """Return the resolved properties of the nearest ancestor block."""
     return block.parent.resolved if block.parent is not None else {}
@@ -1682,4 +1759,6 @@ _RENDERERS = {
     "Banner": render_banner,
     "BannerItem": render_banner_item,
     "Video": render_video,
+    "FAQ": render_faq,
+    "FAQItem": render_faq_item,
 }
