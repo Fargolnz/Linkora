@@ -7,6 +7,7 @@ block requires registering a single new renderer.
 
 from __future__ import annotations
 
+import calendar
 import html
 
 from compiler.ast import Block, Document
@@ -884,18 +885,62 @@ FAQ_JS = """<script>
 </script>"""
 
 
+#: Inline script driving live Countdown timers. Each countdown carries its
+#: target epoch in a ``data-target`` attribute; a timer ticks every second,
+#: updates the four digit boxes, freezes the boxes at zero on expiry, and then
+#: reveals the optional ``expiredText`` message.
+COUNTDOWN_JS = """<script>
+(function () {
+  function pad(n, digits) {
+    n = String(n);
+    while (n.length < digits) n = '0' + n;
+    return n;
+  }
+  function update(root) {
+    var target = Number(root.getAttribute('data-target'));
+    var now = Date.now();
+    var diff = target - now;
+    if (diff < 0) diff = 0;
+    var days = Math.floor(diff / 86400000);
+    var hours = Math.floor(diff % 86400000 / 3600000);
+    var minutes = Math.floor(diff % 3600000 / 60000);
+    var seconds = Math.floor(diff % 60000 / 1000);
+    var vals = [pad(days, 2), pad(hours, 2), pad(minutes, 2), pad(seconds, 2)];
+    var boxes = root.querySelectorAll('.lk-countdown-digit');
+    if (boxes.length === 4) {
+      boxes.forEach(function (box, i) {
+        box.textContent = vals[i];
+      });
+    }
+    if (diff === 0) {
+      var expired = root.querySelector('.lk-countdown-expired');
+      if (expired) expired.style.display = 'block';
+      if (root.__timer) { clearInterval(root.__timer); root.__timer = null; }
+    }
+  }
+  document.querySelectorAll('.lk-countdown').forEach(function (root) {
+    update(root);
+    root.__timer = setInterval(function () { update(root); }, 1000);
+  });
+})();
+</script>"""
+
+
 def render_html(document: Document) -> str:
     """Render a validated document into a complete HTML page."""
-    global _slider_counter, _faq_counter, _faq_item_counter
+    global _slider_counter, _faq_counter, _faq_item_counter, _countdown_counter
     _slider_counter = 0
     _faq_counter = 0
     _faq_item_counter = 0
+    _countdown_counter = 0
     body = "\n".join(_render_block(block) for block in document.blocks)
     scripts = ""
     if _slider_counter > 0:
         scripts += SLIDER_JS + "\n"
     if _faq_counter > 0:
         scripts += FAQ_JS + "\n"
+    if _countdown_counter > 0:
+        scripts += COUNTDOWN_JS + "\n"
 
     return (
         "<!DOCTYPE html>\n"
@@ -1685,6 +1730,75 @@ def render_video(block: Block) -> str:
     return f"{tag_open}{inner}\n{tag_close}"
 
 
+_COUNTDOWN_UNITS = {
+    "fa": ("روز", "ساعت", "دقیقه", "ثانیه"),
+    "en": ("Days", "Hours", "Minutes", "Seconds"),
+}
+
+
+def render_countdown(block: Block) -> str:
+    """Render a Countdown block as a live four-box timer.
+
+    Each box shows one unit (days, hours, minutes, seconds) with a label
+    underneath. The target moment is emitted as an epoch-millisecond
+    ``data-target`` attribute consumed by the shared ``COUNTDOWN_JS`` script.
+    """
+    global _countdown_counter
+    _countdown_counter += 1
+    resolved = block.resolved
+    date = str(resolved["date"])
+    time = str(resolved["time"])
+    expired_text = str(resolved["expiredText"])
+    language = str(resolved["language"])
+    text_color = str(resolved["textColor"])
+    background_color = str(resolved["backgroundColor"])
+    border_color = str(resolved["borderColor"])
+    shape = str(resolved["shape"])
+
+    year, month, day = date.split("/")
+    hour, minute = time.split(":")
+    target_ms = calendar.timegm(
+        (int(year), int(month), int(day), int(hour), int(minute), 0, 0, 0, -1)
+    ) * 1000
+
+    style_parts = []
+    if text_color and text_color != "transparent":
+        style_parts.append(f"color: {text_color};")
+    if background_color and background_color != "transparent":
+        style_parts.append(f"background: {background_color};")
+    if border_color and border_color != "transparent":
+        style_parts.append(f"border-color: {border_color};")
+    style = " ".join(style_parts)
+
+    units = _COUNTDOWN_UNITS.get(language, _COUNTDOWN_UNITS["en"])
+    boxes = "\n".join(
+        '      <div class="lk-countdown-box">\n'
+        f'        <span class="lk-countdown-digit">00</span>\n'
+        f'        <span class="lk-countdown-label">{html.escape(label)}</span>\n'
+        "      </div>"
+        for label in units
+    )
+
+    expired = (
+        f'\n      <div class="lk-countdown-expired" '
+        f'style="display:none;">{html.escape(expired_text)}</div>'
+        if expired_text
+        else ""
+    )
+
+    card_class = "lk-countdown"
+    if not background_color or background_color == "transparent":
+        card_class += " lk-countdown-transparent"
+
+    return (
+        f'  <div class="{card_class} lk-shape-{shape}" '
+        f'data-target="{target_ms}"'
+        f'{f" style=\"{style}\"" if style else ""}>'
+        f'\n    <div class="lk-countdown-row">\n{boxes}\n    </div>'
+        f"{expired}\n  </div>"
+    )
+
+
 def render_faq(block: Block) -> str:
     """Render an FAQ container as a list of accordion items."""
     global _faq_counter
@@ -1797,6 +1911,7 @@ _RENDERERS = {
     "Banner": render_banner,
     "BannerItem": render_banner_item,
     "Video": render_video,
+    "Countdown": render_countdown,
     "FAQ": render_faq,
     "FAQItem": render_faq_item,
 }
