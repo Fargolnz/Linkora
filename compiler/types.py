@@ -42,6 +42,7 @@ def is_file_path(value: object) -> bool:
 
 
 _IMAGE_EXTENSIONS = (".jpg", ".jpeg", ".png", ".svg", ".gif", ".webp")
+_VIDEO_EXTENSIONS = (".mp4", ".webm", ".mov")
 
 
 def is_image(value: object) -> bool:
@@ -62,3 +63,27 @@ def is_number(value: object) -> bool:
 
 def is_boolean(value: object) -> bool:
     return isinstance(value, bool)
+
+
+_YOUTUBE_RE = re.compile(
+    r"^https?://(?:(?:www\.)?youtube\.com/watch\?.*v=|youtu\.be/)[A-Za-z0-9_-]+"
+)
+_APARAT_RE = re.compile(
+    r"^https?://(?:www\.)?aparat\.com/v/[A-Za-z0-9_-]+"
+)
+
+
+def is_video_url(value: object) -> bool:
+    """True for a YouTube, Aparat, or local video file URL/path."""
+    if not isinstance(value, str) or not value.strip():
+        return False
+    lower = value.lower()
+    if _YOUTUBE_RE.match(value):
+        return True
+    if _APARAT_RE.match(value):
+        return True
+    if is_file_path(value):
+        return any(lower.endswith(ext) for ext in _VIDEO_EXTENSIONS)
+    if _URL_RE.match(value):
+        return any(lower.endswith(ext) for ext in _VIDEO_EXTENSIONS)
+    return False
