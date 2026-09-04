@@ -130,6 +130,25 @@ class Validator:
                 )
             return
 
+        if block.name == "Banner":
+            columns = block.property("columns")
+            if columns is not None and columns.value not in (1, 2):
+                errors.append(
+                    SemanticError(
+                        f"Block 'Banner': 'columns' must be "
+                        f"one of 1, 2, found {columns.value}.",
+                        block.position,
+                    )
+                )
+            if not block.children:
+                errors.append(
+                    SemanticError(
+                        "Block 'Banner' must contain at least one 'BannerItem' child.",
+                        block.position,
+                    )
+                )
+            return
+
         if block.name not in ("SocialMedia", "SocialNetwork", "Contact", "Address"):
             return
 
