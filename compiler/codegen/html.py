@@ -841,16 +841,44 @@ SLIDER_JS = """<script>
 </script>"""
 
 
-#: Inline script driving the FAQ accordion chevrons: rotates each item's
-#: arrow to match its open/closed state via the native <details> toggle event.
+#: Inline script driving the FAQ accordion. Clicking a question smoothly
+#: animates the height of its answer open or closed. Each item toggles
+#: independently, and the chevron is rotated to match the open state.
 FAQ_JS = """<script>
 (function () {
-  document.querySelectorAll('details.lk-faqitem').forEach(function (item) {
-    function sync() {
-      item.classList.toggle('is-open', item.open);
+  document.querySelectorAll('.lk-faqitem').forEach(function (item) {
+    var button = item.querySelector('.lk-faqitem-summary');
+    var wrap = item.querySelector('.lk-faqitem-answer-wrap');
+    if (!button || !wrap) return;
+    var a11y = button.getAttribute('aria-expanded');
+    // Start collapsed unless the item was rendered open.
+    if (a11y === 'true') {
+      wrap.style.height = wrap.scrollHeight + 'px';
+    } else {
+      wrap.style.height = '0px';
     }
-    item.addEventListener('toggle', sync);
-    sync();
+    button.addEventListener('click', function () {
+      var open = wrap.style.height !== '0px';
+      if (open) {
+        var from = wrap.scrollHeight;
+        wrap.style.height = from + 'px';
+        void wrap.offsetHeight;
+        wrap.style.height = '0px';
+        button.setAttribute('aria-expanded', 'false');
+        item.classList.remove('is-open');
+      } else {
+        wrap.style.height = wrap.scrollHeight + 'px';
+        button.setAttribute('aria-expanded', 'true');
+        item.classList.add('is-open');
+      }
+    });
+    if (window.ResizeObserver) {
+      new ResizeObserver(function () {
+        if (wrap.style.height !== '0px') {
+          wrap.style.height = wrap.scrollHeight + 'px';
+        }
+      }).observe(wrap);
+    }
   });
 })();
 </script>"""
@@ -858,9 +886,10 @@ FAQ_JS = """<script>
 
 def render_html(document: Document) -> str:
     """Render a validated document into a complete HTML page."""
-    global _slider_counter, _faq_counter
+    global _slider_counter, _faq_counter, _faq_item_counter
     _slider_counter = 0
     _faq_counter = 0
+    _faq_item_counter = 0
     body = "\n".join(_render_block(block) for block in document.blocks)
     scripts = ""
     if _slider_counter > 0:
@@ -1665,12 +1694,17 @@ def render_faq(block: Block) -> str:
 
 
 def render_faq_item(block: Block) -> str:
-    """Render a single FAQ item as a native <details> accordion entry."""
+    """Render a single FAQ item as an animated accordion entry."""
     return _render_faq_item(block)
+
+
+_faq_item_counter = 0
 
 
 def _render_faq_item(block: Block) -> str:
     """Render a single FAQ item, inheriting colors from its container."""
+    global _faq_item_counter
+    _faq_item_counter += 1
     resolved = block.resolved
     parent = _parent_resolved(block)
     question = str(resolved["question"])
@@ -1701,15 +1735,19 @@ def _render_faq_item(block: Block) -> str:
         "</svg>"
     )
 
+    answer_id = f"lk-faqitem-answer-{_faq_item_counter}"
     return (
-        f'    <details class="lk-faqitem lk-shape-{shape}" style="{style}">\n'
-        f'      <summary class="lk-faqitem-summary">'
+        f'    <div class="lk-faqitem lk-shape-{shape}" style="{style}">\n'
+        f'      <button type="button" class="lk-faqitem-summary" '
+        f'aria-expanded="false" aria-controls="{answer_id}">'
         f'<span class="lk-faqitem-question" style="color: {question_color};">'
         f"{html.escape(question)}</span>{arrow_svg}"
-        f"</summary>\n"
-        f'      <div class="lk-faqitem-answer" style="color: {answer_color};">'
+        f"</button>\n"
+        f'      <div class="lk-faqitem-answer-wrap" id="{answer_id}">\n'
+        f'        <div class="lk-faqitem-answer" style="color: {answer_color};">'
         f"{html.escape(answer)}</div>\n"
-        f"    </details>"
+        f"      </div>\n"
+        f"    </div>"
     )
 
 
