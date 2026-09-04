@@ -65,6 +65,50 @@ def is_boolean(value: object) -> bool:
     return isinstance(value, bool)
 
 
+#: Date in yyyy/mm/dd form (used for a countdown target).
+_DATE_RE = re.compile(r"^(\d{4})/(\d{1,2})/(\d{1,2})$")
+
+#: Time in hh:mm 24-hour form (used for a countdown target).
+_TIME_RE = re.compile(r"^(\d{1,2}):(\d{1,2})$")
+
+_DAYS_IN_MONTH = (0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
+
+
+def _is_leap_year(year: int) -> bool:
+    return year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)
+
+
+def is_date(value: object) -> bool:
+    """True for a real calendar date in ``yyyy/mm/dd`` form.
+
+    Rejects impossible dates such as ``2026/13/40`` while accepting single
+    digit months and days like ``2026/9/4``.
+    """
+    if not isinstance(value, str):
+        return False
+    match = _DATE_RE.match(value)
+    if match is None:
+        return False
+    year, month, day = int(match.group(1)), int(match.group(2)), int(match.group(3))
+    if not 1 <= month <= 12:
+        return False
+    max_day = _DAYS_IN_MONTH[month]
+    if month == 2 and _is_leap_year(year):
+        max_day = 29
+    return 1 <= day <= max_day
+
+
+def is_time(value: object) -> bool:
+    """True for a 24-hour ``hh:mm`` time value."""
+    if not isinstance(value, str):
+        return False
+    match = _TIME_RE.match(value)
+    if match is None:
+        return False
+    hour, minute = int(match.group(1)), int(match.group(2))
+    return 0 <= hour <= 23 and 0 <= minute <= 59
+
+
 _YOUTUBE_RE = re.compile(
     r"^https?://(?:(?:www\.)?youtube\.com/watch\?.*v=|youtu\.be/)[A-Za-z0-9_-]+"
 )
