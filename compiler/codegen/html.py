@@ -1547,6 +1547,93 @@ def render_banner_item(block: Block) -> str:
     return _render_banner_item(block)
 
 
+def _is_youtube_url(url: str) -> bool:
+    """Return True if *url* is a YouTube watch URL and extract the video ID."""
+    import re
+    m = re.match(
+        r"^https?://(?:(?:www\.)?youtube\.com/watch\?.*v=|youtu\.be/)([A-Za-z0-9_-]+)",
+        url,
+    )
+    return m is not None
+
+
+def _youtube_video_id(url: str) -> str:
+    """Extract the YouTube video ID from a watch URL."""
+    import re
+    m = re.match(
+        r"^https?://(?:(?:www\.)?youtube\.com/watch\?.*v=|youtu\.be/)([A-Za-z0-9_-]+)",
+        url,
+    )
+    return m.group(1) if m else ""
+
+
+def _is_aparat_url(url: str) -> bool:
+    """Return True if *url* is an Aparat watch URL."""
+    import re
+    return bool(re.match(r"^https?://(?:www\.)?aparat\.com/v/[A-Za-z0-9_-]+", url))
+
+
+def _is_local_video(url: str) -> bool:
+    """Return True if *url* looks like a local video file path."""
+    lower = url.lower()
+    return any(lower.endswith(ext) for ext in (".mp4", ".webm", ".mov"))
+
+
+def render_video(block: Block) -> str:
+    """Render a Video block as a thumbnail card with play icon overlay."""
+    resolved = block.resolved
+    url = str(resolved["url"])
+    thumbnail = str(resolved["thumbnail"])
+    shape = str(resolved["shape"])
+    border_color = str(resolved["borderColor"])
+
+    is_yt = _is_youtube_url(url)
+    is_ap = _is_aparat_url(url)
+    is_local = _is_local_video(url)
+
+    if not thumbnail and is_yt:
+        vid = _youtube_video_id(url)
+        thumbnail = f"https://img.youtube.com/vi/{vid}/maxresdefault.jpg"
+
+    alt = "Video"
+    style = f"border-color: {border_color};" if border_color != "transparent" else ""
+
+    img_tag = (
+        f'\n    <img class="lk-video-img" '
+        f'src="{html.escape(thumbnail, quote=True)}" '
+        f'alt="{html.escape(alt, quote=True)}">'
+    ) if thumbnail else ""
+
+    play_icon = (
+        '\n    <div class="lk-video-play">'
+        '<div class="lk-video-play-triangle"></div>'
+        '</div>'
+    )
+
+    inner = f"{img_tag}{play_icon}"
+
+    if is_local:
+        tag_open = (
+            f'  <div class="lk-video lk-shape-{shape}"'
+            f'{f" style=\"{style}\"" if style else ""}>'
+        )
+        tag_close = "  </div>"
+        video_el = (
+            f'\n    <video class="lk-video-player" controls preload="metadata"'
+            f' src="{html.escape(url, quote=True)}"></video>'
+        )
+        return f"{tag_open}{inner}{video_el}\n{tag_close}"
+
+    tag_open = (
+        f'  <a class="lk-video lk-shape-{shape}" '
+        f'href="{html.escape(url, quote=True)}" '
+        f'target="_blank" rel="noopener"'
+        f'{f" style=\"{style}\"" if style else ""}>'
+    )
+    tag_close = "  </a>"
+    return f"{tag_open}{inner}\n{tag_close}"
+
+
 def _parent_resolved(block: Block) -> dict[str, object]:
     """Return the resolved properties of the nearest ancestor block."""
     return block.parent.resolved if block.parent is not None else {}
@@ -1592,4 +1679,5 @@ _RENDERERS = {
     "ImageItem": render_image_item,
     "Banner": render_banner,
     "BannerItem": render_banner_item,
+    "Video": render_video,
 }
