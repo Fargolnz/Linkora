@@ -146,6 +146,7 @@ Blocks implemented so far:
 | `Video` | [`docs/language/Video.md`](docs/language/Video.md) |
 | `FAQ` | [`docs/language/FAQ.md`](docs/language/FAQ.md) |
 | `FAQItem` | Part of [`docs/language/FAQ.md`](docs/language/FAQ.md) |
+| `Countdown` | [`docs/language/Countdown.md`](docs/language/Countdown.md) |
 
 ## Status
 
