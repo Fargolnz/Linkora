@@ -135,3 +135,16 @@ Banner {
     }
 }
 
+
+Title { title: "Videos" }
+
+Video {
+    url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+    thumbnail: "./assets/slider-3.jpg"
+}
+
+Video {
+    url: "https://www.aparat.com/v/abc123" 
+    shape: slightlyRounded
+}
+
