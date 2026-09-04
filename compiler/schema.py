@@ -509,6 +509,40 @@ _IMAGE_ITEM = BlockDef(
     ),
 )
 
+_BANNER = BlockDef(
+    name="Banner",
+    parent=None,
+    repeatable=True,
+    allowed_children=("BannerItem",),
+    properties=_properties(
+        PropertyDef("columns", ValueType.NUMBER, 1),
+        PropertyDef("titleColor", ValueType.COLOR, "#FFFFFF"),
+        PropertyDef("descriptionColor", ValueType.COLOR, "#FFFFFF"),
+        PropertyDef("borderColor", ValueType.COLOR, "transparent"),
+        PropertyDef(
+            "shape",
+            ValueType.ENUM,
+            "rounded",
+            enum_values=("sharp", "slightlyRounded", "rounded", "pill"),
+        ),
+    ),
+)
+
+_BANNER_ITEM = BlockDef(
+    name="BannerItem",
+    parent="Banner",
+    repeatable=True,
+    properties=_properties(
+        PropertyDef("image", ValueType.IMAGE, "", required=True),
+        PropertyDef("url", ValueType.URL, "", required=True),
+        PropertyDef("title", ValueType.STRING, ""),
+        PropertyDef("description", ValueType.STRING, ""),
+        PropertyDef("titleColor", ValueType.COLOR, ""),
+        PropertyDef("descriptionColor", ValueType.COLOR, ""),
+        PropertyDef("borderColor", ValueType.COLOR, ""),
+    ),
+)
+
 
 #: The full set of blocks known to the compiler, keyed by block name.
 BLOCKS: dict[str, BlockDef] = {
@@ -530,6 +564,8 @@ BLOCKS: dict[str, BlockDef] = {
     _ADDRESS_ITEM.name: _ADDRESS_ITEM,
     _IMAGE.name: _IMAGE,
     _IMAGE_ITEM.name: _IMAGE_ITEM,
+    _BANNER.name: _BANNER,
+    _BANNER_ITEM.name: _BANNER_ITEM,
 }
 
 
