@@ -1546,3 +1546,129 @@ class TestDivider:
 
     def test_repeatable(self):
         compile_ok("Divider { style: orb }\nDivider { style: beads }\n")
+
+
+class TestSuperLink:
+    MINIMAL = 'SuperLink { title: "Go", url: "https://example.com" }\n'
+
+    def test_minimal_valid(self):
+        compile_ok(self.MINIMAL)
+
+    def test_requires_title(self):
+        from compiler import compile_source
+
+        errors = compile_source('SuperLink { url: "https://example.com" }\n').errors
+        assert len(errors) == 1
+        assert "required property 'title'" in errors[0].message
+
+    def test_requires_url(self):
+        from compiler import compile_source
+
+        errors = compile_source('SuperLink { title: "Go" }\n').errors
+        assert len(errors) == 1
+        assert "required property 'url'" in errors[0].message
+
+    def test_defaults(self):
+        result = compile_ok(self.MINIMAL)
+        assert result.ast is not None
+        block = result.ast.blocks[0]
+        assert block.resolved["title"] == "Go"
+        assert block.resolved["description"] == ""
+        assert block.resolved["url"] == "https://example.com"
+        assert block.resolved["icon"] == ""
+        assert block.resolved["iconColor"] == "#FFFFFF"
+        assert block.resolved["direction"] == "rtl"
+        assert block.resolved["titleColor"] == "#FFFFFF"
+        assert block.resolved["descriptionColor"] == "#FFFFFF"
+        assert block.resolved["backgroundColor"] == "#00B4B0"
+        assert block.resolved["borderColor"] == "transparent"
+        assert block.resolved["shape"] == "rounded"
+
+    def test_direction_values_accepted(self):
+        compile_ok(
+            'SuperLink { title: "Go", url: "https://example.com", direction: ltr }\n'
+        )
+        compile_ok(
+            'SuperLink { title: "Go", url: "https://example.com", direction: rtl }\n'
+        )
+
+    def test_direction_invalid(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            'SuperLink { title: "Go", url: "https://example.com", direction: sideways }\n'
+        ).errors
+        assert len(errors) == 1
+        assert "not a valid value" in errors[0].message
+
+    def test_direction_quoted_rejected(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            'SuperLink { title: "Go", url: "https://example.com", direction: "ltr" }\n'
+        ).errors
+        assert len(errors) == 1
+        assert "quotation marks" in errors[0].message
+
+    def test_shape_values_accepted(self):
+        for shape in ("sharp", "slightlyRounded", "rounded", "pill"):
+            compile_ok(
+                f'SuperLink {{ title: "Go", url: "https://example.com", shape: {shape} }}\n'
+            )
+
+    def test_shape_invalid(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            'SuperLink { title: "Go", url: "https://example.com", shape: oval }\n'
+        ).errors
+        assert len(errors) == 1
+        assert "not a valid value" in errors[0].message
+
+    def test_align_rejected(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            'SuperLink { title: "Go", url: "https://example.com", align: left }\n'
+        ).errors
+        assert len(errors) == 1
+        assert "Unknown property 'align'" in errors[0].message
+
+    def test_icon_accepts_image_path(self):
+        compile_ok(
+            'SuperLink { title: "Go", url: "https://example.com", icon: "icons/arrow.svg" }\n'
+        )
+
+    def test_icon_rejects_non_image(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            'SuperLink { title: "Go", url: "https://example.com", icon: "not-an-image.txt" }\n'
+        ).errors
+        assert len(errors) == 1
+        assert "expected an image URL or a relative file path" in errors[0].message
+
+    def test_explicit_values_override_defaults(self):
+        result = compile_ok(
+            'SuperLink { title: "Go", description: "Desc", url: "https://example.com", '
+            'icon: "icons/arrow.svg", iconColor: "#8B5CF6", direction: ltr, '
+            'titleColor: "#1F2937", descriptionColor: "#4B5563", backgroundColor: "#FFFFFF", '
+            'borderColor: "#00B4B0", shape: pill }\n'
+        )
+        assert result.ast is not None
+        block = result.ast.blocks[0]
+        assert block.resolved["description"] == "Desc"
+        assert block.resolved["icon"] == "icons/arrow.svg"
+        assert block.resolved["iconColor"] == "#8B5CF6"
+        assert block.resolved["direction"] == "ltr"
+        assert block.resolved["titleColor"] == "#1F2937"
+        assert block.resolved["descriptionColor"] == "#4B5563"
+        assert block.resolved["backgroundColor"] == "#FFFFFF"
+        assert block.resolved["borderColor"] == "#00B4B0"
+        assert block.resolved["shape"] == "pill"
+
+    def test_repeatable(self):
+        compile_ok(
+            'SuperLink { title: "A", url: "https://a.com" }\n'
+            'SuperLink { title: "B", url: "https://b.com" }\n'
+        )

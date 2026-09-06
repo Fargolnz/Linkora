@@ -1288,3 +1288,130 @@ class TestDividerRendering:
         html = _html("Divider { style: orb }\n")
         assert ".lk-divider {" in html
         assert ".lk-divider-svg {" in html
+
+
+class TestSuperLinkRendering:
+    def test_renders_anchor_defaults(self):
+        html = _html(
+            'SuperLink { title: "Visit", url: "https://example.com" }\n'
+        )
+        assert (
+            '<a class="lk-superlink lk-shape-rounded" '
+            'style="color: #FFFFFF; background-color: #00B4B0; '
+            'border-color: transparent;" '
+            'href="https://example.com" data-direction="rtl">'
+        ) in html
+
+    def test_default_direction_is_rtl(self):
+        html = _html(
+            'SuperLink { title: "Visit", url: "https://example.com" }\n'
+        )
+        assert 'data-direction="rtl"' in html
+
+    def test_direction_ltr_rendered(self):
+        html = _html(
+            'SuperLink { title: "Visit", url: "https://example.com", direction: ltr }\n'
+        )
+        assert 'data-direction="ltr"' in html
+
+    def test_default_icon_is_inline_svg(self):
+        html = _html(
+            'SuperLink { title: "Visit", url: "https://example.com" }\n'
+        )
+        assert '<svg' in html
+        assert 'class="lk-superlink-icon"' in html
+        assert 'fill="#FFFFFF"' in html
+
+    def test_icon_color_tints_default_svg(self):
+        html = _html(
+            'SuperLink { title: "Visit", url: "https://example.com", '
+            'iconColor: "#8B5CF6" }\n'
+        )
+        assert 'fill="#8B5CF6"' in html
+
+    def test_custom_icon_renders_img_without_color(self):
+        html = _html(
+            'SuperLink { title: "Visit", url: "https://example.com", '
+            'icon: "icons/arrow.svg" }\n'
+        )
+        assert '<img class="lk-superlink-icon" src="icons/arrow.svg" alt=""' in html
+        assert "mask-image" not in html
+
+    def test_custom_icon_with_explicit_color_is_tinted(self):
+        html = _html(
+            'SuperLink { title: "Visit", url: "https://example.com", '
+            'icon: "icons/arrow.svg", iconColor: "#FF0000" }\n'
+        )
+        assert 'class="lk-superlink-icon lk-superlink-icon--tinted"' in html
+        assert "background-color: #FF0000" in html
+        assert "-webkit-mask-image: url('icons/arrow.svg')" in html
+        assert "mask-image: url('icons/arrow.svg')" in html
+
+    def test_title_and_description_rendered(self):
+        html = _html(
+            'SuperLink { title: "Visit", description: "Some details", '
+            'url: "https://example.com" }\n'
+        )
+        assert (
+            '<span class="lk-superlink-title" style="color: #FFFFFF;">Visit</span>'
+            in html
+        )
+        assert (
+            '<span class="lk-superlink-desc" style="color: #FFFFFF;">Some details</span>'
+            in html
+        )
+
+    def test_description_omitted_when_empty(self):
+        html = _html(
+            'SuperLink { title: "Visit", url: "https://example.com" }\n'
+        )
+        assert 'class="lk-superlink-desc"' not in html
+
+    def test_text_emitted_before_icon(self):
+        html = _html(
+            'SuperLink { title: "Visit", url: "https://example.com" }\n'
+        )
+        assert html.index('class="lk-superlink-text"') < html.index(
+            'class="lk-superlink-icon"'
+        )
+
+    def test_custom_visual_properties(self):
+        html = _html(
+            'SuperLink { title: "Portfolio", description: "Work", '
+            'url: "https://example.com", direction: ltr, '
+            'shape: pill, backgroundColor: "#3B82F6", titleColor: "#000000", '
+            'descriptionColor: "#1F2937", borderColor: "#2563EB" }\n'
+        )
+        assert 'class="lk-superlink lk-shape-pill"' in html
+        assert (
+            'style="color: #000000; background-color: #3B82F6; '
+            'border-color: #2563EB;"'
+        ) in html
+        assert (
+            '<span class="lk-superlink-title" style="color: #000000;">Portfolio</span>'
+            in html
+        )
+        assert (
+            '<span class="lk-superlink-desc" style="color: #1F2937;">Work</span>'
+            in html
+        )
+
+    def test_css_includes_superlink_styles(self):
+        html = _html(
+            'SuperLink { title: "Visit", url: "https://example.com" }\n'
+        )
+        assert ".lk-superlink {" in html
+        assert "justify-content: space-between;" in html
+        assert ".lk-superlink-icon--tinted {" in html
+        assert ".lk-superlink-title {" in html
+        assert ".lk-superlink-desc {" in html
+        assert ".lk-superlink[data-direction='rtl']" in html
+        assert ".lk-superlink[data-direction='ltr']" in html
+
+    def test_html_escaping(self):
+        html = _html(
+            'SuperLink { title: "He said \\"Hi & Bye\\"", '
+            'url: "https://x.com/?a=1&b=2" }\n'
+        )
+        assert "He said &quot;Hi &amp; Bye&quot;" in html
+        assert 'href="https://x.com/?a=1&amp;b=2"' in html
