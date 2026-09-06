@@ -565,4 +565,17 @@ def build_css() -> str:
     css += "\n    }"
     css += "\n}"
 
+    # Divider ornament styling.
+    css += "\n.lk-divider {"
+    css += "\n    width: 100%;"
+    css += "\n    line-height: 0;"
+    css += "\n    text-align: center;"
+    css += "\n}"
+    css += "\n.lk-divider-svg {"
+    css += "\n    width: 100%;"
+    css += "\n    height: auto;"
+    css += "\n    display: inline-block;"
+    css += "\n    vertical-align: middle;"
+    css += "\n}"
+
     return css + "\n"
