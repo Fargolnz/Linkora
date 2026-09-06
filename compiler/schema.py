@@ -636,6 +636,30 @@ _FAQ_ITEM = BlockDef(
     ),
 )
 
+_SUPERLINK = BlockDef(
+    name="SuperLink",
+    parent=None,
+    repeatable=True,
+    properties=_properties(
+        PropertyDef("title", ValueType.STRING, "", required=True),
+        PropertyDef("description", ValueType.STRING, ""),
+        PropertyDef("url", ValueType.URL, "", required=True),
+        PropertyDef("icon", ValueType.IMAGE, ""),
+        PropertyDef("direction", ValueType.ENUM, "rtl", enum_values=("ltr", "rtl")),
+        PropertyDef("titleColor", ValueType.COLOR, "#FFFFFF"),
+        PropertyDef("descriptionColor", ValueType.COLOR, "#FFFFFF"),
+        PropertyDef("iconColor", ValueType.COLOR, "#FFFFFF"),
+        PropertyDef("backgroundColor", ValueType.COLOR, "#00B4B0"),
+        PropertyDef("borderColor", ValueType.COLOR, "transparent"),
+        PropertyDef(
+            "shape",
+            ValueType.ENUM,
+            "rounded",
+            enum_values=("sharp", "slightlyRounded", "rounded", "pill"),
+        ),
+    ),
+)
+
 _DIVIDER = BlockDef(
     name="Divider",
     parent=None,
@@ -682,6 +706,7 @@ BLOCKS: dict[str, BlockDef] = {
     _FAQ.name: _FAQ,
     _FAQ_ITEM.name: _FAQ_ITEM,
     _DIVIDER.name: _DIVIDER,
+    _SUPERLINK.name: _SUPERLINK,
 }
 
 
