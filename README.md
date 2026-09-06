@@ -148,6 +148,7 @@ Blocks implemented so far:
 | `FAQItem` | Part of [`docs/language/FAQ.md`](docs/language/FAQ.md) |
 | `Countdown` | [`docs/language/Countdown.md`](docs/language/Countdown.md) |
 | `Divider` | [`docs/language/Divider.md`](docs/language/Divider.md) |
+| `SuperLink` | [`docs/language/SuperLink.md`](docs/language/SuperLink.md) |
 
 ## Status
 
