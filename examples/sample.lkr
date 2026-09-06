@@ -149,6 +149,8 @@ Video {
 }
 
 
+Divider { style: bloom, marginTop: 32, marginBottom: 32, color: "#C7006E" }
+
 Title { title: "FAQ" }
 
 FAQ {
@@ -156,6 +158,11 @@ FAQ {
     FAQItem { question: "What is Linkora?", answer: "A DSL for building customizable link-in-bio pages." }
     FAQItem { question: "Can I customize each block?", answer: "Yes — every block supports colors, shapes, and layout options so your page matches your style." }
 }
+
+Divider { style: orb }
+Divider { style: beads }
+Divider { style: diamond }
+Divider { style: grace }
 
 
 Title { title: "Launch Countdown" }
