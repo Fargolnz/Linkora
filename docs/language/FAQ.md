@@ -32,6 +32,7 @@ Multiple `FAQ` blocks may appear within the same document.
 | Background Color | `backgroundColor` | Color | `#FFFFFF` | Valid Color |
 | Border Color | `borderColor` | Color | `#00B4B0` | Valid Color |
 | Shape | `shape` | Enum | `rounded` | `sharp`, `slightlyRounded`, `rounded`, `pill` |
+| Direction | `direction` | Enum | `rtl` | `ltr`, `rtl` |
 
 ---
 
@@ -115,6 +116,25 @@ Supported values:
 | `slightlyRounded` | Small corner radius |
 | `rounded` | Standard rounded corners |
 | `pill` | Fully rounded pill-shaped box |
+
+---
+
+### `direction`
+
+Controls the reading direction of the block.
+
+| Field | Value |
+|-------|-------|
+| Type | Enum |
+| Required | ❌ No |
+| Default | `rtl` |
+
+Supported values:
+
+| Value | Description |
+|-------|-------------|
+| `rtl` | Right-to-left — question starts on the right, chevron sits on the left, answers align right |
+| `ltr` | Left-to-right — question starts on the left, chevron sits on the right, answers align left |
 
 ---
 
@@ -306,3 +326,5 @@ FAQ {
 💡 Clicking a question smoothly animates the answer panel open or closed.
 
 💡 The chevron icon is tinted by `iconColor` and rotates when an item is open.
+
+💡 The `direction` property only affects the FAQ block itself; set `direction: ltr` for an English FAQ or leave the default `rtl` for Persian pages.

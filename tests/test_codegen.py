@@ -995,7 +995,20 @@ class TestFAQRendering:
 
     def test_container(self):
         html = _html(self.SRC)
-        assert '<div class="lk-faq">' in html
+        assert '<div class="lk-faq"' in html
+
+    def test_default_direction_is_rtl(self):
+        html = _html(self.SRC)
+        assert 'class="lk-faq" data-direction="rtl"' in html
+
+    def test_direction_ltr_rendered(self):
+        html = _html(
+            "FAQ {\n"
+            "    direction: ltr\n"
+            '    FAQItem { question: "Q", answer: "A" }\n'
+            "}\n"
+        )
+        assert 'class="lk-faq" data-direction="ltr"' in html
 
     def test_items_are_divs_with_button_summary(self):
         html = _html(self.SRC)

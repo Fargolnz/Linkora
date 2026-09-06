@@ -155,6 +155,7 @@ Title { title: "FAQ" }
 
 FAQ {
     shape: rounded
+    direction: ltr
     FAQItem { question: "What is Linkora?", answer: "A DSL for building customizable link-in-bio pages." }
     FAQItem { question: "Can I customize each block?", answer: "Yes — every block supports colors, shapes, and layout options so your page matches your style." }
 }

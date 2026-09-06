@@ -1999,7 +1999,12 @@ def render_faq(block: Block) -> str:
     global _faq_counter
     _faq_counter += 1
     items = "\n".join(_render_faq_item(child) for child in block.children)
-    return f'  <div class="lk-faq">\n{items}\n  </div>'
+    direction = str(block.resolved["direction"])
+    return (
+        f'  <div class="lk-faq" data-direction="{direction}">\n'
+        f"{items}\n"
+        f"  </div>"
+    )
 
 
 def render_faq_item(block: Block) -> str:

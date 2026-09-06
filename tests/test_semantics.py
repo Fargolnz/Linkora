@@ -1388,6 +1388,45 @@ class TestFAQ:
         assert block.resolved["backgroundColor"] == "#FFFFFF"
         assert block.resolved["borderColor"] == "#00B4B0"
         assert block.resolved["shape"] == "rounded"
+        assert block.resolved["direction"] == "rtl"
+
+    def test_direction_values_accepted(self):
+        compile_ok(
+            "FAQ {\n"
+            "    direction: ltr\n"
+            '    FAQItem { question: "Q", answer: "A" }\n'
+            "}\n"
+        )
+        compile_ok(
+            "FAQ {\n"
+            "    direction: rtl\n"
+            '    FAQItem { question: "Q", answer: "A" }\n'
+            "}\n"
+        )
+
+    def test_direction_invalid(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "FAQ {\n"
+            "    direction: sideways\n"
+            '    FAQItem { question: "Q", answer: "A" }\n'
+            "}\n"
+        ).errors
+        assert len(errors) == 1
+        assert "not a valid value" in errors[0].message
+
+    def test_direction_quoted_rejected(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            'FAQ {\n'
+            '    direction: "rtl"\n'
+            '    FAQItem { question: "Q", answer: "A" }\n'
+            "}\n"
+        ).errors
+        assert len(errors) == 1
+        assert "quotation marks" in errors[0].message
 
     def test_item_color_defaults_inherit(self):
         result = compile_ok(self.SRC)
