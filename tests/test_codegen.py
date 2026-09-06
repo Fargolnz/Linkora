@@ -1230,3 +1230,48 @@ class TestCountdownRendering:
         assert ".lk-countdown-digit" in html
         assert ".lk-countdown-label" in html
         assert ".lk-countdown-expired" in html
+
+
+class TestDividerRendering:
+    def test_container_with_defaults(self):
+        html = _html("Divider { style: orb }\n")
+        assert (
+            '<div class="lk-divider" style="color: #00B4B0; '
+            'margin-top: 20px; margin-bottom: 20px;">' in html
+        )
+
+    def test_embeds_svg_with_current_color(self):
+        html = _html("Divider { style: orb }\n")
+        assert 'class="lk-divider-svg"' in html
+        assert "currentColor" in html
+
+    def test_all_styles_render_distinct_artwork(self):
+        from compiler.codegen.html import DIVIDER_SVGS
+
+        for style, svg in DIVIDER_SVGS.items():
+            html = _html(f"Divider {{ style: {style} }}\n")
+            assert svg in html
+
+            other = next(
+                other
+                for other in DIVIDER_SVGS
+                if other != style
+            )
+            assert DIVIDER_SVGS[other] not in html
+
+    def test_custom_color_applied(self):
+        html = _html('Divider { style: orb, color: "#FF0000" }\n')
+        assert (
+            '<div class="lk-divider" style="color: #FF0000; '
+            'margin-top: 20px; margin-bottom: 20px;">' in html
+        )
+
+    def test_custom_margins(self):
+        html = _html("Divider { style: orb, marginTop: 50, marginBottom: 12 }\n")
+        assert "margin-top: 50px;" in html
+        assert "margin-bottom: 12px;" in html
+
+    def test_css_includes_divider_styles(self):
+        html = _html("Divider { style: orb }\n")
+        assert ".lk-divider {" in html
+        assert ".lk-divider-svg {" in html

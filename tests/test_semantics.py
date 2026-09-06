@@ -1431,3 +1431,79 @@ class TestFAQ:
         ).errors
         assert len(errors) == 1
         assert "Unknown property 'shape'" in errors[0].message
+
+
+class TestDivider:
+    def test_valid_all_styles(self):
+        for style in ("orb", "beads", "diamond", "bloom", "grace"):
+            compile_ok(f"Divider {{ style: {style} }}\n")
+
+    def test_requires_style(self):
+        from compiler import compile_source
+
+        errors = compile_source("Divider { }\n").errors
+        assert len(errors) == 1
+        assert "required property 'style'" in errors[0].message
+
+    def test_style_invalid(self):
+        from compiler import compile_source
+
+        errors = compile_source("Divider { style: zigzag }\n").errors
+        assert len(errors) == 1
+        assert "not a valid value" in errors[0].message
+
+    def test_style_quoted_rejected(self):
+        from compiler import compile_source
+
+        errors = compile_source('Divider { style: "orb" }\n').errors
+        assert len(errors) == 1
+        assert "quotation marks" in errors[0].message
+
+    def test_defaults(self):
+        result = compile_ok("Divider { style: orb }\n")
+        assert result.ast is not None
+        block = result.ast.blocks[0]
+        assert block.resolved["marginTop"] == 20
+        assert block.resolved["marginBottom"] == 20
+        assert block.resolved["color"] == "#00B4B0"
+
+    def test_margin_boundaries_accepted(self):
+        compile_ok("Divider { style: orb, marginTop: 8, marginBottom: 200 }\n")
+
+    def test_margin_below_range(self):
+        from compiler import compile_source
+
+        errors = compile_source("Divider { style: orb, marginTop: 7 }\n").errors
+        assert len(errors) == 1
+        assert "'marginTop' must be an integer" in errors[0].message
+
+    def test_margin_above_range(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "Divider { style: orb, marginBottom: 201 }\n"
+        ).errors
+        assert len(errors) == 1
+        assert "'marginBottom' must be an integer" in errors[0].message
+
+    def test_margin_float_rejected(self):
+        from compiler import compile_source
+
+        errors = compile_source("Divider { style: orb, marginTop: 12.5 }\n").errors
+        assert len(errors) == 1
+        assert "'marginTop' must be an integer" in errors[0].message
+
+    def test_custom_color(self):
+        compile_ok('Divider { style: grace, color: "#111111" }\n')
+
+    def test_invalid_color(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            'Divider { style: grace, color: "not-a-color" }\n'
+        ).errors
+        assert len(errors) == 1
+        assert "valid Color" in errors[0].message
+
+    def test_repeatable(self):
+        compile_ok("Divider { style: orb }\nDivider { style: beads }\n")
