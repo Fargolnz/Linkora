@@ -162,6 +162,26 @@ class Validator:
                 )
             return
 
+        if block.name == "Divider":
+            def margin(name: str) -> object:
+                prop = block.property(name)
+                if prop is not None:
+                    return prop.value
+                return block_def.property(name).default
+
+            for name in ("marginTop", "marginBottom"):
+                value = margin(name)
+                if not (isinstance(value, int) and 8 <= value <= 200):
+                    errors.append(
+                        SemanticError(
+                            f"Block 'Divider': '{name}' must be an integer "
+                            "between 8 and 200 (inclusive), "
+                            f"found {value}.",
+                            block.position,
+                        )
+                    )
+            return
+
         if block.name not in ("SocialMedia", "SocialNetwork", "Contact", "Address"):
             return
 

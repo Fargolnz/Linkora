@@ -630,6 +630,24 @@ _FAQ_ITEM = BlockDef(
     ),
 )
 
+_DIVIDER = BlockDef(
+    name="Divider",
+    parent=None,
+    repeatable=True,
+    properties=_properties(
+        PropertyDef(
+            "style",
+            ValueType.ENUM,
+            "",
+            required=True,
+            enum_values=("orb", "beads", "diamond", "bloom", "grace"),
+        ),
+        PropertyDef("marginTop", ValueType.NUMBER, 20),
+        PropertyDef("marginBottom", ValueType.NUMBER, 20),
+        PropertyDef("color", ValueType.COLOR, "#00B4B0"),
+    ),
+)
+
 
 #: The full set of blocks known to the compiler, keyed by block name.
 BLOCKS: dict[str, BlockDef] = {
@@ -657,6 +675,7 @@ BLOCKS: dict[str, BlockDef] = {
     _COUNTDOWN.name: _COUNTDOWN,
     _FAQ.name: _FAQ,
     _FAQ_ITEM.name: _FAQ_ITEM,
+    _DIVIDER.name: _DIVIDER,
 }
 
 
