@@ -982,6 +982,17 @@ DIVIDER_SVGS: dict[str, str] = {
 }
 
 
+#: Inline SVG used as the SuperLink icon when the ``icon`` property is
+#: omitted. It is a 24x24 "open link" glyph whose fill is set to the
+#: ``iconColor`` property (default white).
+SUPERLINK_SVG = (
+    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" '
+    'viewBox="0 0 24 24" class="lk-superlink-icon" aria-hidden="true" '
+    'fill="{icon_color}">'
+    '<path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7zM19 19H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7z"/>'
+    '</svg>'
+)
+
 
 #: Counter used to give each slider block a unique HTML element id.
 _slider_counter = 0
@@ -2097,6 +2108,77 @@ def render_divider(block: Block) -> str:
     )
 
 
+def render_superlink(block: Block) -> str:
+    """Render a SuperLink block as a prominent, multi-line link button.
+
+    The button shows a title and optional description next to an icon. When no
+    ``icon`` is supplied the built-in open-link SVG is used, filled with
+    ``iconColor``. A user-supplied icon is left untouched unless ``iconColor``
+    is explicitly given, in which case a CSS mask tints it to that color.
+
+    The text stack is emitted before the icon so that, with the block's
+    ``direction``, the text sits on the inline-start side and the icon on the
+    inline-end side: ``ltr`` places the text left and the icon right, while
+    ``rtl`` places the text right and the icon left.
+    """
+    resolved = block.resolved
+    title = str(resolved["title"])
+    description = str(resolved["description"])
+    url = str(resolved["url"])
+    icon = str(resolved["icon"])
+    icon_color = str(resolved["iconColor"])
+    shape = str(resolved["shape"])
+    direction = str(resolved["direction"])
+    title_color = str(resolved["titleColor"])
+    description_color = str(resolved["descriptionColor"])
+    background_color = str(resolved["backgroundColor"])
+    border_color = str(resolved["borderColor"])
+
+    if icon:
+        if block.property("iconColor") is not None:
+            icon_src = html.escape(icon, quote=True)
+            icon_style = (
+                f"-webkit-mask-image: url('{icon_src}'); "
+                f"mask-image: url('{icon_src}'); "
+                f"background-color: {icon_color};"
+            )
+            icon_html = f'    <span class="lk-superlink-icon lk-superlink-icon--tinted" style="{icon_style}" aria-hidden="true"></span>\n'
+        else:
+            icon_html = (
+                f'    <img class="lk-superlink-icon" '
+                f'src="{html.escape(icon, quote=True)}" alt="" aria-hidden="true">\n'
+            )
+    else:
+        icon_html = (
+            "    " + SUPERLINK_SVG.format(icon_color=icon_color) + "\n"
+        )
+
+    text_parts = [f'      <span class="lk-superlink-title" style="color: {title_color};">{html.escape(title)}</span>']
+    if description:
+        text_parts.append(
+            f'      <span class="lk-superlink-desc" style="color: {description_color};">{html.escape(description)}</span>'
+        )
+    text_html = "\n".join(text_parts)
+
+    classes = " ".join(["lk-superlink", f"lk-shape-{shape}"])
+    style = (
+        f"color: {title_color}; "
+        f"background-color: {background_color}; "
+        f"border-color: {border_color};"
+    )
+
+    return (
+        f'  <a class="{classes}" style="{style}" '
+        f'href="{html.escape(url, quote=True)}" '
+        f'data-direction="{direction}">\n'
+        f'    <div class="lk-superlink-text">\n'
+        f"{text_html}\n"
+        f"    </div>\n"
+        f"{icon_html}"
+        f"  </a>"
+    )
+
+
 def _icon_svg(meta: dict[str, str], icon_color: str) -> str:
     """Wrap a platform's inline SVG, optionally forcing a single icon color.
 
@@ -2144,4 +2226,5 @@ _RENDERERS = {
     "FAQ": render_faq,
     "FAQItem": render_faq_item,
     "Divider": render_divider,
+    "SuperLink": render_superlink,
 }
