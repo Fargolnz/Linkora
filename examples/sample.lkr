@@ -26,6 +26,27 @@ Link { title: "لینکدین من", url: "https://www.linkedin.com/in/seyyedeh-
 
 Link { title: "لینکدین من شخصی‌سازی شده", url: "https://www.linkedin.com/in/seyyedeh-fargol-nazemzadeh", align: right, titleColor: "#4F46E5", backgroundColor: "#FFFFFF", borderColor: "#4F46E5", shape: sharp }
 
+Title { title: "Highlights" }
+
+SuperLink {
+    title: "سفارش طراحی سایت"
+    description: "مشاهده نمونه‌کارها و تعرفه‌ها"
+    url: "https://example.com/index"
+}
+
+SuperLink {
+    title: "My Portfolio"
+    description: "Browse my latest projects and case studies"
+    url: "https://example.com/portfolio"
+    direction: ltr
+    titleColor: "#1F2937"
+    descriptionColor: "#4B5563"
+    iconColor: "#2051ff"
+    backgroundColor: "#FFFFFF"
+    borderColor: "#00B4B0"
+    shape: pill
+}
+
 Text { text: "A short paragraph describing my work and interests." }
 
 Title { title: "Social Media" }
@@ -161,9 +182,7 @@ FAQ {
 }
 
 Divider { style: orb }
-Divider { style: beads }
 Divider { style: diamond }
-Divider { style: grace }
 
 
 Title { title: "Launch Countdown" }
