@@ -147,6 +147,7 @@ Blocks implemented so far:
 | `FAQ` | [`docs/language/FAQ.md`](docs/language/FAQ.md) |
 | `FAQItem` | Part of [`docs/language/FAQ.md`](docs/language/FAQ.md) |
 | `Countdown` | [`docs/language/Countdown.md`](docs/language/Countdown.md) |
+| `Divider` | [`docs/language/Divider.md`](docs/language/Divider.md) |
 
 ## Status
 
