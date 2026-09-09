@@ -1385,12 +1385,12 @@ def render_socialmedia(block: Block) -> str:
     """Render a SocialMedia container as a responsive grid of items."""
     resolved = block.resolved
     columns = int(resolved["columns"])
-    items_order = str(resolved["itemsOrder"])
+    direction = str(resolved["direction"])
 
     items = "\n".join(_render_block(child) for child in block.children)
     return (
         f'  <section class="lk-social" '
-        f'data-columns="{columns}" data-order="{items_order}">\n'
+        f'data-columns="{columns}" data-direction="{direction}">\n'
         f"{items}\n"
         f"  </section>"
     )
@@ -1450,12 +1450,12 @@ def render_socialnetwork(block: Block) -> str:
     """Render a SocialNetwork container as a responsive grid of items."""
     resolved = block.resolved
     columns = int(resolved["columns"])
-    items_order = str(resolved["itemsOrder"])
+    direction = str(resolved["direction"])
 
     items = "\n".join(_render_block(child) for child in block.children)
     return (
         f'  <section class="lk-social" '
-        f'data-columns="{columns}" data-order="{items_order}">\n'
+        f'data-columns="{columns}" data-direction="{direction}">\n'
         f"{items}\n"
         f"  </section>"
     )
@@ -1465,12 +1465,12 @@ def render_contact(block: Block) -> str:
     """Render a Contact container as a responsive grid of contact items."""
     resolved = block.resolved
     columns = int(resolved["columns"])
-    items_order = str(resolved["itemsOrder"])
+    direction = str(resolved["direction"])
 
     items = "\n".join(_render_block(child) for child in block.children)
     return (
         f'  <section class="lk-social" '
-        f'data-columns="{columns}" data-order="{items_order}">\n'
+        f'data-columns="{columns}" data-direction="{direction}">\n'
         f"{items}\n"
         f"  </section>"
     )
@@ -1540,7 +1540,7 @@ def render_address(block: Block) -> str:
     """Render an Address container as an address caption plus a provider grid."""
     resolved = block.resolved
     columns = int(resolved["columns"])
-    items_order = str(resolved["itemsOrder"])
+    direction = str(resolved["direction"])
     address = str(resolved["address"])
     address_color = str(resolved["addressColor"]) or "#000000"
 
@@ -1553,7 +1553,7 @@ def render_address(block: Block) -> str:
         )
     return (
         f'  <section class="lk-social" '
-        f'data-columns="{columns}" data-order="{items_order}">\n'
+        f'data-columns="{columns}" data-direction="{direction}">\n'
         f"{caption}"
         f"{items}\n"
         f"  </section>"
