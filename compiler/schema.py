@@ -259,7 +259,7 @@ _SOCIALMEDIA = BlockDef(
             enum_values=("left", "right"),
         ),
         PropertyDef(
-            "itemsOrder",
+            "direction",
             ValueType.ENUM,
             "rtl",
             enum_values=("ltr", "rtl"),
@@ -314,7 +314,7 @@ _SOCIALNETWORK = BlockDef(
             enum_values=("left", "right"),
         ),
         PropertyDef(
-            "itemsOrder",
+            "direction",
             ValueType.ENUM,
             "rtl",
             enum_values=("ltr", "rtl"),
@@ -373,7 +373,7 @@ _CONTACT = BlockDef(
             enum_values=("left", "right"),
         ),
         PropertyDef(
-            "itemsOrder",
+            "direction",
             ValueType.ENUM,
             "rtl",
             enum_values=("ltr", "rtl"),
@@ -430,7 +430,7 @@ _ADDRESS = BlockDef(
             enum_values=("left", "right"),
         ),
         PropertyDef(
-            "itemsOrder",
+            "direction",
             ValueType.ENUM,
             "rtl",
             enum_values=("ltr", "rtl"),
