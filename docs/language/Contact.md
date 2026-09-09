@@ -30,7 +30,7 @@ Multiple `Contact` blocks may appear within the same document.
 | Show Title | `showTitle` | Boolean | `true` | `true`, `false` |
 | Show Icon | `showIcon` | Boolean | `true` | `true`, `false` |
 | Icon Position | `iconPosition` | Enum | `right` | `left`, `right` |
-| Items Order | `itemsOrder` | Enum | `rtl` | `ltr`, `rtl` |
+| Direction | `direction` | Enum | `rtl` | `ltr`, `rtl` |
 | Title Color | `titleColor` | Color | `#00B4B0` | Valid Color |
 | Icon Color | `iconColor` | Color | `#00B4B0` | Valid Color |
 | Background Color | `backgroundColor` | Color | `#FFFFFF` | Valid Color |
@@ -100,7 +100,7 @@ Supported values:
 
 ---
 
-### `itemsOrder`
+### `direction`
 
 Controls the reading direction of the items.
 
@@ -112,8 +112,10 @@ Controls the reading direction of the items.
 
 Supported values:
 
-- `rtl` — right-to-left
-- `ltr` — left-to-right
+| Value | Description |
+|-------|-------------|
+| `rtl` | Right-to-left — the first item starts on the right and the rest flow leftward |
+| `ltr` | Left-to-right — the first item starts on the left and the rest flow rightward |
 
 ---
 
@@ -315,7 +317,7 @@ These visual properties behave like their `Contact` counterparts but apply only 
 The `Contact` block is rendered as a responsive CSS grid containing the item buttons:
 
 - The grid uses the number of columns specified by `columns`.
-- The reading direction is set by `itemsOrder`.
+- The reading direction is set by `direction`.
 - Each `ContactItem` renders as an `<a>` anchor styled as a button.
 - The generic icon is shown when `showIcon` is `true`.
 - The label (the item `title` or the service name) is shown when `showTitle` is `true`.
@@ -354,7 +356,7 @@ Contact {
 
     iconPosition: left
 
-    itemsOrder: ltr
+    direction: ltr
 
     titleColor: "#1F2937"
 
