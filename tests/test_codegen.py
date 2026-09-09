@@ -281,6 +281,24 @@ class TestSocialMediaRendering:
         )
         assert 'data-columns="2"' in html
 
+    def test_direction_default_is_rtl(self):
+        html = _html(
+            "SocialMedia {\n"
+            "    SocialMediaItem { service: instagram, url: \"https://ig/x\" }\n"
+            "}\n"
+        )
+        assert 'data-direction="rtl"' in html
+
+    def test_direction_ltr_override(self):
+        html = _html(
+            "SocialMedia {\n"
+            "    direction: ltr\n"
+            "    SocialMediaItem { service: instagram, url: \"https://ig/x\" }\n"
+            "}\n"
+        )
+        assert 'data-direction="ltr"' in html
+        assert 'data-direction="rtl"' not in html
+
     def test_css_styles_present(self):
         html = _html(SOCIAL)
         assert ".lk-socialitem" in html
@@ -360,6 +378,24 @@ class TestSocialNetworkRendering:
         )
         assert 'data-columns="2"' in html
 
+    def test_direction_default_is_rtl(self):
+        html = _html(
+            "SocialNetwork {\n"
+            "    SocialNetworkItem { service: whatsapp, url: \"https://wa.me/1\" }\n"
+            "}\n"
+        )
+        assert 'data-direction="rtl"' in html
+
+    def test_direction_ltr_override(self):
+        html = _html(
+            "SocialNetwork {\n"
+            "    direction: ltr\n"
+            "    SocialNetworkItem { service: whatsapp, url: \"https://wa.me/1\" }\n"
+            "}\n"
+        )
+        assert 'data-direction="ltr"' in html
+        assert 'data-direction="rtl"' not in html
+
     def test_css_styles_present(self):
         html = _html(SOCIAL_NETWORK)
         assert ".lk-socialitem" in html
@@ -437,6 +473,24 @@ class TestContactRendering:
         )
         assert 'data-columns="2"' in html
 
+    def test_direction_default_is_rtl(self):
+        html = _html(
+            "Contact {\n"
+            "    ContactItem { service: email, value: \"hi@example.com\" }\n"
+            "}\n"
+        )
+        assert 'data-direction="rtl"' in html
+
+    def test_direction_ltr_override(self):
+        html = _html(
+            "Contact {\n"
+            "    direction: ltr\n"
+            "    ContactItem { service: email, value: \"hi@example.com\" }\n"
+            "}\n"
+        )
+        assert 'data-direction="ltr"' in html
+        assert 'data-direction="rtl"' not in html
+
     def test_css_styles_present(self):
         html = _html(CONTACT)
         assert ".lk-socialitem" in html
@@ -510,6 +564,24 @@ class TestAddressRendering:
         html = _html(ADDRESS)
         assert '<section class="lk-social"' in html
         assert 'data-columns="1"' in html
+
+    def test_direction_default_is_rtl(self):
+        html = _html(
+            "Address {\n"
+            "    AddressItem { service: googleMap, url: \"https://g/x\" }\n"
+            "}\n"
+        )
+        assert 'data-direction="rtl"' in html
+
+    def test_direction_ltr_override(self):
+        html = _html(
+            "Address {\n"
+            "    direction: ltr\n"
+            "    AddressItem { service: googleMap, url: \"https://g/x\" }\n"
+            "}\n"
+        )
+        assert 'data-direction="ltr"' in html
+        assert 'data-direction="rtl"' not in html
 
     def test_item_anchor_with_url_href(self):
         html = _html(ADDRESS)

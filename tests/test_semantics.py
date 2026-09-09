@@ -362,6 +362,49 @@ class TestSocialMedia:
         assert len(errors) == 1
         assert "only allowed inside" in errors[0].message
 
+    def test_direction_default_is_rtl(self):
+        result = compile_ok(
+            "SocialMedia {\n"
+            "    SocialMediaItem { service: instagram, url: \"https://ig/x\" }\n"
+            "}\n"
+        )
+        assert result.ast is not None
+        assert result.ast.blocks[0].resolved["direction"] == "rtl"
+
+    def test_direction_ltr_accepted(self):
+        result = compile_ok(
+            "SocialMedia {\n"
+            "    direction: ltr\n"
+            "    SocialMediaItem { service: instagram, url: \"https://ig/x\" }\n"
+            "}\n"
+        )
+        assert result.ast is not None
+        assert result.ast.blocks[0].resolved["direction"] == "ltr"
+
+    def test_direction_invalid_rejected(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "SocialMedia {\n"
+            "    direction: sideways\n"
+            "    SocialMediaItem { service: instagram, url: \"https://ig/x\" }\n"
+            "}\n"
+        ).errors
+        assert len(errors) == 1
+        assert "not a valid value" in errors[0].message
+
+    def test_direction_quoted_rejected(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            'SocialMedia {\n'
+            '    direction: "rtl"\n'
+            '    SocialMediaItem { service: instagram, url: "https://ig/x" }\n'
+            "}\n"
+        ).errors
+        assert len(errors) == 1
+        assert "quotation marks" in errors[0].message
+
 
 class TestSocialNetwork:
     SRC = (
@@ -479,6 +522,49 @@ class TestSocialNetwork:
         ).errors
         assert len(errors) == 1
         assert "only allowed inside" in errors[0].message
+
+    def test_direction_default_is_rtl(self):
+        result = compile_ok(
+            "SocialNetwork {\n"
+            "    SocialNetworkItem { service: whatsapp, url: \"https://wa.me/1\" }\n"
+            "}\n"
+        )
+        assert result.ast is not None
+        assert result.ast.blocks[0].resolved["direction"] == "rtl"
+
+    def test_direction_ltr_accepted(self):
+        result = compile_ok(
+            "SocialNetwork {\n"
+            "    direction: ltr\n"
+            "    SocialNetworkItem { service: whatsapp, url: \"https://wa.me/1\" }\n"
+            "}\n"
+        )
+        assert result.ast is not None
+        assert result.ast.blocks[0].resolved["direction"] == "ltr"
+
+    def test_direction_invalid_rejected(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "SocialNetwork {\n"
+            "    direction: sideways\n"
+            "    SocialNetworkItem { service: whatsapp, url: \"https://wa.me/1\" }\n"
+            "}\n"
+        ).errors
+        assert len(errors) == 1
+        assert "not a valid value" in errors[0].message
+
+    def test_direction_quoted_rejected(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            'SocialNetwork {\n'
+            '    direction: "rtl"\n'
+            '    SocialNetworkItem { service: whatsapp, url: "https://wa.me/1" }\n'
+            "}\n"
+        ).errors
+        assert len(errors) == 1
+        assert "quotation marks" in errors[0].message
 
     def test_valid_network_services(self):
         compile_ok("SocialNetwork {\n"
@@ -711,6 +797,49 @@ class TestContact:
         assert len(errors) == 1
         assert "only allowed inside" in errors[0].message
 
+    def test_direction_default_is_rtl(self):
+        result = compile_ok(
+            "Contact {\n"
+            "    ContactItem { service: mobile, value: \"+1 234 567 8901\" }\n"
+            "}\n"
+        )
+        assert result.ast is not None
+        assert result.ast.blocks[0].resolved["direction"] == "rtl"
+
+    def test_direction_ltr_accepted(self):
+        result = compile_ok(
+            "Contact {\n"
+            "    direction: ltr\n"
+            "    ContactItem { service: mobile, value: \"+1 234 567 8901\" }\n"
+            "}\n"
+        )
+        assert result.ast is not None
+        assert result.ast.blocks[0].resolved["direction"] == "ltr"
+
+    def test_direction_invalid_rejected(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "Contact {\n"
+            "    direction: sideways\n"
+            "    ContactItem { service: mobile, value: \"+1 234 567 8901\" }\n"
+            "}\n"
+        ).errors
+        assert len(errors) == 1
+        assert "not a valid value" in errors[0].message
+
+    def test_direction_quoted_rejected(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            'Contact {\n'
+            '    direction: "rtl"\n'
+            '    ContactItem { service: mobile, value: "+1 234 567 8901" }\n'
+            "}\n"
+        ).errors
+        assert len(errors) == 1
+        assert "quotation marks" in errors[0].message
+
     def test_item_requires_service(self):
         from compiler import compile_source
 
@@ -839,6 +968,49 @@ class TestAddress:
         ).errors
         assert len(errors) == 1
         assert "only allowed inside" in errors[0].message
+
+    def test_direction_default_is_rtl(self):
+        result = compile_ok(
+            "Address {\n"
+            "    AddressItem { service: googleMap, url: \"https://g/x\" }\n"
+            "}\n"
+        )
+        assert result.ast is not None
+        assert result.ast.blocks[0].resolved["direction"] == "rtl"
+
+    def test_direction_ltr_accepted(self):
+        result = compile_ok(
+            "Address {\n"
+            "    direction: ltr\n"
+            "    AddressItem { service: googleMap, url: \"https://g/x\" }\n"
+            "}\n"
+        )
+        assert result.ast is not None
+        assert result.ast.blocks[0].resolved["direction"] == "ltr"
+
+    def test_direction_invalid_rejected(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "Address {\n"
+            "    direction: sideways\n"
+            "    AddressItem { service: googleMap, url: \"https://g/x\" }\n"
+            "}\n"
+        ).errors
+        assert len(errors) == 1
+        assert "not a valid value" in errors[0].message
+
+    def test_direction_quoted_rejected(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            'Address {\n'
+            '    direction: "rtl"\n'
+            '    AddressItem { service: googleMap, url: "https://g/x" }\n'
+            "}\n"
+        ).errors
+        assert len(errors) == 1
+        assert "quotation marks" in errors[0].message
 
     def test_item_requires_service(self):
         from compiler import compile_source
