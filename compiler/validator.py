@@ -15,6 +15,33 @@ from compiler.errors import SemanticError
 from compiler.schema import BLOCKS, BlockDef, PropertyDef, ValueType
 
 
+#: Theme child block name -> content block names whose defaults it overrides.
+_THEME_TARGETS: dict[str, tuple[str, ...]] = {
+    "LinkTheme": ("Link",),
+    "SuperLinkTheme": ("SuperLink",),
+    "GridTheme": ("SocialMedia", "SocialNetwork", "Contact", "Address"),
+    "TitleTheme": ("Title",),
+    "ImageTheme": ("Image",),
+    "BannerTheme": ("Banner",),
+    "DividerTheme": ("Divider",),
+    "VideoTheme": ("Video",),
+}
+
+#: (block, property) pairs recolored by the Theme block's ``primaryColor``.
+_PRIMARY_TARGETS: tuple[tuple[str, str], ...] = (
+    ("Link", "backgroundColor"),
+    ("SuperLink", "backgroundColor"),
+    ("Divider", "color"),
+    ("Contact", "iconColor"),
+    ("Contact", "borderColor"),
+    ("Contact", "titleColor"),
+    ("Countdown", "textColor"),
+    ("FAQ", "questionColor"),
+    ("FAQ", "iconColor"),
+    ("FAQ", "borderColor"),
+)
+
+
 class Validator:
     """Validates a parsed document against the language schema."""
 
@@ -31,10 +58,47 @@ class Validator:
         return errors
 
     def resolve(self, document: Document) -> Document:
-        """Apply defaults so every block has a complete set of properties."""
+        """Apply defaults so every block has a complete set of properties.
+
+        When the document contains a ``Theme`` block, its explicit values act as
+        the defaults for empty optional properties across the document, so the
+        final override order is: schema defaults < ``primaryColor`` < Theme
+        block properties < the block's own explicit properties.
+        """
+        overrides: dict[tuple[str, str], object] = {}
+        theme_block = next(
+            (block for block in document.blocks if block.name == "Theme"), None
+        )
+        if theme_block is not None:
+            self._resolve_block(theme_block)
+            overrides = self._build_theme_overrides(theme_block)
+
         for block in document.blocks:
-            self._resolve_block(block)
+            self._resolve_block(block, overrides)
         return document
+
+    def _build_theme_overrides(
+        self, theme_block: Block
+    ) -> dict[tuple[str, str], object]:
+        """Collect the default overrides contributed by a Theme block."""
+        overrides: dict[tuple[str, str], object] = {}
+        primary = str(theme_block.resolved.get("primaryColor", ""))
+
+        if primary:
+            for block_name, prop_name in _PRIMARY_TARGETS:
+                overrides[(block_name, prop_name)] = primary
+
+        for child in theme_block.children:
+            targets = _THEME_TARGETS.get(child.name)
+            if targets is None:
+                continue
+            for prop_name, value in child.resolved.items():
+                if value is None or value == "":
+                    continue
+                for block_name in targets:
+                    overrides[(block_name, prop_name)] = value
+
+        return overrides
 
     # -- Block-level rules ---------------------------------------------------
 
@@ -180,6 +244,76 @@ class Validator:
                             block.position,
                         )
                     )
+            return
+
+        if block.name == "PageTheme":
+            prop = block.property("backgroundColor")
+            if prop is not None and prop.value == types.TRANSPARENT_COLOR:
+                errors.append(
+                    SemanticError(
+                        "Block 'PageTheme': 'backgroundColor' must be an opaque "
+                        "color — it cannot be 'transparent'.",
+                        block.position,
+                    )
+                )
+            return
+
+        if block.name == "DividerTheme":
+            def margin(name: str) -> object:
+                prop = block.property(name)
+                if prop is not None:
+                    return prop.value
+                return block_def.property(name).default
+
+            for name in ("marginTop", "marginBottom"):
+                value = margin(name)
+                if value != "" and not (isinstance(value, int) and 8 <= value <= 200):
+                    errors.append(
+                        SemanticError(
+                            f"Block 'DividerTheme': '{name}' must be an integer "
+                            "between 8 and 200 (inclusive), "
+                            f"found {value}.",
+                            block.position,
+                        )
+                    )
+            return
+
+        if block.name == "GridTheme":
+            def effective(name: str) -> object:
+                prop = block.property(name)
+                if prop is not None:
+                    return prop.value
+                return block_def.property(name).default
+
+            columns = effective("columns")
+            if columns != "" and columns not in (1, 2, 3, 4):
+                errors.append(
+                    SemanticError(
+                        f"Block 'GridTheme': 'columns' must be one of 1, 2, 3, 4, "
+                        f"found {columns}.",
+                        block.position,
+                    )
+                )
+
+            show_title = effective("showTitle")
+            show_icon = effective("showIcon")
+            if show_title is False and show_icon is False:
+                errors.append(
+                    SemanticError(
+                        "Block 'GridTheme': 'showTitle' and 'showIcon' "
+                        "cannot both be false.",
+                        block.position,
+                    )
+                )
+
+            if columns == 4 and show_title and show_icon:
+                errors.append(
+                    SemanticError(
+                        "Block 'GridTheme': 'columns' can only be 4 when either "
+                        "'showTitle' or 'showIcon' is false.",
+                        block.position,
+                    )
+                )
             return
 
         if block.name not in ("SocialMedia", "SocialNetwork", "Contact", "Address"):
@@ -351,7 +485,9 @@ class Validator:
 
     # -- Default resolution -----------------------------------------------------
 
-    def _resolve_block(self, block: Block) -> None:
+    def _resolve_block(
+        self, block: Block, overrides: dict[tuple[str, str], object] | None = None
+    ) -> None:
         block_def = self.blocks.get(block.name)
         if block_def is None:
             return
@@ -363,12 +499,17 @@ class Validator:
                 resolved[prop.name] = prop.value
 
         for prop_def in block_def.properties.values():
-            resolved.setdefault(prop_def.name, prop_def.default)
+            default: object = prop_def.default
+            if overrides is not None:
+                key = (block.name, prop_def.name)
+                if key in overrides:
+                    default = overrides[key]
+            resolved.setdefault(prop_def.name, default)
 
         block.resolved = resolved
 
         for child in block.children:
-            self._resolve_block(child)
+            self._resolve_block(child, overrides)
 
 
 def _uses_jalali(block: Block) -> bool:
