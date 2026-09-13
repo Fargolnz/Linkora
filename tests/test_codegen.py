@@ -1487,3 +1487,67 @@ class TestSuperLinkRendering:
         )
         assert "He said &quot;Hi &amp; Bye&quot;" in html
         assert 'href="https://x.com/?a=1&amp;b=2"' in html
+
+
+class TestThemeRendering:
+    SRC = (
+        "Theme {\n"
+        '    PageTheme { backgroundColor: "#0F172A", '
+        "backdropColor: transparent, fontFamily: inter }\n"
+        "    LinkTheme { shape: pill }\n"
+        "    DividerTheme { marginTop: 48 }\n"
+        "}\n"
+        + LINK
+    )
+
+    def _html(self, source: str = SRC) -> str:
+        result = compile_ok(source)
+        assert result.html is not None
+        return result.html
+
+    def test_theme_blocks_not_rendered(self):
+        html = self._html()
+        for name in (
+            "PageTheme",
+            "LinkTheme",
+            "DividerTheme",
+            "GridTheme",
+            "lk-theme",
+        ):
+            assert name not in html
+
+    def test_page_background_applied(self):
+        html = self._html()
+        assert "--lk-background: #0F172A;" in html
+        assert "--lk-backdrop: transparent;" in html
+
+    def test_font_applied_from_theme(self):
+        html = self._html()
+        assert '--lk-font-family: "Inter",' in html
+        assert (
+            "https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+            in html
+        )
+
+    def test_default_font_stylesheet_without_theme(self):
+        html = self._html(LINK)
+        assert "https://fonts.googleapis.com/css2?family=Vazirmatn" in html
+        assert '--lk-font-family: "Vazirmatn",' in html
+
+    def test_link_inherits_pill_from_link_theme(self):
+        html = self._html()
+        assert 'class="lk-link lk-shape-pill lk-align-center"' in html
+
+    def test_primary_color_not_required_for_style_override(self):
+        html = self._html(
+            "Theme {\n"
+            "    LinkTheme { shape: sharp }\n"
+            "}\n"
+            'Link { title: "x", url: "https://x.com" }'
+        )
+        assert 'class="lk-link lk-shape-sharp lk-align-center"' in html
+
+    def test_page_background_default_when_unset(self):
+        html = self._html(LINK)
+        assert "--lk-background: #ffffff;" in html
+        assert "--lk-backdrop: #e0f4f4;" in html

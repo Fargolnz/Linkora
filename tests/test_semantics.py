@@ -1844,3 +1844,258 @@ class TestSuperLink:
             'SuperLink { title: "A", url: "https://a.com" }\n'
             'SuperLink { title: "B", url: "https://b.com" }\n'
         )
+
+
+THEME_PRIMARY = 'Theme { primaryColor: "#C7006E" }'
+
+
+class TestThemeValidation:
+    def test_empty_theme_valid(self):
+        compile_ok("Theme {}")
+
+    def test_primary_color_only_valid(self):
+        compile_ok(THEME_PRIMARY)
+
+    def test_theme_not_repeatable(self):
+        from compiler import compile_source
+
+        errors = compile_source("Theme {}\nTheme {}").errors
+        assert any("may appear only once" in e.message for e in errors)
+
+    def test_invalid_primary_color(self):
+        from compiler import compile_source
+
+        errors = compile_source('Theme { primaryColor: "red" }').errors
+        assert len(errors) == 1
+        assert "Color" in errors[0].message
+
+    def test_unknown_property(self):
+        from compiler import compile_source
+
+        errors = compile_source('Theme { textColor: "#000000" }').errors
+        assert len(errors) == 1
+        assert "Unknown property 'textColor'" in errors[0].message
+
+    def test_child_inside_theme_valid(self):
+        compile_ok(
+            "Theme {\n"
+            '    PageTheme { backgroundColor: "#0F172A" }\n'
+            "}"
+        )
+
+    def test_all_theme_children_valid(self):
+        compile_ok(
+            "Theme {\n"
+            '    PageTheme { fontFamily: inter, backgroundColor: "#0F172A" }\n'
+            "    LinkTheme { shape: pill }\n"
+            "    SuperLinkTheme { shape: rounded }\n"
+            "    GridTheme { columns: 2 }\n"
+            "    TitleTheme { align: left }\n"
+            "    ImageTheme { imageShadow: true }\n"
+            "    BannerTheme { shape: rounded }\n"
+            "    DividerTheme { marginTop: 40 }\n"
+            "    VideoTheme { shape: slightlyRounded }\n"
+            "}"
+        )
+
+    def test_theme_child_outside_theme_rejected(self):
+        from compiler import compile_source
+
+        errors = compile_source("LinkTheme { shape: pill }").errors
+        assert len(errors) == 1
+        assert "only allowed inside" in errors[0].message
+        assert "'Theme'" in errors[0].message
+
+    def test_unknown_child_rejected(self):
+        from compiler import compile_source
+
+        errors = compile_source("Theme { ColorTheme { } }").errors
+        assert len(errors) == 1
+        assert "Unknown block 'ColorTheme'" in errors[0].message
+
+    def test_theme_child_not_repeatable(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "Theme { LinkTheme { }\nLinkTheme { } }"
+        ).errors
+        assert any("may appear only once" in e.message for e in errors)
+
+    def test_page_background_rejects_transparent(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "Theme { PageTheme { backgroundColor: transparent } }"
+        ).errors
+        assert len(errors) == 1
+        assert "opaque" in errors[0].message
+
+    def test_page_backdrop_allows_transparent(self):
+        compile_ok("Theme { PageTheme { backdropColor: transparent } }")
+
+    def test_invalid_font_family(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "Theme { PageTheme { fontFamily: comicSans } }"
+        ).errors
+        assert len(errors) == 1
+        assert "not a valid value" in errors[0].message
+
+    def test_quoted_font_family_rejected(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            'Theme { PageTheme { fontFamily: "inter" } }'
+        ).errors
+        assert len(errors) == 1
+        assert "quotation marks" in errors[0].message
+
+
+class TestGridThemeRules:
+    def _errors(self, body: str):
+        from compiler import compile_source
+
+        return compile_source(
+            "Theme { GridTheme {" + body + "} }"
+        ).errors
+
+    def test_invalid_columns(self):
+        errors = self._errors(" columns: 5 ")
+        assert len(errors) == 1
+        assert "'columns' must be one of 1, 2, 3, 4" in errors[0].message
+
+    def test_columns_four_rejected_when_both_shown(self):
+        errors = self._errors(
+            " columns: 4\n showTitle: true\n showIcon: true\n"
+        )
+        assert len(errors) == 1
+        assert "'columns' can only be 4" in errors[0].message
+
+    def test_columns_four_allowed_when_title_hidden(self):
+        self._errors(" columns: 4\n showTitle: false\n showIcon: true\n")
+
+    def test_columns_four_allowed_when_icon_hidden(self):
+        self._errors(" columns: 4\n showTitle: true\n showIcon: false\n")
+
+    def test_both_false_rejected(self):
+        errors = self._errors(
+            " showTitle: false\n showIcon: false\n"
+        )
+        assert len(errors) == 1
+        assert "'showTitle' and 'showIcon' cannot both be false" in errors[0].message
+
+    def test_dimmed_columns_allowed(self):
+        self._errors(" columns: 4 ")  # booleans unset -> no conflict
+
+
+class TestDividerThemeRules:
+    def test_invalid_margin_top(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "Theme { DividerTheme { marginTop: 400 } }"
+        ).errors
+        assert len(errors) == 1
+        assert "between 8 and 200" in errors[0].message
+
+    def test_invalid_margin_bottom(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "Theme { DividerTheme { marginBottom: 1 } }"
+        ).errors
+        assert len(errors) == 1
+        assert "between 8 and 200" in errors[0].message
+
+    def test_valid_margins(self):
+        compile_ok("Theme { DividerTheme { marginTop: 8, marginBottom: 200 } }")
+
+
+def _resolved(block_name: str, source: str):
+    result = compile_ok(source)
+    assert result.ast is not None
+    return next(b for b in result.ast.blocks if b.name == block_name).resolved
+
+
+class TestThemeOverrides:
+    def test_primary_color_becomes_link_background(self):
+        resolved = _resolved(
+            "Link",
+            THEME_PRIMARY + "\n" + LINK,
+        )
+        assert resolved["backgroundColor"] == "#C7006E"
+
+    def test_primary_color_repaints_divider(self):
+        resolved = _resolved(
+            "Divider",
+            THEME_PRIMARY + '\nDivider { style: orb }',
+        )
+        assert resolved["color"] == "#C7006E"
+
+    def test_link_theme_sets_optional_defaults(self):
+        resolved = _resolved(
+            "Link",
+            "Theme {\n"
+            '    LinkTheme { titleColor: "#FFFFFF", shape: pill }\n'
+            "}\n"
+            + LINK,
+        )
+        assert resolved["titleColor"] == "#FFFFFF"
+        assert resolved["shape"] == "pill"
+
+    def test_overrides_do_not_apply_when_theme_absent(self):
+        resolved = _resolved("Link", LINK)
+        assert resolved["backgroundColor"] == "#00B4B0"
+        assert resolved["shape"] == "rounded"
+
+    def test_explicit_properties_beat_theme(self):
+        resolved = _resolved(
+            "Link",
+            THEME_PRIMARY
+            + '\nLink { title: "x", url: "https://x.com", '
+            'backgroundColor: "#000000" }',
+        )
+        assert resolved["backgroundColor"] == "#000000"
+
+    def test_primary_color_does_not_override_explicit(self):
+        resolved = _resolved(
+            "Link",
+            THEME_PRIMARY
+            + '\nLink { title: "x", url: "https://x.com", '
+            'titleColor: "#3B82F6" }',
+        )
+        assert resolved["titleColor"] == "#3B82F6"
+
+    def test_grid_theme_columns_override(self):
+        resolved = _resolved(
+            "SocialMedia",
+            "Theme { GridTheme { columns: 4, showTitle: false } }\n"
+            "SocialMedia {\n"
+            '    SocialMediaItem { service: instagram, url: "https://ig/x" }\n'
+            "}",
+        )
+        assert resolved["columns"] == 4
+
+    def test_grid_theme_direction_override(self):
+        resolved = _resolved(
+            "Contact",
+            "Theme { GridTheme { direction: ltr } }\n"
+            "Contact {\n"
+            '    ContactItem { service: email, value: "hi@x.com" }\n'
+            "}",
+        )
+        assert resolved["direction"] == "ltr"
+
+    def test_theme_does_not_pollute_own_resolution(self):
+        result = compile_ok(
+            "Theme {\n"
+            '    PageTheme { backgroundColor: "#0F172A" }\n'
+            "    LinkTheme { shape: pill }\n"
+            "}\n"
+            + LINK
+        )
+        assert result.ast is not None
+        theme = result.ast.blocks[0]
+        assert theme.resolved.get("backgroundColor") is None
+        assert theme.resolved.get("shape") is None
