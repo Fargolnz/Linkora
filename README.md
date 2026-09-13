@@ -149,6 +149,7 @@ Blocks implemented so far:
 | `Countdown` | [`docs/language/Countdown.md`](docs/language/Countdown.md) |
 | `Divider` | [`docs/language/Divider.md`](docs/language/Divider.md) |
 | `SuperLink` | [`docs/language/SuperLink.md`](docs/language/SuperLink.md) |
+| `Theme` | [`docs/language/Theme.md`](docs/language/Theme.md) |
 
 ## Status
 
