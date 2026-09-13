@@ -1,0 +1,119 @@
+Theme {
+    primaryColor: "#C7006E"
+    PageTheme {
+        fontFamily: inter
+        backgroundColor: "#0F172A"
+        backdropColor: "#1E293B"
+    }
+    TitleTheme { align: left, titleColor: "#FFFFFF" }
+    LinkTheme { shape: pill }
+    SuperLinkTheme {
+        shape: rounded
+        backgroundColor: "#1E293B"
+        titleColor: "#FFFFFF"
+        iconColor: "#C7006E"
+    }
+    GridTheme { columns: 4, showTitle: false }
+    ImageTheme { shape: rounded, imageShadow: true }
+    BannerTheme { shape: rounded }
+    DividerTheme { color: "#C7006E", marginTop: 32, marginBottom: 32 }
+    VideoTheme { shape: rounded }
+}
+
+Title { title: "My Themed Page" }
+
+Link {
+    title: "My GitHub"
+    url: "https://github.com/Fargolnz"
+}
+
+Link {
+    title: "GitHub"
+    url: "https://github.com/Fargolnz"
+    backgroundColor: "#2563EB"
+}
+
+Link { title: "لینکدین من", url: "https://www.linkedin.com/in/seyyedeh-fargol-nazemzadeh" }
+
+SuperLink {
+    title: "Order a Website"
+    description: "Check out the portfolio and pricing"
+    url: "https://example.com/order"
+}
+
+Title { title: "Highlights" }
+
+SuperLink {
+    title: "My Portfolio"
+    description: "Browse my latest projects and case studies"
+    url: "https://example.com/portfolio"
+    direction: ltr
+}
+
+Text { text: "A short paragraph describing my work and interests.", textColor: "#E2E8F0" }
+
+Title { title: "Social Media" }
+
+SocialMedia {
+    SocialMediaItem { service: instagram, url: "https://instagram.com" }
+    SocialMediaItem { service: telegram, url: "https://t.me/linkora" }
+    SocialMediaItem { service: youtube, url: "https://youtube.com" }
+    SocialMediaItem { service: tiktok, url: "https://tiktok.com" }
+    SocialMediaItem { service: x, url: "https://x.com" }
+    SocialMediaItem { service: linkedin, url: "https://www.linkedin.com/in/seyyedeh-fargol-nazemzadeh" }
+    SocialMediaItem { service: github, url: "https://github.com/Fargolnz" }
+    SocialMediaItem { service: spotify, url: "https://open.spotify.com" }
+}
+
+Title { title: "Contact" }
+
+Contact {
+    columns: 1
+    ContactItem { service: mobile, value: "+1 234 567 8901" }
+    ContactItem { service: email, value: "hi@example.com" }
+    ContactItem { service: website, value: "https://example.com" }
+}
+
+Title { title: "Gallery" }
+
+Image {
+    columns: 2
+    ImageItem { image: "./assets/single-1.jpg", title: "Scenery", description: "A scenery image." }
+    ImageItem { image: "./assets/single-2.jpg", title: "Scenery" }
+}
+
+Title { title: "Promotions" }
+
+Banner {
+    columns: 1
+    BannerItem {
+        image: "./assets/banner-1.png"
+        url: "https://example.com/banner-1"
+        title: "Summer Sale"
+        description: "Up to 50% off on selected items."
+    }
+}
+
+Title { title: "Video" }
+
+Video {
+    url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+}
+
+Divider { style: bloom }
+
+Title { title: "FAQ", titleColor: "#C7006E" }
+
+FAQ {
+    shape: rounded
+    FAQItem { question: "لینکورا چیست؟", answer: "یک DSL که با استفاده از آن می‌توانید صفحات link-in-bio خود را به صورت شخصی‌سازی شده بسازید!" }
+    FAQItem { question: "بلوک Theme چگونه کار می‌کند؟", answer: "مقادیر پیش‌فرض همه بلوک‌ها را تنظیم می‌کند؛ همچنان می‌توانید هر مقداری را در خود بلوک تغییر دهید." }
+}
+
+Title { title: "Launch Countdown" }
+
+Countdown {
+    date: "1405/07/13"
+    time: "23:59"
+    expiredText: "لینکورا منتشر شد!"
+}
