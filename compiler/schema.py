@@ -678,6 +678,211 @@ _DIVIDER = BlockDef(
     ),
 )
 
+_FONT_FAMILIES = ("vazirmatn", "inter", "poppins", "rubik", "roboto")
+
+_THEME_CHILDREN = (
+    "PageTheme",
+    "LinkTheme",
+    "SuperLinkTheme",
+    "GridTheme",
+    "TitleTheme",
+    "ImageTheme",
+    "BannerTheme",
+    "DividerTheme",
+    "VideoTheme",
+)
+
+_THEME = BlockDef(
+    name="Theme",
+    parent=None,
+    repeatable=False,
+    allowed_children=_THEME_CHILDREN,
+    properties=_properties(
+        PropertyDef("primaryColor", ValueType.COLOR, ""),
+    ),
+)
+
+_PAGE_THEME = BlockDef(
+    name="PageTheme",
+    parent="Theme",
+    repeatable=False,
+    properties=_properties(
+        PropertyDef(
+            "fontFamily",
+            ValueType.ENUM,
+            "",
+            enum_values=_FONT_FAMILIES,
+        ),
+        PropertyDef("backgroundColor", ValueType.COLOR, ""),
+        PropertyDef("backdropColor", ValueType.COLOR, ""),
+        PropertyDef("backgroundImage", ValueType.IMAGE, ""),
+        PropertyDef(
+            "backgroundSize",
+            ValueType.ENUM,
+            "",
+            enum_values=("cover", "contain", "auto"),
+        ),
+        PropertyDef(
+            "backgroundRepeat",
+            ValueType.ENUM,
+            "",
+            enum_values=("repeat", "repeat-x", "repeat-y", "no-repeat"),
+        ),
+        PropertyDef(
+            "backgroundPosition",
+            ValueType.ENUM,
+            "",
+            enum_values=("left", "center", "right"),
+        ),
+    ),
+)
+
+_LINK_THEME = BlockDef(
+    name="LinkTheme",
+    parent="Theme",
+    repeatable=False,
+    properties=_properties(
+        PropertyDef("titleColor", ValueType.COLOR, ""),
+        PropertyDef("backgroundColor", ValueType.COLOR, ""),
+        PropertyDef("borderColor", ValueType.COLOR, ""),
+        PropertyDef(
+            "shape",
+            ValueType.ENUM,
+            "",
+            enum_values=("sharp", "slightlyRounded", "rounded", "pill"),
+        ),
+    ),
+)
+
+_SUPERLINK_THEME = BlockDef(
+    name="SuperLinkTheme",
+    parent="Theme",
+    repeatable=False,
+    properties=_properties(
+        PropertyDef("titleColor", ValueType.COLOR, ""),
+        PropertyDef("descriptionColor", ValueType.COLOR, ""),
+        PropertyDef("iconColor", ValueType.COLOR, ""),
+        PropertyDef("backgroundColor", ValueType.COLOR, ""),
+        PropertyDef("borderColor", ValueType.COLOR, ""),
+        PropertyDef(
+            "shape",
+            ValueType.ENUM,
+            "",
+            enum_values=("sharp", "slightlyRounded", "rounded", "pill"),
+        ),
+    ),
+)
+
+_GRID_THEME = BlockDef(
+    name="GridTheme",
+    parent="Theme",
+    repeatable=False,
+    properties=_properties(
+        PropertyDef("columns", ValueType.NUMBER, ""),
+        PropertyDef("showTitle", ValueType.BOOLEAN, None),
+        PropertyDef("showIcon", ValueType.BOOLEAN, None),
+        PropertyDef(
+            "iconPosition",
+            ValueType.ENUM,
+            "",
+            enum_values=("left", "right"),
+        ),
+        PropertyDef(
+            "direction",
+            ValueType.ENUM,
+            "",
+            enum_values=("ltr", "rtl"),
+        ),
+        PropertyDef("titleColor", ValueType.COLOR, ""),
+        PropertyDef("iconColor", ValueType.COLOR, ""),
+        PropertyDef("backgroundColor", ValueType.COLOR, ""),
+        PropertyDef("borderColor", ValueType.COLOR, ""),
+        PropertyDef(
+            "shape",
+            ValueType.ENUM,
+            "",
+            enum_values=("sharp", "slightlyRounded", "rounded", "pill"),
+        ),
+    ),
+)
+
+_TITLE_THEME = BlockDef(
+    name="TitleTheme",
+    parent="Theme",
+    repeatable=False,
+    properties=_properties(
+        PropertyDef("titleColor", ValueType.COLOR, ""),
+        PropertyDef(
+            "align",
+            ValueType.ENUM,
+            "",
+            enum_values=("left", "center", "right"),
+        ),
+    ),
+)
+
+_IMAGE_THEME = BlockDef(
+    name="ImageTheme",
+    parent="Theme",
+    repeatable=False,
+    properties=_properties(
+        PropertyDef(
+            "shape",
+            ValueType.ENUM,
+            "",
+            enum_values=("sharp", "slightlyRounded", "rounded", "pill"),
+        ),
+        PropertyDef("titleColor", ValueType.COLOR, ""),
+        PropertyDef("descriptionColor", ValueType.COLOR, ""),
+        PropertyDef("backgroundColor", ValueType.COLOR, ""),
+        PropertyDef("borderColor", ValueType.COLOR, ""),
+        PropertyDef("imageShadow", ValueType.BOOLEAN, None),
+    ),
+)
+
+_BANNER_THEME = BlockDef(
+    name="BannerTheme",
+    parent="Theme",
+    repeatable=False,
+    properties=_properties(
+        PropertyDef(
+            "shape",
+            ValueType.ENUM,
+            "",
+            enum_values=("sharp", "slightlyRounded", "rounded", "pill"),
+        ),
+        PropertyDef("titleColor", ValueType.COLOR, ""),
+        PropertyDef("descriptionColor", ValueType.COLOR, ""),
+        PropertyDef("borderColor", ValueType.COLOR, ""),
+    ),
+)
+
+_DIVIDER_THEME = BlockDef(
+    name="DividerTheme",
+    parent="Theme",
+    repeatable=False,
+    properties=_properties(
+        PropertyDef("color", ValueType.COLOR, ""),
+        PropertyDef("marginTop", ValueType.NUMBER, ""),
+        PropertyDef("marginBottom", ValueType.NUMBER, ""),
+    ),
+)
+
+_VIDEO_THEME = BlockDef(
+    name="VideoTheme",
+    parent="Theme",
+    repeatable=False,
+    properties=_properties(
+        PropertyDef(
+            "shape",
+            ValueType.ENUM,
+            "",
+            enum_values=("sharp", "slightlyRounded", "rounded", "pill"),
+        ),
+        PropertyDef("borderColor", ValueType.COLOR, ""),
+    ),
+)
+
 
 #: The full set of blocks known to the compiler, keyed by block name.
 BLOCKS: dict[str, BlockDef] = {
@@ -707,6 +912,16 @@ BLOCKS: dict[str, BlockDef] = {
     _FAQ_ITEM.name: _FAQ_ITEM,
     _DIVIDER.name: _DIVIDER,
     _SUPERLINK.name: _SUPERLINK,
+    _THEME.name: _THEME,
+    _PAGE_THEME.name: _PAGE_THEME,
+    _LINK_THEME.name: _LINK_THEME,
+    _SUPERLINK_THEME.name: _SUPERLINK_THEME,
+    _GRID_THEME.name: _GRID_THEME,
+    _TITLE_THEME.name: _TITLE_THEME,
+    _IMAGE_THEME.name: _IMAGE_THEME,
+    _BANNER_THEME.name: _BANNER_THEME,
+    _DIVIDER_THEME.name: _DIVIDER_THEME,
+    _VIDEO_THEME.name: _VIDEO_THEME,
 }
 
 
