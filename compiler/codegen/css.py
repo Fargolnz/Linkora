@@ -22,23 +22,41 @@ LINK_ALIGNMENTS = {
 }
 
 #: Primary background of the page/card, identical on every screen size.
-#: Overridable later through a Theme block via the --lk-background
-#: variable.
+#: Overridable through a Theme block via the --lk-background variable.
 BACKGROUND = "#ffffff"
 
 #: Desktop-only surface behind the floating card, hidden on mobile where
-#: the card fills the viewport. Overridable later through a Theme block
-#: via the --lk-backdrop variable.
+#: the card fills the viewport. Overridable through a Theme block via
+#: the --lk-backdrop variable.
 BACKDROP = "#e0f4f4"
+
+#: Default font stack. The lead family is swapped out when a Theme block
+#: sets its own ``fontFamily``.
+BASE_FONT_STACK = (
+    '"Vazirmatn", -apple-system, BlinkMacSystemFont, "Segoe UI", '
+    "Roboto, Helvetica, Arial, sans-serif"
+)
+
+#: Google Fonts family name for each ``PageTheme.fontFamily`` enum value.
+#: The enum values are lowercase identifiers (per the Linkora grammar),
+#: the mapping carries the properly-cased family name used in CSS.
+FONT_FAMILIES = {
+    "vazirmatn": "Vazirmatn",
+    "inter": "Inter",
+    "poppins": "Poppins",
+    "rubik": "Rubik",
+    "roboto": "Roboto",
+}
 
 #: Viewport width (px) above which the page becomes a floating card.
 DESKTOP_BREAKPOINT = "600px"
 
-_BASE_CSS = f"""
+_BASE_CSS = """
 :root {{
     color-scheme: light;
-    --lk-background: {BACKGROUND};
-    --lk-backdrop: {BACKDROP};
+    --lk-background: {background};
+    --lk-backdrop: {backdrop};
+    --lk-font-family: {font_family};
 }}
 
 * {{
@@ -53,8 +71,7 @@ body {{
     min-height: 100vh;
     min-height: 100dvh;
     background-color: var(--lk-backdrop);
-    font-family: "Vazirmatn", -apple-system, BlinkMacSystemFont, "Segoe UI",
-        Roboto, Helvetica, Arial, sans-serif;
+    font-family: var(--lk-font-family);
 }}
 
 /* Mobile-first: the page fills the phone viewport. */
@@ -90,7 +107,7 @@ body {{
 
 /* Larger screens: a column slightly wider than a phone, floating on the
    tinted background as a card, centered with equal space above and below. */
-@media (min-width: {DESKTOP_BREAKPOINT}) {{
+@media (min-width: {desktop_breakpoint}) {{
     body {{
         display: flex;
     }}
@@ -107,9 +124,31 @@ body {{
 """
 
 
-def build_css() -> str:
-    """Return the complete stylesheet for a generated page."""
-    css = _BASE_CSS
+def build_css(theme_data: dict[str, str] | None = None) -> str:
+    """Return the complete stylesheet for a generated page.
+
+    ``theme_data`` optionally carries the page background, the desktop
+    backdrop color, and the page font family read from a Theme block.
+    Every omitted key falls back to the built-in default.
+    """
+    theme_data = theme_data or {}
+    background = theme_data.get("background", BACKGROUND)
+    backdrop = theme_data.get("backdrop", BACKDROP)
+    font = theme_data.get("font")
+    if font:
+        font_family = (
+            f'"{FONT_FAMILIES.get(font, font)}", -apple-system, '
+            'BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif'
+        )
+    else:
+        font_family = BASE_FONT_STACK
+
+    css = _BASE_CSS.format(
+        background=background,
+        backdrop=backdrop,
+        font_family=font_family,
+        desktop_breakpoint=DESKTOP_BREAKPOINT,
+    )
 
     css += "\n.lk-profile {"
     css += "\n    display: flex;"

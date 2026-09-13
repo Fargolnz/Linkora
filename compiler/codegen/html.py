@@ -9,9 +9,10 @@ from __future__ import annotations
 
 import calendar
 import html
+from urllib.parse import quote
 
 from compiler.ast import Block, Document
-from compiler.codegen.css import build_css
+from compiler.codegen.css import FONT_FAMILIES, build_css
 from compiler.types import jalali_to_gregorian
 
 
@@ -1133,7 +1134,11 @@ def render_html(document: Document) -> str:
     _faq_counter = 0
     _faq_item_counter = 0
     _countdown_counter = 0
-    body = "\n".join(_render_block(block) for block in document.blocks)
+
+    theme_block = next((b for b in document.blocks if b.name == "Theme"), None)
+    theme_data = _theme_data(theme_block)
+    content_blocks = [b for b in document.blocks if b.name != "Theme"]
+    body = "\n".join(_render_block(block) for block in content_blocks)
     scripts = ""
     if _slider_counter > 0:
         scripts += SLIDER_JS + "\n"
@@ -1150,10 +1155,10 @@ def render_html(document: Document) -> str:
         "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n"
         "  <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\n"
         "  <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\n"
-        "  <link href=\"https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700&display=swap\" rel=\"stylesheet\">\n"
+        f"  {_theme_font_stylesheet_link(theme_data)}\n"
         "  <title>Linkora</title>\n"
         "  <style>\n"
-        f"{build_css()}"
+        f"{build_css(theme_data)}"
         "  </style>\n"
         "</head>\n"
         "<body>\n"
@@ -1162,6 +1167,50 @@ def render_html(document: Document) -> str:
         "</body>\n"
         "</html>\n"
     )
+
+
+_DEFAULT_FONT_STYLESHEET = (
+    "https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700&display=swap"
+)
+
+
+def _theme_data(theme_block: Block | None) -> dict[str, str]:
+    """Extract page-level theme values (background, backdrop, font)."""
+    data: dict[str, str] = {}
+    if theme_block is None:
+        return data
+
+    page_theme = next(
+        (child for child in theme_block.children if child.name == "PageTheme"),
+        None,
+    )
+    if page_theme is None:
+        return data
+
+    for target, src in (
+        ("background", "backgroundColor"),
+        ("backdrop", "backdropColor"),
+        ("font", "fontFamily"),
+    ):
+        value = str(page_theme.resolved.get(src, ""))
+        if value:
+            data[target] = value
+    return data
+
+
+def _theme_font_stylesheet_link(theme_data: dict[str, str]) -> str:
+    """Return the Google Fonts <link> URL for the active page font."""
+    font = theme_data.get("font")
+    if not font:
+        return (
+            f'<link href="{_DEFAULT_FONT_STYLESHEET}" rel="stylesheet">'
+        )
+    family = quote(FONT_FAMILIES.get(font, font), safe="")
+    href = (
+        "https://fonts.googleapis.com/css2?"
+        f"family={family}:wght@400;600;700&display=swap"
+    )
+    return f'<link href="{href}" rel="stylesheet">'
 
 
 def _render_block(block: Block) -> str:
