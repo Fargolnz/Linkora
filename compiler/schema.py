@@ -854,10 +854,22 @@ _VIDEO_THEME = BlockDef(
         PropertyDef("borderColor", ValueType.COLOR, ""),
     ),
 )
+_PAGE = BlockDef(
+    name="Page",
+    parent=None,
+    repeatable=False,
+    properties=_properties(
+        PropertyDef("language", ValueType.ENUM, "fa", enum_values=("fa", "en")),
+        PropertyDef("title", ValueType.STRING, ""),
+        PropertyDef("description", ValueType.STRING, ""),
+        PropertyDef("favicon", ValueType.IMAGE, ""),
+    ),
+)
 
 
 #: The full set of blocks known to the compiler, keyed by block name.
 BLOCKS: dict[str, BlockDef] = {
+    _PAGE.name: _PAGE,
     _PROFILE.name: _PROFILE,
     _NAME.name: _NAME,
     _LOGO.name: _LOGO,
