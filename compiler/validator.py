@@ -62,8 +62,9 @@ class Validator:
 
         When the document contains a ``Theme`` block, its explicit values act as
         the defaults for empty optional properties across the document, so the
-        final override order is: schema defaults < ``primaryColor`` < Theme
-        block properties < the block's own explicit properties.
+        final override order is: schema defaults < ``Page.language`` defaults <
+        ``primaryColor`` < Theme block properties < the block's own explicit
+        properties.
         """
         overrides: dict[tuple[str, str], object] = {}
         theme_block = next(
@@ -72,6 +73,25 @@ class Validator:
         if theme_block is not None:
             self._resolve_block(theme_block)
             overrides = self._build_theme_overrides(theme_block)
+
+        page_block = next(
+            (block for block in document.blocks if block.name == "Page"), None
+        )
+        if page_block is not None:
+            self._resolve_block(page_block)
+            if str(page_block.resolved.get("language", "fa")) == "en":
+                for name in (
+                    "SocialMedia",
+                    "SocialNetwork",
+                    "Contact",
+                    "Address",
+                    "FAQ",
+                    "SuperLink",
+                    "Image",
+                    "Banner",
+                ):
+                    overrides.setdefault((name, "direction"), "ltr")
+                overrides.setdefault(("Countdown", "language"), "en")
 
         for block in document.blocks:
             self._resolve_block(block, overrides)
