@@ -20,7 +20,16 @@ class TestPageShell:
     def test_doctype_and_lang(self):
         html = _html()
         assert html.startswith("<!DOCTYPE html>")
-        assert '<html lang="en">' in html
+        assert '<html lang="fa" dir="rtl">' in html
+
+    def test_default_title(self):
+        html = _html()
+        assert "<title>Linkora</title>" in html
+
+    def test_no_metadata_when_absent(self):
+        html = _html()
+        assert 'name="description"' not in html
+        assert 'rel="icon"' not in html
 
     def test_page_container(self):
         html = _html()
@@ -33,6 +42,71 @@ class TestPageShell:
         assert ".lk-link" in html
         assert ".lk-shape-rounded" in html
         assert ".lk-align-center" in html
+
+
+class TestPageBlock:
+    def test_language_en_sets_lang_and_dir(self):
+        html = _html('Page { language: en }\n')
+        assert '<html lang="en" dir="ltr">' in html
+
+    def test_title_rendered_and_escaped(self):
+        html = _html('Page { title: "My <Page>" }\n')
+        assert "<title>My &lt;Page&gt;</title>" in html
+
+    def test_description_meta_rendered_and_escaped(self):
+        html = _html('Page { description: "A <b>page</b>" }\n')
+        assert '<meta name="description" content="A &lt;b&gt;page&lt;/b&gt;">' in html
+
+    def test_favicon_link_rendered(self):
+        html = _html('Page { favicon: "./assets/icon.png" }\n')
+        assert '<link rel="icon" href="./assets/icon.png">' in html
+
+    def test_page_not_rendered_in_body(self):
+        html = _html('Page { title: "Secret" }\n' + LINK)
+        assert "<title>Secret</title>" in html
+        body = html.split("<body>", 1)[1]
+        assert "Secret" not in body
+
+    def test_language_en_flips_grid_directions(self):
+        html = _html(
+            "Page { language: en }\n"
+            "SocialMedia {\n"
+            '    SocialMediaItem { service: instagram, url: "https://ig/x" }\n'
+            "}\n"
+            "Image {\n"
+            "    ImageItem { image: \"./a.jpg\" }\n"
+            "}\n"
+            "Banner {\n"
+            '    BannerItem { image: "./a.jpg", url: "https://example.com" }\n'
+            "}\n"
+        )
+        assert 'data-columns="1" data-direction="ltr"' in html
+        assert '<section class="lk-image lk-image-grid" data-direction="ltr">' in html
+        assert '<section class="lk-banner" data-direction="ltr">' in html
+        assert 'data-direction="rtl"' not in html
+
+    def test_language_en_sets_countdown_to_english(self):
+        html = _html(
+            "Page { language: en }\n"
+            'Countdown { date: "2026/12/31", time: "23:59", calendar: gregorian }\n'
+        )
+        assert ">Days</span>" in html
+        assert ">روز</span>" not in html
+        assert "data-digits=\"fa\"" not in html
+
+    def test_explicit_block_beats_page_default(self):
+        html = _html(
+            "Page { language: en }\n"
+            "SocialMedia {\n"
+            "    direction: rtl\n"
+            '    SocialMediaItem { service: instagram, url: "https://ig/x" }\n'
+            "}\n"
+            "Countdown {\n"
+            "    language: fa\n"
+            '    date: "2026/12/31", time: "23:59", calendar: gregorian }\n'
+        )
+        assert 'data-columns="1" data-direction="rtl"' in html
+        assert "data-digits=\"fa\"" in html
 
 
 class TestResponsiveDesign:

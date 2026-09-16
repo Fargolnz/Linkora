@@ -180,6 +180,122 @@ class TestBlockRules:
         compile_ok(f"{LINK}\n{LINK}")
 
 
+class TestPage:
+    def _page(self, source: str):
+        result = compile_ok(source)
+        assert result.ast is not None
+        return result.ast.blocks[0]
+
+    def test_defaults(self):
+        page = self._page("Page { }\n")
+        assert page.resolved == {
+            "language": "fa",
+            "title": "",
+            "description": "",
+            "favicon": "",
+        }
+
+    def test_explicit_values(self):
+        page = self._page(
+            'Page {\n'
+            '    language: en\n'
+            '    title: "My Page"\n'
+            '    description: "About me"\n'
+            '    favicon: "./assets/icon.png"\n'
+            "}\n"
+        )
+        assert page.resolved["language"] == "en"
+        assert page.resolved["title"] == "My Page"
+        assert page.resolved["description"] == "About me"
+        assert page.resolved["favicon"] == "./assets/icon.png"
+
+    def test_may_appear_only_once(self):
+        from compiler import compile_source
+
+        errors = compile_source("Page { }\nPage { }\n").errors
+        assert len(errors) == 1
+        assert "may appear only once" in errors[0].message
+
+    def test_invalid_language_rejected(self):
+        from compiler import compile_source
+
+        errors = compile_source("Page { language: de }\n").errors
+        assert len(errors) == 1
+        assert "not a valid value" in errors[0].message
+
+    def test_quoted_language_rejected(self):
+        from compiler import compile_source
+
+        errors = compile_source('Page { language: "fa" }\n').errors
+        assert len(errors) == 1
+        assert "quotation marks" in errors[0].message
+
+    def test_language_en_flips_direction_defaults(self):
+        from compiler import compile_source
+
+        result = compile_ok(
+            "Page { language: en }\n"
+            "SocialMedia {\n"
+            '    SocialMediaItem { service: instagram, url: "https://ig/x" }\n'
+            "}\n"
+            "FAQ {\n"
+            '    FAQItem { question: "Q", answer: "A" }\n'
+            "}\n"
+            "Image {\n"
+            "    ImageItem { image: \"./a.jpg\" }\n"
+            "}\n"
+            "Banner {\n"
+            '    BannerItem { image: "./a.jpg", url: "https://example.com" }\n'
+            "}\n"
+            'Countdown { date: "2026/12/31", time: "23:59", calendar: gregorian }\n'
+        )
+        assert result.ast is not None
+        for block in result.ast.blocks:
+            if block.name in ("SocialMedia", "FAQ", "Image", "Banner"):
+                assert block.resolved["direction"] == "ltr"
+            elif block.name == "Countdown":
+                assert block.resolved["language"] == "en"
+
+    def test_fa_default_leaves_direction_defaults(self):
+        result = compile_ok(
+            "Page { }\n"
+            "SocialMedia {\n"
+            '    SocialMediaItem { service: instagram, url: "https://ig/x" }\n'
+            "}\n"
+            'Countdown { date: "1404/09/15", time: "23:59" }\n'
+        )
+        assert result.ast is not None
+        for block in result.ast.blocks:
+            if block.name == "SocialMedia":
+                assert block.resolved["direction"] == "rtl"
+            elif block.name == "Countdown":
+                assert block.resolved["language"] == "fa"
+
+    def test_explicit_block_beats_page_default(self):
+        result = compile_ok(
+            "Page { language: en }\n"
+            "FAQ {\n"
+            "    direction: rtl\n"
+            '    FAQItem { question: "Q", answer: "A" }\n'
+            "}\n"
+        )
+        assert result.ast is not None
+        faq = next(b for b in result.ast.blocks if b.name == "FAQ")
+        assert faq.resolved["direction"] == "rtl"
+
+    def test_theme_beats_page_default(self):
+        result = compile_ok(
+            "Page { language: en }\n"
+            "Theme { GridTheme { direction: rtl } }\n"
+            "SocialMedia {\n"
+            '    SocialMediaItem { service: instagram, url: "https://ig/x" }\n'
+            "}\n"
+        )
+        assert result.ast is not None
+        social = next(b for b in result.ast.blocks if b.name == "SocialMedia")
+        assert social.resolved["direction"] == "rtl"
+
+
 class TestTitle:
     def _first_title(self, source: str):
         result = compile_ok(source)
