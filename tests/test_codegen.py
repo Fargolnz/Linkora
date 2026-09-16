@@ -1383,7 +1383,7 @@ class TestDividerRendering:
         assert "currentColor" in html
 
     def test_all_styles_render_distinct_artwork(self):
-        from compiler.codegen.html import DIVIDER_SVGS
+        from compiler.codegen.svg import DIVIDER_SVGS
 
         for style, svg in DIVIDER_SVGS.items():
             html = _html(f"Divider {{ style: {style} }}\n")
