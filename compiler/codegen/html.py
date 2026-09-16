@@ -168,7 +168,8 @@ def render_html(document: Document) -> str:
 
     theme_block = next((b for b in document.blocks if b.name == "Theme"), None)
     theme_data = _theme_data(theme_block)
-    content_blocks = [b for b in document.blocks if b.name != "Theme"]
+    page_data = _page_data(document)
+    content_blocks = [b for b in document.blocks if b.name not in ("Theme", "Page")]
     body = "\n".join(_render_block(block) for block in content_blocks)
     scripts = ""
     if _slider_counter > 0:
@@ -178,19 +179,25 @@ def render_html(document: Document) -> str:
     if _countdown_counter > 0:
         scripts += COUNTDOWN_JS + "\n"
 
+    head = "  <meta charset=\"utf-8\">\n"
+    head += "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n"
+    if page_data["favicon"]:
+        head += f'  <link rel="icon" href="{html.escape(str(page_data["favicon"]))}">\n'
+    head += "  <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\n"
+    head += "  <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\n"
+    head += f"  {_theme_font_stylesheet_link(theme_data)}\n"
+    head += f"  <title>{html.escape(str(page_data['title'] or 'Linkora'))}</title>\n"
+    if page_data["description"]:
+        head += f'  <meta name="description" content="{html.escape(str(page_data["description"]))}">\n'
+    head += "  <style>\n"
+    head += f"{build_css(theme_data)}"
+    head += "  </style>\n"
+
     return (
         "<!DOCTYPE html>\n"
-        "<html lang=\"en\">\n"
+        f"<html lang=\"{page_data['lang']}\" dir=\"{page_data['dir']}\">\n"
         "<head>\n"
-        "  <meta charset=\"utf-8\">\n"
-        "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n"
-        "  <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\n"
-        "  <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\n"
-        f"  {_theme_font_stylesheet_link(theme_data)}\n"
-        "  <title>Linkora</title>\n"
-        "  <style>\n"
-        f"{build_css(theme_data)}"
-        "  </style>\n"
+        f"{head}"
         "</head>\n"
         "<body>\n"
         f"  <main class=\"lk-page\">\n{body}\n  </main>\n"
@@ -203,6 +210,28 @@ def render_html(document: Document) -> str:
 _DEFAULT_FONT_STYLESHEET = (
     "https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700&display=swap"
 )
+
+
+def _page_data(document: Document) -> dict[str, str]:
+    """Extract page-level metadata from the optional Page block."""
+    language = "fa"
+    title = ""
+    description = ""
+    favicon = ""
+    page_block = next((b for b in document.blocks if b.name == "Page"), None)
+    if page_block is not None:
+        language = str(page_block.resolved.get("language", "fa"))
+        title = str(page_block.resolved.get("title", ""))
+        description = str(page_block.resolved.get("description", ""))
+        favicon = str(page_block.resolved.get("favicon", ""))
+    lang = "fa" if language == "fa" else "en"
+    return {
+        "lang": lang,
+        "dir": "rtl" if lang == "fa" else "ltr",
+        "title": title,
+        "description": description,
+        "favicon": favicon,
+    }
 
 
 def _theme_data(theme_block: Block | None) -> dict[str, str]:
