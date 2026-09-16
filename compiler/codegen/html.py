@@ -732,6 +732,7 @@ def render_image(block: Block) -> str:
         )
 
     columns = int(resolved["columns"])
+    direction = str(resolved["direction"])
     rows = []
     for i in range(0, len(items), columns):
         row_items = items[i : i + columns]
@@ -750,7 +751,7 @@ def render_image(block: Block) -> str:
         )
     body = "\n".join(rows)
     return (
-        f'  <section class="lk-image lk-image-grid">\n'
+        f'  <section class="lk-image lk-image-grid" data-direction="{direction}">\n'
         f"{body}\n"
         f"  </section>"
     )
@@ -852,6 +853,7 @@ def render_banner(block: Block) -> str:
     """Render a Banner container as a grid of linked image cards."""
     resolved = block.resolved
     columns = int(resolved["columns"])
+    direction = str(resolved["direction"])
     items = list(block.children)
 
     rows = []
@@ -861,7 +863,7 @@ def render_banner(block: Block) -> str:
         rows.append(f'    <div class="lk-banner-row">\n{cards}\n    </div>')
     body = "\n".join(rows)
     return (
-        f'  <section class="lk-banner">\n'
+        f'  <section class="lk-banner" data-direction="{direction}">\n'
         f"{body}\n"
         f"  </section>"
     )

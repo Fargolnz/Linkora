@@ -725,8 +725,34 @@ class TestImageRendering:
 
     def test_grid_section_and_rows(self):
         html = _html(self.SRC)
-        assert '<section class="lk-image lk-image-grid">' in html
+        assert '<section class="lk-image lk-image-grid" data-direction="rtl">' in html
         assert 'class="lk-image-row lk-image-row--caption"' in html
+
+    def test_direction_default_is_rtl(self):
+        html = _html(self.SRC)
+        assert '<section class="lk-image lk-image-grid" data-direction="rtl">' in html
+        assert 'data-direction="ltr"' not in html
+
+    def test_direction_ltr_override(self):
+        html = _html(
+            "Image {\n"
+            "    direction: ltr\n"
+            "    ImageItem { image: \"./a.jpg\" }\n"
+            "}\n"
+        )
+        assert '<section class="lk-image lk-image-grid" data-direction="ltr">' in html
+        assert 'data-direction="rtl"' not in html
+
+    def test_direction_ignored_in_slider_mode(self):
+        html = _html(
+            "Image {\n"
+            "    displayMode: slider\n"
+            "    direction: ltr\n"
+            "    ImageItem { image: \"./a.jpg\" }\n"
+            "}\n"
+        )
+        assert 'class="lk-image lk-image-slider" id="' in html
+        assert 'data-direction="' not in html.split('class="lk-image lk-image-slider"')[1].split('>', 1)[0]
 
     def test_card_and_image_alt(self):
         html = _html(self.SRC)
@@ -961,6 +987,8 @@ class TestImageRendering:
         assert ".lk-imagecard-img" in html
         assert ".lk-image-slider-track" in html
         assert "scroll-snap-type: x mandatory" in html
+        assert ".lk-image-grid[data-direction='rtl']" in html
+        assert ".lk-image-grid[data-direction='ltr']" in html
 
 
 class TestBannerRendering:
@@ -973,8 +1001,23 @@ class TestBannerRendering:
 
     def test_grid_section_and_rows(self):
         html = _html(self.SRC)
-        assert '<section class="lk-banner">' in html
+        assert '<section class="lk-banner" data-direction="rtl">' in html
         assert 'class="lk-banner-row"' in html
+
+    def test_direction_default_is_rtl(self):
+        html = _html(self.SRC)
+        assert '<section class="lk-banner" data-direction="rtl">' in html
+        assert 'data-direction="ltr"' not in html
+
+    def test_direction_ltr_override(self):
+        html = _html(
+            "Banner {\n"
+            "    direction: ltr\n"
+            '    BannerItem { image: "./a.jpg", url: "https://example.com" }\n'
+            "}\n"
+        )
+        assert '<section class="lk-banner" data-direction="ltr">' in html
+        assert 'data-direction="rtl"' not in html
 
     def test_card_is_link_with_href(self):
         html = _html(self.SRC)
@@ -1059,6 +1102,8 @@ class TestBannerRendering:
         assert "aspect-ratio: 16 / 9" in html
         assert "linear-gradient" in html
         assert "transform: translateY(-2px)" in html
+        assert ".lk-banner[data-direction='rtl']" in html
+        assert ".lk-banner[data-direction='ltr']" in html
 
 
 class TestVideoRendering:

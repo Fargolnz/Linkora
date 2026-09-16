@@ -27,6 +27,7 @@ Multiple `Banner` blocks may appear within the same document.
 | Property | Keyword | Type | Default | Allowed Values |
 |----------|---------|------|---------|----------------|
 | Columns | `columns` | Number | `1` | `1`, `2` |
+| Direction | `direction` | Enum | `rtl` | `ltr`, `rtl` |
 | Title Color | `titleColor` | Color | `#FFFFFF` | Valid Color |
 | Description Color | `descriptionColor` | Color | `#FFFFFF` | Valid Color |
 | Border Color | `borderColor` | Color | `transparent` | Valid Color |
@@ -47,6 +48,25 @@ Controls how many cards appear in each row of the grid.
 | Default | `1` |
 
 Supported values: `1`, `2`.
+
+---
+
+### `direction`
+
+Controls the reading direction of the grid rows.
+
+| Field | Value |
+|-------|-------|
+| Type | Enum |
+| Required | ❌ No |
+| Default | `rtl` |
+
+Supported values:
+
+| Value | Description |
+|-------|-------------|
+| `rtl` | Right-to-left — the first card in each row starts on the right and the rest flow leftward |
+| `ltr` | Left-to-right — the first card in each row starts on the left and the rest flow rightward |
 
 ---
 
@@ -221,7 +241,7 @@ These visual properties behave like their `Banner` counterparts but apply only t
 
 The `Banner` block renders each child as a clickable card:
 
-- Cards are grouped into rows of `columns` each.
+- Cards are grouped into rows of `columns` each, and rows flow right-to-left by default (`direction: rtl`) or left-to-right when `direction: ltr` is set.
 - Each card is wrapped in an `<a>` element linking to `url`, making the entire card a tap/click target.
 - An image fills the card at a 16:9 aspect ratio with `object-fit: cover`.
 - A dark gradient overlay sits at the bottom of the card, always showing the title and description.

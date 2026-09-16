@@ -469,6 +469,7 @@ _IMAGE = BlockDef(
             enum_values=("sharp", "slightlyRounded", "rounded", "pill"),
         ),
         PropertyDef("imageShadow", ValueType.BOOLEAN, False),
+        PropertyDef("direction", ValueType.ENUM, "rtl", enum_values=("ltr", "rtl")),
     ),
 )
 
@@ -504,6 +505,7 @@ _BANNER = BlockDef(
             "rounded",
             enum_values=("sharp", "slightlyRounded", "rounded", "pill"),
         ),
+        PropertyDef("direction", ValueType.ENUM, "rtl", enum_values=("ltr", "rtl")),
     ),
 )
 

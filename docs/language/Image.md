@@ -28,6 +28,7 @@ Multiple `Image` blocks may appear within the same document.
 |----------|---------|------|---------|----------------|
 | Display Mode | `displayMode` | Enum | `single` | `single`, `slider` |
 | Columns | `columns` | Number | `1` | `1`, `2` |
+| Direction | `direction` | Enum | `rtl` | `ltr`, `rtl` |
 | Title Color | `titleColor` | Color | `#000000` | Valid Color |
 | Description Color | `descriptionColor` | Color | `#3B3B3B` | Valid Color |
 | Background Color | `backgroundColor` | Color | `#FFFFFF` | Valid Color |
@@ -69,6 +70,27 @@ Controls how many cards appear in each row of the grid.
 Supported values: `1`, `2`.
 
 > ⚠️ `columns` applies only in `single` display mode and is ignored (without error) in `slider` mode.
+
+---
+
+### `direction`
+
+Controls the reading direction of the grid rows in `single` display mode.
+
+| Field | Value |
+|-------|-------|
+| Type | Enum |
+| Required | ❌ No |
+| Default | `rtl` |
+
+Supported values:
+
+| Value | Description |
+|-------|-------------|
+| `rtl` | Right-to-left — the first card in each row starts on the right and the rest flow leftward |
+| `ltr` | Left-to-right — the first card in each row starts on the left and the rest flow rightward |
+
+> ⚠️ `direction` applies only in `single` display mode and is ignored (without error) in `slider` mode.
 
 ---
 
@@ -273,7 +295,7 @@ These visual properties behave like their `Image` counterparts but apply only to
 
 The `Image` block renders each child as a display card containing the image followed by an optional caption block:
 
-- In `single` mode, cards are grouped into rows of `columns` each.
+- In `single` mode, cards are grouped into rows of `columns` each, and rows flow right-to-left by default (`direction: rtl`) or left-to-right when `direction: ltr` is set.
 - Caption space is reserved **per row**: a row reserves equal caption space for every card in it only when at least one card in that row has a caption. Rows where no card has a caption leave no caption space, keeping the cards as pure images.
 - In `slider` mode, cards are placed in a horizontal scroll-snap carousel (one card per view) with a light dot indicator overlaid at the bottom edge of the image: one dot per slide, the current slide filled and the rest empty outlines. The dots highlight live while swiping and jump to a slide on tap (backed by a small embedded script).
 - Each card's corner shape follows `shape`, and the image is always cropped to a consistent ratio (`aspect-ratio`) with `object-fit: cover`.

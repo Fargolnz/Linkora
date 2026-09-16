@@ -1090,6 +1090,7 @@ class TestImage:
         assert block.resolved["borderColor"] == "transparent"
         assert block.resolved["shape"] == "rounded"
         assert block.resolved["imageShadow"] is False
+        assert block.resolved["direction"] == "rtl"
 
     def test_item_color_defaults_inherit(self):
         result = compile_ok(self.SRC)
@@ -1131,6 +1132,45 @@ class TestImage:
             "    columns: 4\n"
             "    ImageItem { image: \"./a.jpg\" }\n"
             "}\n")
+
+    def test_direction_default_is_rtl(self):
+        result = compile_ok(self.SRC)
+        block = result.ast.blocks[0]
+        assert block.resolved["direction"] == "rtl"
+
+    def test_direction_ltr_accepted(self):
+        result = compile_ok(
+            "Image {\n"
+            "    direction: ltr\n"
+            "    ImageItem { image: \"./a.jpg\" }\n"
+            "}\n"
+        )
+        block = result.ast.blocks[0]
+        assert block.resolved["direction"] == "ltr"
+
+    def test_direction_invalid_rejected(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "Image {\n"
+            "    direction: sideways\n"
+            "    ImageItem { image: \"./a.jpg\" }\n"
+            "}\n"
+        ).errors
+        assert len(errors) == 1
+        assert "not a valid value" in errors[0].message
+
+    def test_direction_quoted_rejected(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "Image {\n"
+            '    direction: "rtl"\n'
+            "    ImageItem { image: \"./a.jpg\" }\n"
+            "}\n"
+        ).errors
+        assert len(errors) == 1
+        assert "quotation marks" in errors[0].message
 
     def test_invalid_display_mode(self):
         from compiler import compile_source
@@ -1200,6 +1240,7 @@ class TestBanner:
         assert block.resolved["descriptionColor"] == "#FFFFFF"
         assert block.resolved["borderColor"] == "transparent"
         assert block.resolved["shape"] == "rounded"
+        assert block.resolved["direction"] == "rtl"
 
     def test_item_color_defaults_inherit(self):
         result = compile_ok(self.SRC)
@@ -1231,6 +1272,45 @@ class TestBanner:
             ).errors
             assert len(errors) == 1
             assert "columns" in errors[0].message
+
+    def test_direction_default_is_rtl(self):
+        result = compile_ok(self.SRC)
+        block = result.ast.blocks[0]
+        assert block.resolved["direction"] == "rtl"
+
+    def test_direction_ltr_accepted(self):
+        result = compile_ok(
+            "Banner {\n"
+            "    direction: ltr\n"
+            '    BannerItem { image: "./a.jpg", url: "https://example.com" }\n'
+            "}\n"
+        )
+        block = result.ast.blocks[0]
+        assert block.resolved["direction"] == "ltr"
+
+    def test_direction_invalid_rejected(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "Banner {\n"
+            "    direction: sideways\n"
+            '    BannerItem { image: "./a.jpg", url: "https://example.com" }\n'
+            "}\n"
+        ).errors
+        assert len(errors) == 1
+        assert "not a valid value" in errors[0].message
+
+    def test_direction_quoted_rejected(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "Banner {\n"
+            '    direction: "rtl"\n'
+            '    BannerItem { image: "./a.jpg", url: "https://example.com" }\n'
+            "}\n"
+        ).errors
+        assert len(errors) == 1
+        assert "quotation marks" in errors[0].message
 
     def test_banneritem_only_allowed_inside_banner(self):
         from compiler import compile_source
