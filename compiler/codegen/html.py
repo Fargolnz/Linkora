@@ -694,11 +694,20 @@ def render_image(block: Block) -> str:
 
     if display_mode == "slider":
         slider_id = _new_slider_id()
+        image_shadow = bool(resolved.get("imageShadow", False))
+        shape = str(resolved.get("shape") or "rounded")
+        section_classes = ["lk-image", "lk-image-slider"]
+        if image_shadow:
+            section_classes.append("lk-imageslider--shadow")
+            section_classes.append(f"lk-shape-{shape}")
         cards = []
         for i, child in enumerate(items):
             cards.append(
                 _render_image_item(
-                    child, reserve_caption=False, card_id=f"{slider_id}-slide-{i}"
+                    child,
+                    reserve_caption=False,
+                    card_id=f"{slider_id}-slide-{i}",
+                    apply_shadow=False,
                 )
             )
         dots = []
@@ -708,8 +717,9 @@ def render_image(block: Block) -> str:
                 f'      <button type="button" class="lk-image-slider-dot{active}" '
                 f'data-slide="{i}" aria-label="Go to slide {i + 1}"></button>'
             )
+        section_class = " ".join(section_classes)
         return (
-            f'  <section class="lk-image lk-image-slider" id="{slider_id}">\n'
+            f'  <section class="{section_class}" id="{slider_id}">\n'
             f'    <div class="lk-image-slider-track">\n'
             + "\n".join(cards)
             + "\n"
@@ -758,7 +768,7 @@ def _new_slider_id() -> str:
     return f"lk-slider-{_slider_counter}"
 
 
-def _render_image_item(block: Block, reserve_caption: bool, card_id: str | None = None) -> str:
+def _render_image_item(block: Block, reserve_caption: bool, card_id: str | None = None, *, apply_shadow: bool = True) -> str:
     """Render a single Image item as a display card.
 
     When ``reserve_caption`` is True the caption area is emitted even for
@@ -794,7 +804,7 @@ def _render_image_item(block: Block, reserve_caption: bool, card_id: str | None 
     classes = ["lk-imagecard", f"lk-shape-{shape}"]
     if has_caption:
         classes.append("lk-imagecard--has-caption")
-    if image_shadow:
+    if apply_shadow and image_shadow:
         classes.append("lk-imagecard--shadow")
 
     style = (

@@ -855,7 +855,7 @@ class TestImageRendering:
         assert "pointer-events: none" in html
         assert "pointer-events: auto" in html
 
-    def test_last_slide_fills_viewport(self):
+    def test_slides_fill_viewport(self):
         html = _html(
             "Image {\n"
             "    displayMode: slider\n"
@@ -864,8 +864,9 @@ class TestImageRendering:
             "    ImageItem { image: \"./c.jpg\" }\n"
             "}\n"
         )
-        assert "lk-image-slider-track .lk-imagecard:last-child" in html
-        assert "flex-basis: 100%" in html
+        assert ".lk-image-slider .lk-imagecard" in html
+        assert "flex: 0 0 100%" in html
+        assert "lk-image-slider-track .lk-imagecard:last-child" not in html
 
     def test_slider_slides_have_unique_ids(self):
         html = _html(
@@ -921,6 +922,38 @@ class TestImageRendering:
             "}\n"
         )
         assert "lk-imagecard--shadow" in html
+
+    def test_slider_shadow_on_container_only(self):
+        html = _html(
+            "Image {\n"
+            "    displayMode: slider\n"
+            "    imageShadow: true\n"
+            "    ImageItem { image: \"./a.jpg\" }\n"
+            "}\n"
+        )
+        assert 'class="lk-image lk-image-slider lk-imageslider--shadow lk-shape-rounded"' in html
+        assert 'lk-imagecard--shadow"' not in html
+
+    def test_slider_no_shadow_without_image_shadow(self):
+        html = _html(
+            "Image {\n"
+            "    displayMode: slider\n"
+            "    ImageItem { image: \"./a.jpg\" }\n"
+            "}\n"
+        )
+        assert 'class="lk-image lk-image-slider"' in html
+        assert 'lk-imageslider--shadow"' not in html
+
+    def test_slider_shadow_css_rule(self):
+        html = _html(
+            "Image {\n"
+            "    displayMode: slider\n"
+            "    imageShadow: true\n"
+            "    ImageItem { image: \"./a.jpg\" }\n"
+            "}\n"
+        )
+        assert ".lk-imageslider--shadow" in html
+        assert "box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);" in html
 
     def test_css_includes_image_styles(self):
         html = _html(self.SRC)
