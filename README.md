@@ -123,6 +123,7 @@ Blocks implemented so far:
 
 | Block | Documentation |
 |-------|---------------|
+| `Page` | [`docs/language/Page.md`](docs/language/Page.md) |
 | `Profile` | [`docs/language/Profile.md`](docs/language/Profile.md) |
 | `Name` | Part of [`docs/language/Profile.md`](docs/language/Profile.md) |
 | `Bio` | Part of [`docs/language/Profile.md`](docs/language/Profile.md) |
