@@ -324,7 +324,22 @@ class TestSocialMediaRendering:
     def test_css_styles_present(self):
         html = _html(SOCIAL)
         assert ".lk-socialitem" in html
-        assert "grid-template-columns: repeat(3, 1fr)" in html
+        assert "flex-basis: calc((100% - 24px) / 3)" in html
+
+    def test_partial_last_row_is_centered(self):
+        html = _html(SOCIAL)
+        assert "display: flex;" in html
+        assert "flex-wrap: wrap;" in html
+        assert "justify-content: center;" in html
+        assert "display: grid;" not in html
+        assert "grid-template-columns" not in html
+        for columns, basis in (
+            (1, "100%"),
+            (2, "calc((100% - 12px) / 2)"),
+            (3, "calc((100% - 24px) / 3)"),
+            (4, "calc((100% - 36px) / 4)"),
+        ):
+            assert f"flex-basis: {basis}" in html
 
     def test_item_shrinks_in_narrow_grid(self):
         html = _html(SOCIAL)
@@ -426,7 +441,7 @@ class TestSocialNetworkRendering:
     def test_css_styles_present(self):
         html = _html(SOCIAL_NETWORK)
         assert ".lk-socialitem" in html
-        assert "grid-template-columns: repeat(3, 1fr)" in html
+        assert "flex-basis: calc((100% - 24px) / 3)" in html
 
     def test_item_shrinks_in_narrow_grid(self):
         html = _html(SOCIAL_NETWORK)
