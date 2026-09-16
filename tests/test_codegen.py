@@ -259,7 +259,7 @@ class TestSocialMediaRendering:
 
     def test_item_anchor(self):
         html = _html(SOCIAL)
-        assert 'class="lk-socialitem lk-shape-rounded lk-icon-right"' in html
+        assert 'class="lk-socialitem lk-shape-rounded"' in html
         assert 'href="https://ig/insta"' in html
 
     def test_service_title_defaults_to_name(self):
@@ -298,6 +298,28 @@ class TestSocialMediaRendering:
         )
         assert 'data-direction="ltr"' in html
         assert 'data-direction="rtl"' not in html
+
+    def test_icon_precedes_title_in_dom(self):
+        html = _html(
+            "SocialMedia {\n"
+            "    SocialMediaItem { service: instagram, url: \"https://ig/x\" }\n"
+            "}\n"
+        )
+        assert html.index('class="lk-socialitem-icon"') < html.index(">Instagram</span>")
+
+    def test_no_icon_position_class_emitted(self):
+        html = _html(
+            "SocialMedia {\n"
+            "    direction: ltr\n"
+            "    SocialMediaItem { service: instagram, url: \"https://ig/x\" }\n"
+            "}\n"
+        )
+        assert "lk-icon-" not in html
+
+    def test_items_flex_row_default(self):
+        html = _html(SOCIAL)
+        assert "flex-direction: row-reverse" not in html
+        assert ".lk-socialitem {" in html
 
     def test_css_styles_present(self):
         html = _html(SOCIAL)
@@ -356,7 +378,7 @@ class TestSocialNetworkRendering:
 
     def test_item_anchor(self):
         html = _html(SOCIAL_NETWORK)
-        assert 'class="lk-socialitem lk-shape-rounded lk-icon-right"' in html
+        assert 'class="lk-socialitem lk-shape-rounded"' in html
         assert 'href="https://wa.me/1"' in html
 
     def test_service_title_defaults_to_name(self):
@@ -367,6 +389,11 @@ class TestSocialNetworkRendering:
     def test_brand_icon_present(self):
         html = _html(SOCIAL_NETWORK)
         assert 'class="lk-socialitem-icon"' in html
+
+    def test_icon_precedes_title_and_no_icon_class(self):
+        html = _html(SOCIAL_NETWORK)
+        assert html.index('class="lk-socialitem-icon"') < html.index(">WhatsApp</span>")
+        assert "lk-icon-" not in html
 
     def test_columns_attribute(self):
         html = _html(
@@ -452,7 +479,7 @@ class TestContactRendering:
 
     def test_item_anchor(self):
         html = _html(CONTACT)
-        assert 'class="lk-socialitem lk-shape-rounded lk-icon-right"' in html
+        assert 'class="lk-socialitem lk-shape-rounded"' in html
 
     def test_title_defaults_to_service_name(self):
         html = _html(CONTACT)
@@ -462,6 +489,11 @@ class TestContactRendering:
     def test_icon_present(self):
         html = _html(CONTACT)
         assert 'class="lk-socialitem-icon"' in html
+
+    def test_icon_precedes_title_and_no_icon_class(self):
+        html = _html(CONTACT)
+        assert html.index('class="lk-socialitem-icon"') < html.index(">Email</span>")
+        assert "lk-icon-" not in html
 
     def test_columns_attribute(self):
         html = _html(
@@ -598,6 +630,11 @@ class TestAddressRendering:
         assert 'class="lk-socialitem-icon"' in html
         assert 'fill="#ea4335"' in html
         assert 'fill="#33CCFF"' in html
+
+    def test_icon_precedes_title_and_no_icon_class(self):
+        html = _html(ADDRESS)
+        assert html.index('class="lk-socialitem-icon"') < html.index(">Google Maps</span>")
+        assert "lk-icon-" not in html
 
     def test_all_service_brand_hexes(self):
         html = _html(

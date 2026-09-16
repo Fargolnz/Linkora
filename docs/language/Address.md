@@ -31,7 +31,6 @@ Multiple `Address` blocks may appear within the same document.
 | Columns | `columns` | Number | `1` | `1`, `2`, `3`, `4` |
 | Show Title | `showTitle` | Boolean | `true` | `true`, `false` |
 | Show Icon | `showIcon` | Boolean | `true` | `true`, `false` |
-| Icon Position | `iconPosition` | Enum | `right` | `left`, `right` |
 | Direction | `direction` | Enum | `rtl` | `ltr`, `rtl` |
 | Title Color | `titleColor` | Color | `#3B3B3B` | Valid Color |
 | Icon Color | `iconColor` | Color | `""` (brand color) | Valid Color |
@@ -111,26 +110,10 @@ Controls whether the provider brand icon is displayed on each item.
 
 ---
 
-### `iconPosition`
-
-Controls the placement of the icon relative to the label.
-
-| Field | Value |
-|-------|-------|
-| Type | Enum |
-| Required | ❌ No |
-| Default | `right` |
-
-Supported values:
-
-- `left` — icon before the label
-- `right` — icon after the label
-
----
-
 ### `direction`
 
-Controls the reading direction of the items.
+Controls the reading direction of the items and determines where the icon
+sits relative to the label.
 
 | Field | Value |
 |-------|-------|
@@ -142,8 +125,8 @@ Supported values:
 
 | Value | Description |
 |-------|-------------|
-| `rtl` | Right-to-left — the first item starts on the right and the rest flow leftward |
-| `ltr` | Left-to-right — the first item starts on the left and the rest flow rightward |
+| `rtl` | Right-to-left — the first item starts on the right and the rest flow leftward; the icon appears on the right of the label |
+| `ltr` | Left-to-right — the first item starts on the left and the rest flow rightward; the icon appears on the left of the label |
 
 ---
 
@@ -383,8 +366,6 @@ Address {
     addressColor: "#111111"
 
     showTitle: true
-
-    iconPosition: left
 
     direction: ltr
 

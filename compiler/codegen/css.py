@@ -278,10 +278,6 @@ def build_css(theme_data: dict[str, str] | None = None) -> str:
     css += "\n    overflow: hidden;"
     css += "\n    text-overflow: ellipsis;"
     css += "\n}"
-    css += "\n.lk-icon-left { flex-direction: row; }"
-    css += "\n.lk-icon-right { flex-direction: row-reverse; }"
-    css += "\n.lk-icon-top { flex-direction: column; gap: 4px; }"
-    css += "\n.lk-icon-top .lk-socialitem-title { white-space: normal; text-align: center; }"
 
     # Image grid + slider + card styling.
     css += "\n.lk-image {"

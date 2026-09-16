@@ -253,12 +253,6 @@ _SOCIALMEDIA = BlockDef(
         PropertyDef("showTitle", ValueType.BOOLEAN, True),
         PropertyDef("showIcon", ValueType.BOOLEAN, True),
         PropertyDef(
-            "iconPosition",
-            ValueType.ENUM,
-            "right",
-            enum_values=("left", "right"),
-        ),
-        PropertyDef(
             "direction",
             ValueType.ENUM,
             "rtl",
@@ -307,12 +301,6 @@ _SOCIALNETWORK = BlockDef(
         PropertyDef("columns", ValueType.NUMBER, 1),
         PropertyDef("showTitle", ValueType.BOOLEAN, True),
         PropertyDef("showIcon", ValueType.BOOLEAN, True),
-        PropertyDef(
-            "iconPosition",
-            ValueType.ENUM,
-            "right",
-            enum_values=("left", "right"),
-        ),
         PropertyDef(
             "direction",
             ValueType.ENUM,
@@ -367,12 +355,6 @@ _CONTACT = BlockDef(
         PropertyDef("showTitle", ValueType.BOOLEAN, True),
         PropertyDef("showIcon", ValueType.BOOLEAN, True),
         PropertyDef(
-            "iconPosition",
-            ValueType.ENUM,
-            "right",
-            enum_values=("left", "right"),
-        ),
-        PropertyDef(
             "direction",
             ValueType.ENUM,
             "rtl",
@@ -423,12 +405,6 @@ _ADDRESS = BlockDef(
         PropertyDef("columns", ValueType.NUMBER, 1),
         PropertyDef("showTitle", ValueType.BOOLEAN, True),
         PropertyDef("showIcon", ValueType.BOOLEAN, True),
-        PropertyDef(
-            "iconPosition",
-            ValueType.ENUM,
-            "right",
-            enum_values=("left", "right"),
-        ),
         PropertyDef(
             "direction",
             ValueType.ENUM,
@@ -781,12 +757,6 @@ _GRID_THEME = BlockDef(
         PropertyDef("columns", ValueType.NUMBER, ""),
         PropertyDef("showTitle", ValueType.BOOLEAN, None),
         PropertyDef("showIcon", ValueType.BOOLEAN, None),
-        PropertyDef(
-            "iconPosition",
-            ValueType.ENUM,
-            "",
-            enum_values=("left", "right"),
-        ),
         PropertyDef(
             "direction",
             ValueType.ENUM,

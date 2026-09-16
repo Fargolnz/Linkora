@@ -1405,11 +1405,10 @@ def render_socialmedia_item(block: Block) -> str:
 
     show_title = bool(parent.get("showTitle", True))
     show_icon = bool(parent.get("showIcon", True))
-    icon_position = str(parent.get("iconPosition", "right"))
     shape = str(parent.get("shape", "rounded"))
 
     classes = " ".join(
-        ["lk-socialitem", f"lk-shape-{shape}", f"lk-icon-{icon_position}"]
+        ["lk-socialitem", f"lk-shape-{shape}"]
     )
     style = (
         f"color: {title_color}; "
@@ -1470,11 +1469,10 @@ def render_socialnetwork_item(block: Block) -> str:
 
     show_title = bool(parent.get("showTitle", True))
     show_icon = bool(parent.get("showIcon", True))
-    icon_position = str(parent.get("iconPosition", "right"))
     shape = str(parent.get("shape", "rounded"))
 
     classes = " ".join(
-        ["lk-socialitem", f"lk-shape-{shape}", f"lk-icon-{icon_position}"]
+        ["lk-socialitem", f"lk-shape-{shape}"]
     )
     style = (
         f"color: {title_color}; "
@@ -1550,11 +1548,10 @@ def render_contact_item(block: Block) -> str:
 
     show_title = bool(parent.get("showTitle", True))
     show_icon = bool(parent.get("showIcon", True))
-    icon_position = str(parent.get("iconPosition", "right"))
     shape = str(parent.get("shape", "rounded"))
 
     classes = " ".join(
-        ["lk-socialitem", f"lk-shape-{shape}", f"lk-icon-{icon_position}"]
+        ["lk-socialitem", f"lk-shape-{shape}"]
     )
     style = (
         f"color: {title_color}; "
@@ -1634,11 +1631,10 @@ def render_address_item(block: Block) -> str:
 
     show_title = bool(parent.get("showTitle", True))
     show_icon = bool(parent.get("showIcon", True))
-    icon_position = str(parent.get("iconPosition", "right"))
     shape = str(parent.get("shape", "rounded"))
 
     classes = " ".join(
-        ["lk-socialitem", f"lk-shape-{shape}", f"lk-icon-{icon_position}"]
+        ["lk-socialitem", f"lk-shape-{shape}"]
     )
     style = (
         f"color: {title_color}; "

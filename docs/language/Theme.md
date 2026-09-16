@@ -161,7 +161,6 @@ Applies to every `SuperLink` block.
 | Columns | `columns` | Number | *(inherited)* | 1, 2, 3, 4 |
 | Show Title | `showTitle` | Boolean | *(inherited)* | `true`, `false` |
 | Show Icon | `showIcon` | Boolean | *(inherited)* | `true`, `false` |
-| Icon Position | `iconPosition` | Enum | *(inherited)* | `left`, `right` |
 | Direction | `direction` | Enum | *(inherited)* | `ltr`, `rtl` |
 | Title Color | `titleColor` | Color | *(inherited)* | |
 | Icon Color | `iconColor` | Color | *(inherited)* | |

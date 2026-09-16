@@ -66,6 +66,32 @@ class TestPropertyRules:
         assert len(errors) == 1
         assert "Duplicate property 'title'" in errors[0].message
 
+    def test_icon_position_removed_from_grid_blocks(self):
+        from compiler import compile_source
+
+        for source in (
+            'SocialMedia {\n    iconPosition: left\n    '
+            'SocialMediaItem { service: instagram, url: "https://ig/x" }\n}\n',
+            'SocialNetwork {\n    iconPosition: right\n    '
+            'SocialNetworkItem { service: telegram, url: "https://t/x" }\n}\n',
+            'Contact {\n    iconPosition: left\n    '
+            'ContactItem { service: email, value: "hi@x.com" }\n}\n',
+            'Address {\n    iconPosition: right\n    address: "Tehran"\n    '
+            'AddressItem { service: waze, url: "https://w/x" }\n}\n',
+        ):
+            errors = compile_source(source).errors
+            assert len(errors) == 1
+            assert "Unknown property 'iconPosition'" in errors[0].message
+
+    def test_icon_position_removed_from_grid_theme(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "Theme { GridTheme { iconPosition: left } }"
+        ).errors
+        assert len(errors) == 1
+        assert "Unknown property 'iconPosition'" in errors[0].message
+
 
 class TestValueValidation:
     def test_invalid_enum_value(self):
