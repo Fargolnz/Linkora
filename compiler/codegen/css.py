@@ -87,6 +87,10 @@ body {{
     gap: 16px;
 }}
 
+.lk-page * {{
+    unicode-bidi: plaintext;
+}}
+
 .lk-link {{
     display: flex;
     align-items: center;
