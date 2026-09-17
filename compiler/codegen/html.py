@@ -9,12 +9,11 @@ from __future__ import annotations
 
 import calendar
 import html
+import re
 from urllib.parse import quote
 
 from compiler.ast import Block, Document
 from compiler.codegen.css import FONT_FAMILIES, build_css
-from compiler.types import jalali_to_gregorian
-
 from compiler.codegen.svg import (
     ADDRESS_META,
     CONTACT_META,
@@ -24,6 +23,7 @@ from compiler.codegen.svg import (
     SUPERLINK_SVG,
     _icon_svg,
 )
+from compiler.types import jalali_to_gregorian
 
 
 #: Counter used to give each slider block a unique HTML element id.
@@ -191,7 +191,7 @@ def render_html(document: Document) -> str:
     if page_data["description"]:
         head += f'  <meta name="description" content="{html.escape(str(page_data["description"]))}">\n'
     head += "  <style>\n"
-    head += f"{build_css(theme_data, used_blocks)}"
+    head += build_css(theme_data, used_blocks)
     head += "  </style>\n"
 
     return (
@@ -325,16 +325,24 @@ def render_name(block: Block) -> str:
     )
 
 
+#: Shared ``lk-shape-*`` class for each block-specific ``shape`` value.
+_SHAPE_CLASS = {
+    "circle": "pill",
+    "square": "sharp",
+    "rectangle": "sharp",
+}
+
+
 def render_logo(block: Block) -> str:
     """Render a Logo block as a profile image."""
     resolved = block.resolved
     image = str(resolved["image"])
-    shape = str(resolved["shape"])
+    shape = _SHAPE_CLASS.get(str(resolved["shape"]), str(resolved["shape"]))
     border_color = str(resolved["borderColor"])
 
     style = f"border-color: {border_color};"
     return (
-        f'    <img class="lk-logo lk-logo-{shape}" '
+        f'    <img class="lk-logo lk-shape-{shape}" '
         f'style="{style}" '
         f'src="{html.escape(image, quote=True)}" alt="Logo">'
     )
@@ -367,9 +375,9 @@ def render_cover(block: Block) -> str:
     """Render a Cover block as a full-width banner image."""
     resolved = block.resolved
     image = str(resolved["image"])
-    shape = str(resolved["shape"])
+    shape = _SHAPE_CLASS.get(str(resolved["shape"]), str(resolved["shape"]))
 
-    classes = " ".join(["lk-cover", f"lk-cover-{shape}"])
+    classes = " ".join(["lk-cover", f"lk-shape-{shape}"])
     return (
         f'  <div class="{classes}">\n'
         f'    <img class="lk-cover-img" '
@@ -441,28 +449,50 @@ def render_text(block: Block) -> str:
     )
 
 
-def render_socialmedia_item(block: Block) -> str:
-    """Render a single SocialMedia item as a clickable styled button."""
+def _render_connect_container(block: Block, caption: str = "") -> str:
+    """Render a connect container (SocialMedia, SocialNetwork, Contact, or
+    Address) as a responsive grid of items."""
+    resolved = block.resolved
+    columns = int(resolved["columns"])
+    direction = str(resolved["direction"])
+
+    items = "\n".join(_render_block(child) for child in block.children)
+    return (
+        f'  <section class="lk-connect" '
+        f'data-columns="{columns}" data-direction="{direction}">\n'
+        f"{caption}"
+        f"{items}\n"
+        f"  </section>"
+    )
+
+
+def _render_connect_item(
+    block: Block,
+    meta: dict[str, object],
+    *,
+    title_fallback: str,
+    border_fallback: str,
+    icon_fallback: str,
+    href: str,
+) -> str:
+    """Render a single connect item (SocialMedia, SocialNetwork, Contact, or
+    Address) as a clickable styled button."""
     resolved = block.resolved
     parent = _parent_resolved(block)
-    service = str(resolved["service"])
-    meta = PLATFORM_META[service]
 
-    def inherit(key: str, parent_key: str, fallback: str = "") -> str:
-        value = str(resolved[key])
-        if value:
-            return value
-        pvalue = str(parent.get(parent_key, ""))
-        if pvalue:
-            return pvalue
-        return fallback
-
-    title = str(resolved["title"]) or meta["name"]
-    url = str(resolved["url"])
-    title_color = inherit("titleColor", "titleColor", "#1A1A1A")
-    background_color = inherit("backgroundColor", "backgroundColor", meta["bg"])
-    border_color = inherit("borderColor", "borderColor", "transparent")
-    icon_color = str(resolved["iconColor"]) or str(parent.get("iconColor", "")) or ""
+    title = str(resolved["title"]) or str(meta["name"])
+    title_color = _inherit(
+        parent, resolved, "titleColor", "titleColor", title_fallback
+    )
+    background_color = _inherit(
+        parent, resolved, "backgroundColor", "backgroundColor", str(meta["bg"])
+    )
+    border_color = _inherit(
+        parent, resolved, "borderColor", "borderColor", border_fallback
+    )
+    icon_color = _inherit(
+        parent, resolved, "iconColor", "iconColor", icon_fallback
+    )
 
     show_title = bool(parent.get("showTitle", True))
     show_icon = bool(parent.get("showIcon", True))
@@ -476,151 +506,6 @@ def render_socialmedia_item(block: Block) -> str:
         f"background-color: {background_color}; "
         f"border-color: {border_color};"
     )
-
-    parts = []
-    if show_icon:
-        parts.append(_icon_svg(meta, icon_color))
-    if show_title:
-        parts.append(f'<span class="lk-connectitem-title">{html.escape(title)}</span>')
-
-    inner = "".join(parts)
-    return (
-        f'    <a class="{classes}" style="{style}" '
-        f'href="{html.escape(url, quote=True)}">{inner}</a>'
-    )
-
-
-def render_socialmedia(block: Block) -> str:
-    """Render a SocialMedia container as a responsive grid of items."""
-    resolved = block.resolved
-    columns = int(resolved["columns"])
-    direction = str(resolved["direction"])
-
-    items = "\n".join(_render_block(child) for child in block.children)
-    return (
-        f'  <section class="lk-connect" '
-        f'data-columns="{columns}" data-direction="{direction}">\n'
-        f"{items}\n"
-        f"  </section>"
-    )
-
-
-def render_socialnetwork_item(block: Block) -> str:
-    """Render a single SocialNetwork item as a clickable styled button."""
-    resolved = block.resolved
-    parent = _parent_resolved(block)
-    service = str(resolved["service"])
-    meta = NETWORK_META[service]
-
-    def inherit(key: str, parent_key: str, fallback: str = "") -> str:
-        value = str(resolved[key])
-        if value:
-            return value
-        pvalue = str(parent.get(parent_key, ""))
-        if pvalue:
-            return pvalue
-        return fallback
-
-    title = str(resolved["title"]) or meta["name"]
-    url = str(resolved["url"])
-    title_color = inherit("titleColor", "titleColor", "#3B3B3B")
-    background_color = inherit("backgroundColor", "backgroundColor", meta["bg"])
-    border_color = inherit("borderColor", "borderColor", "transparent")
-    icon_color = str(resolved["iconColor"]) or str(parent.get("iconColor", "")) or ""
-
-    show_title = bool(parent.get("showTitle", True))
-    show_icon = bool(parent.get("showIcon", True))
-    shape = str(parent.get("shape", "rounded"))
-
-    classes = " ".join(
-        ["lk-connectitem", f"lk-shape-{shape}"]
-    )
-    style = (
-        f"color: {title_color}; "
-        f"background-color: {background_color}; "
-        f"border-color: {border_color};"
-    )
-
-    parts = []
-    if show_icon:
-        parts.append(_icon_svg(meta, icon_color))
-    if show_title:
-        parts.append(f'<span class="lk-connectitem-title">{html.escape(title)}</span>')
-
-    inner = "".join(parts)
-    return (
-        f'    <a class="{classes}" style="{style}" '
-        f'href="{html.escape(url, quote=True)}">{inner}</a>'
-    )
-
-
-def render_socialnetwork(block: Block) -> str:
-    """Render a SocialNetwork container as a responsive grid of items."""
-    resolved = block.resolved
-    columns = int(resolved["columns"])
-    direction = str(resolved["direction"])
-
-    items = "\n".join(_render_block(child) for child in block.children)
-    return (
-        f'  <section class="lk-connect" '
-        f'data-columns="{columns}" data-direction="{direction}">\n'
-        f"{items}\n"
-        f"  </section>"
-    )
-
-
-def render_contact(block: Block) -> str:
-    """Render a Contact container as a responsive grid of contact items."""
-    resolved = block.resolved
-    columns = int(resolved["columns"])
-    direction = str(resolved["direction"])
-
-    items = "\n".join(_render_block(child) for child in block.children)
-    return (
-        f'  <section class="lk-connect" '
-        f'data-columns="{columns}" data-direction="{direction}">\n'
-        f"{items}\n"
-        f"  </section>"
-    )
-
-
-def render_contact_item(block: Block) -> str:
-    """Render a single Contact item as a clickable button with a scheme href."""
-    resolved = block.resolved
-    parent = _parent_resolved(block)
-    service = str(resolved["service"])
-    meta = CONTACT_META[service]
-
-    def inherit(key: str, parent_key: str, fallback: str = "") -> str:
-        value = str(resolved[key])
-        if value:
-            return value
-        pvalue = str(parent.get(parent_key, ""))
-        if pvalue:
-            return pvalue
-        return fallback
-
-    title = str(resolved["title"]) or meta["name"]
-    value = str(resolved["value"])
-    title_color = inherit("titleColor", "titleColor", "#00B4B0")
-    background_color = inherit("backgroundColor", "backgroundColor", meta["bg"])
-    border_color = inherit("borderColor", "borderColor", "#00B4B0")
-    icon_color = inherit("iconColor", "iconColor", "#00B4B0")
-
-    show_title = bool(parent.get("showTitle", True))
-    show_icon = bool(parent.get("showIcon", True))
-    shape = str(parent.get("shape", "rounded"))
-
-    classes = " ".join(
-        ["lk-connectitem", f"lk-shape-{shape}"]
-    )
-    style = (
-        f"color: {title_color}; "
-        f"background-color: {background_color}; "
-        f"border-color: {border_color};"
-    )
-
-    href = _contact_href(service, value)
 
     parts = []
     if show_icon:
@@ -635,6 +520,63 @@ def render_contact_item(block: Block) -> str:
     )
 
 
+def render_socialmedia_item(block: Block) -> str:
+    """Render a single SocialMedia item as a clickable styled button."""
+    resolved = block.resolved
+    service = str(resolved["service"])
+    return _render_connect_item(
+        block,
+        PLATFORM_META[service],
+        title_fallback="#1A1A1A",
+        border_fallback="transparent",
+        icon_fallback="",
+        href=str(resolved["url"]),
+    )
+
+
+def render_socialmedia(block: Block) -> str:
+    """Render a SocialMedia container as a responsive grid of items."""
+    return _render_connect_container(block)
+
+
+def render_socialnetwork_item(block: Block) -> str:
+    """Render a single SocialNetwork item as a clickable styled button."""
+    resolved = block.resolved
+    service = str(resolved["service"])
+    return _render_connect_item(
+        block,
+        NETWORK_META[service],
+        title_fallback="#3B3B3B",
+        border_fallback="transparent",
+        icon_fallback="",
+        href=str(resolved["url"]),
+    )
+
+
+def render_socialnetwork(block: Block) -> str:
+    """Render a SocialNetwork container as a responsive grid of items."""
+    return _render_connect_container(block)
+
+
+def render_contact(block: Block) -> str:
+    """Render a Contact container as a responsive grid of contact items."""
+    return _render_connect_container(block)
+
+
+def render_contact_item(block: Block) -> str:
+    """Render a single Contact item as a clickable button with a scheme href."""
+    resolved = block.resolved
+    service = str(resolved["service"])
+    return _render_connect_item(
+        block,
+        CONTACT_META[service],
+        title_fallback="#00B4B0",
+        border_fallback="#00B4B0",
+        icon_fallback="#00B4B0",
+        href=_contact_href(service, str(resolved["value"])),
+    )
+
+
 def _contact_href(contact_type: str, value: str) -> str:
     """Build the destination href for a contact type from its raw value."""
     scheme = CONTACT_META[contact_type]["scheme"]
@@ -643,76 +585,34 @@ def _contact_href(contact_type: str, value: str) -> str:
             return scheme + value
         return value
     return scheme + value
+
+
 def render_address(block: Block) -> str:
     """Render an Address container as an address caption plus a provider grid."""
     resolved = block.resolved
-    columns = int(resolved["columns"])
-    direction = str(resolved["direction"])
     address = str(resolved["address"])
     address_color = str(resolved["addressColor"]) or "#000000"
 
-    items = "\n".join(_render_block(child) for child in block.children)
     caption = ""
     if address:
         caption = (
             f'  <div class="lk-address-caption" style="color: {address_color};">'
-            f'{html.escape(address)}</div>\n'
+            f"{html.escape(address)}</div>\n"
         )
-    return (
-        f'  <section class="lk-connect" '
-        f'data-columns="{columns}" data-direction="{direction}">\n'
-        f"{caption}"
-        f"{items}\n"
-        f"  </section>"
-    )
+    return _render_connect_container(block, caption=caption)
 
 
 def render_address_item(block: Block) -> str:
     """Render a single Address item as a clickable navigation button."""
     resolved = block.resolved
-    parent = _parent_resolved(block)
     service = str(resolved["service"])
-    meta = ADDRESS_META[service]
-
-    def inherit(key: str, parent_key: str, fallback: str = "") -> str:
-        value = str(resolved[key])
-        if value:
-            return value
-        pvalue = str(parent.get(parent_key, ""))
-        if pvalue:
-            return pvalue
-        return fallback
-
-    title = str(resolved["title"]) or meta["name"]
-    url = str(resolved["url"])
-    title_color = inherit("titleColor", "titleColor", "#3B3B3B")
-    background_color = inherit("backgroundColor", "backgroundColor", meta["bg"])
-    border_color = inherit("borderColor", "borderColor", "transparent")
-    icon_color = inherit("iconColor", "iconColor", "")
-
-    show_title = bool(parent.get("showTitle", True))
-    show_icon = bool(parent.get("showIcon", True))
-    shape = str(parent.get("shape", "rounded"))
-
-    classes = " ".join(
-        ["lk-connectitem", f"lk-shape-{shape}"]
-    )
-    style = (
-        f"color: {title_color}; "
-        f"background-color: {background_color}; "
-        f"border-color: {border_color};"
-    )
-
-    parts = []
-    if show_icon:
-        parts.append(_icon_svg(meta, icon_color))
-    if show_title:
-        parts.append(f'<span class="lk-connectitem-title">{html.escape(title)}</span>')
-
-    inner = "".join(parts)
-    return (
-        f'    <a class="{classes}" style="{style}" '
-        f'href="{html.escape(url, quote=True)}">{inner}</a>'
+    return _render_connect_item(
+        block,
+        ADDRESS_META[service],
+        title_fallback="#3B3B3B",
+        border_fallback="transparent",
+        icon_fallback="",
+        href=str(resolved["url"]),
     )
 
 
@@ -771,13 +671,12 @@ def render_image(block: Block) -> str:
             or str(child.resolved.get("description") or "")
             for child in row_items
         )
-        row_class = "lk-image-row--caption" if has_caption else "lk-image-row--plain"
         cards = "\n".join(
             _render_image_item(child, reserve_caption=has_caption)
             for child in row_items
         )
         rows.append(
-            f'    <div class="lk-image-row {row_class}">\n{cards}\n    </div>'
+            f'    <div class="lk-image-row">\n{cards}\n    </div>'
         )
     body = "\n".join(rows)
     return (
@@ -815,19 +714,18 @@ def _render_image_item(block: Block, reserve_caption: bool, card_id: str | None 
     shape = str(parent.get("shape", "rounded"))
     image_shadow = bool(parent.get("imageShadow", False))
 
-    def inherit(key: str, parent_key: str) -> str:
-        value = str(resolved[key])
-        if value:
-            return value
-        return str(parent.get(parent_key, ""))
-
-    background_color = inherit("backgroundColor", "backgroundColor") or "#FFFFFF"
-    border_color = inherit("borderColor", "borderColor") or "transparent"
+    background_color = _inherit(
+        parent, resolved, "backgroundColor", "backgroundColor"
+    ) or "#FFFFFF"
+    border_color = _inherit(
+        parent, resolved, "borderColor", "borderColor"
+    ) or "transparent"
     title_color = (
-        inherit("titleColor", "titleColor") or str(parent.get("titleColor", "#000000"))
+        _inherit(parent, resolved, "titleColor", "titleColor")
+        or str(parent.get("titleColor", "#000000"))
     )
     description_color = (
-        inherit("descriptionColor", "descriptionColor")
+        _inherit(parent, resolved, "descriptionColor", "descriptionColor")
         or str(parent.get("descriptionColor", "#3B3B3B"))
     )
 
@@ -910,17 +808,15 @@ def _render_banner_item(block: Block) -> str:
     alt = title or description or "Banner"
     shape = str(parent.get("shape", "rounded"))
 
-    def inherit(key: str, parent_key: str) -> str:
-        value = str(resolved[key])
-        if value:
-            return value
-        return str(parent.get(parent_key, ""))
-
-    border_color = inherit("borderColor", "borderColor") or "transparent"
-    title_color = inherit("titleColor", "titleColor") or "#FFFFFF"
-    description_color = (
-        inherit("descriptionColor", "descriptionColor") or "#FFFFFF"
-    )
+    border_color = _inherit(
+        parent, resolved, "borderColor", "borderColor"
+    ) or "transparent"
+    title_color = _inherit(
+        parent, resolved, "titleColor", "titleColor"
+    ) or "#FFFFFF"
+    description_color = _inherit(
+        parent, resolved, "descriptionColor", "descriptionColor"
+    ) or "#FFFFFF"
 
     classes = " ".join(["lk-banneritem", f"lk-shape-{shape}"])
     style = f"border-color: {border_color};"
@@ -959,30 +855,13 @@ def render_banner_item(block: Block) -> str:
     return _render_banner_item(block)
 
 
-def _is_youtube_url(url: str) -> bool:
-    """Return True if *url* is a YouTube watch URL and extract the video ID."""
-    import re
-    m = re.match(
-        r"^https?://(?:(?:www\.)?youtube\.com/watch\?.*v=|youtu\.be/)([A-Za-z0-9_-]+)",
-        url,
-    )
-    return m is not None
-
-
 def _youtube_video_id(url: str) -> str:
-    """Extract the YouTube video ID from a watch URL."""
-    import re
+    """Extract the YouTube video ID from a watch URL, or "" if not one."""
     m = re.match(
         r"^https?://(?:(?:www\.)?youtube\.com/watch\?.*v=|youtu\.be/)([A-Za-z0-9_-]+)",
         url,
     )
     return m.group(1) if m else ""
-
-
-def _is_aparat_url(url: str) -> bool:
-    """Return True if *url* is an Aparat watch URL."""
-    import re
-    return bool(re.match(r"^https?://(?:www\.)?aparat\.com/v/[A-Za-z0-9_-]+", url))
 
 
 def _is_local_video(url: str) -> bool:
@@ -999,12 +878,11 @@ def render_video(block: Block) -> str:
     shape = str(resolved["shape"])
     border_color = str(resolved["borderColor"])
 
-    is_yt = _is_youtube_url(url)
-    is_ap = _is_aparat_url(url)
+    vid = _youtube_video_id(url)
+    is_yt = bool(vid)
     is_local = _is_local_video(url)
 
     if not thumbnail and is_yt:
-        vid = _youtube_video_id(url)
         thumbnail = f"https://img.youtube.com/vi/{vid}/maxresdefault.jpg"
 
     alt = "Video"
@@ -1025,11 +903,11 @@ def render_video(block: Block) -> str:
     )
 
     inner = f"{img_tag}{play_icon}"
+    style_attr = f' style="{style}"' if style else ""
 
     if is_local:
         tag_open = (
-            f'  <div class="{card_class} lk-shape-{shape}"'
-            f'{f" style=\"{style}\"" if style else ""}>'
+            f'  <div class="{card_class} lk-shape-{shape}"{style_attr}>'
         )
         tag_close = "  </div>"
         video_el = (
@@ -1041,8 +919,7 @@ def render_video(block: Block) -> str:
     tag_open = (
         f'  <a class="{card_class} lk-shape-{shape}" '
         f'href="{html.escape(url, quote=True)}" '
-        f'target="_blank" rel="noopener"'
-        f'{f" style=\"{style}\"" if style else ""}>'
+        f'target="_blank" rel="noopener"{style_attr}>'
     )
     tag_close = "  </a>"
     return f"{tag_open}{inner}\n{tag_close}"
@@ -1114,10 +991,10 @@ def render_countdown(block: Block) -> str:
     if not background_color or background_color == "transparent":
         card_class += " lk-countdown-transparent"
 
+    style_attr = f' style="{style}"' if style else ""
     return (
         f'  <div class="{card_class} lk-shape-{shape}" '
-        f'data-target="{target_ms}"{digits_attr}'
-        f'{f" style=\"{style}\"" if style else ""}>'
+        f'data-target="{target_ms}"{digits_attr}{style_attr}>'
         f'\n    <div class="lk-countdown-row">\n{boxes}\n    </div>'
         f"{expired}\n  </div>"
     )
@@ -1153,17 +1030,11 @@ def _render_faq_item(block: Block) -> str:
     question = str(resolved["question"])
     answer = str(resolved["answer"])
 
-    def inherit(key: str, parent_key: str, default: str = "") -> str:
-        value = str(resolved[key])
-        if value:
-            return value
-        return str(parent.get(parent_key, default)) or default
-
-    question_color = inherit("questionColor", "questionColor", "#00B4B0")
-    answer_color = inherit("answerColor", "answerColor", "#3B3B3B")
-    icon_color = inherit("iconColor", "iconColor", "#00B4B0")
-    background_color = inherit("backgroundColor", "backgroundColor", "#FFFFFF")
-    border_color = inherit("borderColor", "borderColor", "#00B4B0")
+    question_color = _inherit(parent, resolved, "questionColor", "questionColor", "#00B4B0")
+    answer_color = _inherit(parent, resolved, "answerColor", "answerColor", "#3B3B3B")
+    icon_color = _inherit(parent, resolved, "iconColor", "iconColor", "#00B4B0")
+    background_color = _inherit(parent, resolved, "backgroundColor", "backgroundColor", "#FFFFFF")
+    border_color = _inherit(parent, resolved, "borderColor", "borderColor", "#00B4B0")
     shape = str(parent.get("shape", "rounded")) or "rounded"
 
     style = (
@@ -1197,6 +1068,20 @@ def _render_faq_item(block: Block) -> str:
 def _parent_resolved(block: Block) -> dict[str, object]:
     """Return the resolved properties of the nearest ancestor block."""
     return block.parent.resolved if block.parent is not None else {}
+
+
+def _inherit(
+    parent: dict[str, object],
+    resolved: dict[str, object],
+    key: str,
+    parent_key: str,
+    fallback: str = "",
+) -> str:
+    """Resolve ``key`` from the block, falling back to its parent."""
+    value = str(resolved[key])
+    if value:
+        return value
+    return str(parent.get(parent_key, fallback)) or fallback
 
 
 def render_divider(block: Block) -> str:

@@ -331,11 +331,11 @@ class TestProfileRendering:
 
     def test_logo_shape(self):
         html = _html(PROFILE)
-        assert "lk-logo-circle" in html
+        assert "lk-shape-pill" in html
 
     def test_cover_shape(self):
         html = _html(PROFILE)
-        assert "lk-cover-rounded" in html
+        assert "lk-shape-rounded" in html
 
     def test_bio_text(self):
         html = _html(PROFILE)
@@ -829,7 +829,7 @@ class TestImageRendering:
     def test_grid_section_and_rows(self):
         html = _html(self.SRC)
         assert '<section class="lk-image lk-image-grid" data-direction="rtl">' in html
-        assert 'class="lk-image-row lk-image-row--caption"' in html
+        assert 'class="lk-image-row"' in html
 
     def test_direction_default_is_rtl(self):
         html = _html(self.SRC)
@@ -930,7 +930,7 @@ class TestImageRendering:
             "    ImageItem { image: \"./c.jpg\" }\n"
             "}\n"
         )
-        assert 'class="lk-image-row lk-image-row--plain"' in html
+        assert 'class="lk-image-row"' in html
         assert html.count('class="lk-image-row') == 2
 
     def test_slider_mode(self):
