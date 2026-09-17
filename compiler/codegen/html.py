@@ -728,7 +728,7 @@ def render_image(block: Block) -> str:
         shape = str(resolved.get("shape") or "rounded")
         section_classes = ["lk-image", "lk-image-slider"]
         if image_shadow:
-            section_classes.append("lk-imageslider--shadow")
+            section_classes.append("lk-image-slider--shadow")
             section_classes.append(f"lk-shape-{shape}")
         cards = []
         for i, child in enumerate(items):

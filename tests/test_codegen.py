@@ -1060,7 +1060,7 @@ class TestImageRendering:
             "    ImageItem { image: \"./a.jpg\" }\n"
             "}\n"
         )
-        assert 'class="lk-image lk-image-slider lk-imageslider--shadow lk-shape-rounded"' in html
+        assert 'class="lk-image lk-image-slider lk-image-slider--shadow lk-shape-rounded"' in html
         assert 'lk-imagecard--shadow"' not in html
 
     def test_slider_no_shadow_without_image_shadow(self):
@@ -1071,7 +1071,7 @@ class TestImageRendering:
             "}\n"
         )
         assert 'class="lk-image lk-image-slider"' in html
-        assert 'lk-imageslider--shadow"' not in html
+        assert 'lk-image-slider--shadow"' not in html
 
     def test_slider_shadow_css_rule(self):
         html = _html(
@@ -1081,7 +1081,7 @@ class TestImageRendering:
             "    ImageItem { image: \"./a.jpg\" }\n"
             "}\n"
         )
-        assert ".lk-imageslider--shadow" in html
+        assert ".lk-image-slider--shadow" in html
         assert "box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);" in html
 
     def test_css_includes_image_styles(self):

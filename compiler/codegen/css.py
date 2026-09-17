@@ -6,16 +6,16 @@ blocks can reuse the same conventions without collisions.
 
 from __future__ import annotations
 
-#: Border-radius (px) for each ``shape`` value of the Link block.
-LINK_SHAPES = {
+#: Border-radius (px) for each ``shape`` value shared by every block.
+BLOCK_SHAPES = {
     "sharp": "0",
     "slightlyRounded": "6px",
     "rounded": "12px",
     "pill": "999px",
 }
 
-#: CSS flex alignment for each ``align`` value of the Link block.
-LINK_ALIGNMENTS = {
+#: CSS flex alignment for each ``align`` value shared by every block.
+BLOCK_ALIGNMENTS = {
     "left": "flex-start",
     "center": "center",
     "right": "flex-end",
@@ -64,6 +64,7 @@ _SOCIAL_BLOCKS = frozenset(
 )
 
 #: CSS group for each of the remaining blocks, keyed by top-level block name.
+_LINK_BLOCKS = frozenset({"Link"})
 _IMAGE_BLOCKS = frozenset({"Image"})
 _BANNER_BLOCKS = frozenset({"Banner"})
 _VIDEO_BLOCKS = frozenset({"Video"})
@@ -122,24 +123,6 @@ body {{
     unicode-bidi: plaintext;
 }}
 
-.lk-link {{
-    display: flex;
-    align-items: center;
-    width: 100%;
-    min-height: 52px;
-    padding: 16px 24px;
-    border: 2px solid transparent;
-    font-size: 16px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: transform 120ms ease, opacity 120ms ease;
-}}
-
-.lk-link:hover {{
-    transform: translateY(-2px);
-    opacity: 0.92;
-}}
-
 /* Larger screens: a column slightly wider than a phone, floating on the
    tinted background as a card, centered with equal space above and below. */
 @media (min-width: {desktop_breakpoint}) {{
@@ -192,7 +175,34 @@ def build_css(
         desktop_breakpoint=DESKTOP_BREAKPOINT,
     )
 
+    # Shared shape and alignment utilities used by every block.
+    for name, radius in BLOCK_SHAPES.items():
+        css += f"\n.lk-shape-{name} {{ border-radius: {radius}; }}"
+
+    for name, alignment in BLOCK_ALIGNMENTS.items():
+        css += f"\n.lk-align-{name} {{ justify-content: {alignment}; }}"
+
+    if _css_wanted(used_blocks, _LINK_BLOCKS):
+        # Link button styling.
+        css += "\n.lk-link {"
+        css += "\n    display: flex;"
+        css += "\n    align-items: center;"
+        css += "\n    width: 100%;"
+        css += "\n    min-height: 52px;"
+        css += "\n    padding: 16px 24px;"
+        css += "\n    border: 2px solid transparent;"
+        css += "\n    font-size: 16px;"
+        css += "\n    font-weight: 600;"
+        css += "\n    text-decoration: none;"
+        css += "\n    transition: transform 120ms ease, opacity 120ms ease;"
+        css += "\n}"
+        css += "\n.lk-link:hover {"
+        css += "\n    transform: translateY(-2px);"
+        css += "\n    opacity: 0.92;"
+        css += "\n}"
+
     if _css_wanted(used_blocks, _PROFILE_BLOCKS):
+        # Profile identity + standalone text block styling.
         css += "\n.lk-profile {"
         css += "\n    display: flex;"
         css += "\n    flex-direction: column;"
@@ -223,15 +233,7 @@ def build_css(
         css += "\n    border: 3px solid transparent;"
         css += "\n}"
         css += "\n.lk-logo-circle { border-radius: 50%; }"
-        css += "\n.lk-logo-square { border-radius: 0; }"
-        css += "\n.lk-bio {"
-        css += "\n    margin: 0;"
-        css += "\n    padding: 12px 20px;"
-        css += "\n    font-size: 14px;"
-        css += "\n    line-height: 1.6;"
-        css += "\n    width: 100%;"
-        css += "\n    border: 1px solid transparent;"
-        css += "\n}"
+        css += "\n.lk-bio,"
         css += "\n.lk-text {"
         css += "\n    margin: 0;"
         css += "\n    padding: 12px 20px;"
@@ -261,14 +263,9 @@ def build_css(
         css += "\n    width: 100%;"
         css += "\n}"
 
-    for name, radius in LINK_SHAPES.items():
-        css += f"\n.lk-shape-{name} {{ border-radius: {radius}; }}"
-
-    for name, alignment in LINK_ALIGNMENTS.items():
-        css += f"\n.lk-align-{name} {{ justify-content: {alignment}; }}"
-
     if _css_wanted(used_blocks, _SOCIAL_BLOCKS):
-        # Social grid + item styling (shared by SocialMedia and SocialNetwork).
+        # Social grid + item styling (shared by SocialMedia, SocialNetwork,
+        # Contact, and Address).
         css += "\n.lk-social {"
         css += "\n    display: flex;"
         css += "\n    flex-wrap: wrap;"
@@ -359,7 +356,8 @@ def build_css(
         css += "\n    object-fit: cover;"
         css += "\n    flex: 0 0 auto;"
         css += "\n}"
-        css += "\n.lk-imagecard--shadow {"
+        css += "\n.lk-imagecard--shadow,"
+        css += "\n.lk-image-slider--shadow {"
         css += "\n    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);"
         css += "\n}"
         css += "\n.lk-imagecard--has-caption .lk-imagecard-img {"
@@ -388,9 +386,6 @@ def build_css(
         css += "\n.lk-image-slider {"
         css += "\n    position: relative;"
         css += "\n    overflow: hidden;"
-        css += "\n}"
-        css += "\n.lk-imageslider--shadow {"
-        css += "\n    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);"
         css += "\n}"
         css += "\n.lk-image-slider .lk-image-slider-track {"
         css += "\n    display: flex;"
@@ -511,7 +506,8 @@ def build_css(
         css += "\n    transform: translateY(-2px);"
         css += "\n    opacity: 0.92;"
         css += "\n}"
-        css += "\n.lk-video-img {"
+        css += "\n.lk-video-img,"
+        css += "\n.lk-video-player {"
         css += "\n    display: block;"
         css += "\n    width: 100%;"
         css += "\n    aspect-ratio: 16 / 9;"
@@ -542,12 +538,6 @@ def build_css(
         css += "\n    border-width: 10px 0 10px 18px;"
         css += "\n    border-color: transparent transparent transparent #FFFFFF;"
         css += "\n    margin-left: 4px;"
-        css += "\n}"
-        css += "\n.lk-video-player {"
-        css += "\n    display: block;"
-        css += "\n    width: 100%;"
-        css += "\n    aspect-ratio: 16 / 9;"
-        css += "\n    object-fit: cover;"
         css += "\n}"
 
     if _css_wanted(used_blocks, _FAQ_BLOCKS):
