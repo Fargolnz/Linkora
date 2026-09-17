@@ -170,6 +170,7 @@ def render_html(document: Document) -> str:
     theme_data = _theme_data(theme_block)
     page_data = _page_data(document)
     content_blocks = [b for b in document.blocks if b.name not in ("Theme", "Page")]
+    used_blocks = {b.name for b in content_blocks}
     body = "\n".join(_render_block(block) for block in content_blocks)
     scripts = ""
     if _slider_counter > 0:
@@ -190,7 +191,7 @@ def render_html(document: Document) -> str:
     if page_data["description"]:
         head += f'  <meta name="description" content="{html.escape(str(page_data["description"]))}">\n'
     head += "  <style>\n"
-    head += f"{build_css(theme_data)}"
+    head += f"{build_css(theme_data, used_blocks)}"
     head += "  </style>\n"
 
     return (

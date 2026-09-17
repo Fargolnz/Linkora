@@ -43,6 +43,35 @@ class TestPageShell:
         assert ".lk-shape-rounded" in html
         assert ".lk-align-center" in html
 
+    def test_unused_block_css_is_tree_shaken(self):
+        html = _html()
+        for unused in (
+            ".lk-profile {",
+            ".lk-social {",
+            ".lk-image {",
+            ".lk-banner {",
+            ".lk-video {",
+            ".lk-faq {",
+            ".lk-superlink {",
+            ".lk-countdown {",
+            ".lk-divider {",
+        ):
+            assert unused not in html
+        assert ".lk-link {" in html
+        assert ".lk-page {" in html
+
+    def test_used_block_css_is_kept(self):
+        html = _html(
+            "Countdown { date: \"2026/12/31\", time: \"23:59\", calendar: gregorian }\n"
+            "Divider { style: orb }\n"
+            "FAQ { FAQItem { question: \"Q\", answer: \"A\" } }\n"
+        )
+        assert ".lk-countdown {" in html
+        assert ".lk-divider {" in html
+        assert ".lk-faq {" in html
+        assert ".lk-social {" not in html
+        assert ".lk-image {" not in html
+
 
 class TestPageBlock:
     def test_language_en_sets_lang_and_dir(self):
