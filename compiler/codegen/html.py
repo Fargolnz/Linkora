@@ -469,7 +469,7 @@ def render_socialmedia_item(block: Block) -> str:
     shape = str(parent.get("shape", "rounded"))
 
     classes = " ".join(
-        ["lk-socialitem", f"lk-shape-{shape}"]
+        ["lk-connectitem", f"lk-shape-{shape}"]
     )
     style = (
         f"color: {title_color}; "
@@ -481,7 +481,7 @@ def render_socialmedia_item(block: Block) -> str:
     if show_icon:
         parts.append(_icon_svg(meta, icon_color))
     if show_title:
-        parts.append(f'<span class="lk-socialitem-title">{html.escape(title)}</span>')
+        parts.append(f'<span class="lk-connectitem-title">{html.escape(title)}</span>')
 
     inner = "".join(parts)
     return (
@@ -498,7 +498,7 @@ def render_socialmedia(block: Block) -> str:
 
     items = "\n".join(_render_block(child) for child in block.children)
     return (
-        f'  <section class="lk-social" '
+        f'  <section class="lk-connect" '
         f'data-columns="{columns}" data-direction="{direction}">\n'
         f"{items}\n"
         f"  </section>"
@@ -533,7 +533,7 @@ def render_socialnetwork_item(block: Block) -> str:
     shape = str(parent.get("shape", "rounded"))
 
     classes = " ".join(
-        ["lk-socialitem", f"lk-shape-{shape}"]
+        ["lk-connectitem", f"lk-shape-{shape}"]
     )
     style = (
         f"color: {title_color}; "
@@ -545,7 +545,7 @@ def render_socialnetwork_item(block: Block) -> str:
     if show_icon:
         parts.append(_icon_svg(meta, icon_color))
     if show_title:
-        parts.append(f'<span class="lk-socialitem-title">{html.escape(title)}</span>')
+        parts.append(f'<span class="lk-connectitem-title">{html.escape(title)}</span>')
 
     inner = "".join(parts)
     return (
@@ -562,7 +562,7 @@ def render_socialnetwork(block: Block) -> str:
 
     items = "\n".join(_render_block(child) for child in block.children)
     return (
-        f'  <section class="lk-social" '
+        f'  <section class="lk-connect" '
         f'data-columns="{columns}" data-direction="{direction}">\n'
         f"{items}\n"
         f"  </section>"
@@ -577,7 +577,7 @@ def render_contact(block: Block) -> str:
 
     items = "\n".join(_render_block(child) for child in block.children)
     return (
-        f'  <section class="lk-social" '
+        f'  <section class="lk-connect" '
         f'data-columns="{columns}" data-direction="{direction}">\n'
         f"{items}\n"
         f"  </section>"
@@ -612,7 +612,7 @@ def render_contact_item(block: Block) -> str:
     shape = str(parent.get("shape", "rounded"))
 
     classes = " ".join(
-        ["lk-socialitem", f"lk-shape-{shape}"]
+        ["lk-connectitem", f"lk-shape-{shape}"]
     )
     style = (
         f"color: {title_color}; "
@@ -626,7 +626,7 @@ def render_contact_item(block: Block) -> str:
     if show_icon:
         parts.append(_icon_svg(meta, icon_color))
     if show_title:
-        parts.append(f'<span class="lk-socialitem-title">{html.escape(title)}</span>')
+        parts.append(f'<span class="lk-connectitem-title">{html.escape(title)}</span>')
 
     inner = "".join(parts)
     return (
@@ -659,7 +659,7 @@ def render_address(block: Block) -> str:
             f'{html.escape(address)}</div>\n'
         )
     return (
-        f'  <section class="lk-social" '
+        f'  <section class="lk-connect" '
         f'data-columns="{columns}" data-direction="{direction}">\n'
         f"{caption}"
         f"{items}\n"
@@ -695,7 +695,7 @@ def render_address_item(block: Block) -> str:
     shape = str(parent.get("shape", "rounded"))
 
     classes = " ".join(
-        ["lk-socialitem", f"lk-shape-{shape}"]
+        ["lk-connectitem", f"lk-shape-{shape}"]
     )
     style = (
         f"color: {title_color}; "
@@ -707,7 +707,7 @@ def render_address_item(block: Block) -> str:
     if show_icon:
         parts.append(_icon_svg(meta, icon_color))
     if show_title:
-        parts.append(f'<span class="lk-socialitem-title">{html.escape(title)}</span>')
+        parts.append(f'<span class="lk-connectitem-title">{html.escape(title)}</span>')
 
     inner = "".join(parts)
     return (

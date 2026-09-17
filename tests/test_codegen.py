@@ -47,7 +47,7 @@ class TestPageShell:
         html = _html()
         for unused in (
             ".lk-profile {",
-            ".lk-social {",
+            ".lk-connect {",
             ".lk-image {",
             ".lk-banner {",
             ".lk-video {",
@@ -69,7 +69,7 @@ class TestPageShell:
         assert ".lk-countdown {" in html
         assert ".lk-divider {" in html
         assert ".lk-faq {" in html
-        assert ".lk-social {" not in html
+        assert ".lk-connect {" not in html
         assert ".lk-image {" not in html
 
 
@@ -357,12 +357,12 @@ SOCIAL = (
 class TestSocialMediaRendering:
     def test_grid_section(self):
         html = _html(SOCIAL)
-        assert '<section class="lk-social"' in html
+        assert '<section class="lk-connect"' in html
         assert 'data-columns="1"' in html
 
     def test_item_anchor(self):
         html = _html(SOCIAL)
-        assert 'class="lk-socialitem lk-shape-rounded"' in html
+        assert 'class="lk-connectitem lk-shape-rounded"' in html
         assert 'href="https://ig/insta"' in html
 
     def test_service_title_defaults_to_name(self):
@@ -372,7 +372,7 @@ class TestSocialMediaRendering:
 
     def test_brand_icon_present(self):
         html = _html(SOCIAL)
-        assert 'class="lk-socialitem-icon"' in html
+        assert 'class="lk-connectitem-icon"' in html
 
     def test_columns_attribute(self):
         html = _html(
@@ -408,7 +408,7 @@ class TestSocialMediaRendering:
             "    SocialMediaItem { service: instagram, url: \"https://ig/x\" }\n"
             "}\n"
         )
-        assert html.index('class="lk-socialitem-icon"') < html.index(">Instagram</span>")
+        assert html.index('class="lk-connectitem-icon"') < html.index(">Instagram</span>")
 
     def test_no_icon_position_class_emitted(self):
         html = _html(
@@ -422,11 +422,11 @@ class TestSocialMediaRendering:
     def test_items_flex_row_default(self):
         html = _html(SOCIAL)
         assert "flex-direction: row-reverse" not in html
-        assert ".lk-socialitem {" in html
+        assert ".lk-connectitem {" in html
 
     def test_css_styles_present(self):
         html = _html(SOCIAL)
-        assert ".lk-socialitem" in html
+        assert ".lk-connectitem" in html
         assert "flex-basis: calc((100% - 24px) / 3)" in html
 
     def test_partial_last_row_is_centered(self):
@@ -491,12 +491,12 @@ SOCIAL_NETWORK = (
 class TestSocialNetworkRendering:
     def test_grid_section(self):
         html = _html(SOCIAL_NETWORK)
-        assert '<section class="lk-social"' in html
+        assert '<section class="lk-connect"' in html
         assert 'data-columns="1"' in html
 
     def test_item_anchor(self):
         html = _html(SOCIAL_NETWORK)
-        assert 'class="lk-socialitem lk-shape-rounded"' in html
+        assert 'class="lk-connectitem lk-shape-rounded"' in html
         assert 'href="https://wa.me/1"' in html
 
     def test_service_title_defaults_to_name(self):
@@ -506,11 +506,11 @@ class TestSocialNetworkRendering:
 
     def test_brand_icon_present(self):
         html = _html(SOCIAL_NETWORK)
-        assert 'class="lk-socialitem-icon"' in html
+        assert 'class="lk-connectitem-icon"' in html
 
     def test_icon_precedes_title_and_no_icon_class(self):
         html = _html(SOCIAL_NETWORK)
-        assert html.index('class="lk-socialitem-icon"') < html.index(">WhatsApp</span>")
+        assert html.index('class="lk-connectitem-icon"') < html.index(">WhatsApp</span>")
         assert "lk-icon-" not in html
 
     def test_columns_attribute(self):
@@ -543,7 +543,7 @@ class TestSocialNetworkRendering:
 
     def test_css_styles_present(self):
         html = _html(SOCIAL_NETWORK)
-        assert ".lk-socialitem" in html
+        assert ".lk-connectitem" in html
         assert "flex-basis: calc((100% - 24px) / 3)" in html
 
     def test_item_shrinks_in_narrow_grid(self):
@@ -592,12 +592,12 @@ CONTACT = (
 class TestContactRendering:
     def test_grid_section(self):
         html = _html(CONTACT)
-        assert '<section class="lk-social"' in html
+        assert '<section class="lk-connect"' in html
         assert 'data-columns="1"' in html
 
     def test_item_anchor(self):
         html = _html(CONTACT)
-        assert 'class="lk-socialitem lk-shape-rounded"' in html
+        assert 'class="lk-connectitem lk-shape-rounded"' in html
 
     def test_title_defaults_to_service_name(self):
         html = _html(CONTACT)
@@ -606,11 +606,11 @@ class TestContactRendering:
 
     def test_icon_present(self):
         html = _html(CONTACT)
-        assert 'class="lk-socialitem-icon"' in html
+        assert 'class="lk-connectitem-icon"' in html
 
     def test_icon_precedes_title_and_no_icon_class(self):
         html = _html(CONTACT)
-        assert html.index('class="lk-socialitem-icon"') < html.index(">Email</span>")
+        assert html.index('class="lk-connectitem-icon"') < html.index(">Email</span>")
         assert "lk-icon-" not in html
 
     def test_columns_attribute(self):
@@ -643,7 +643,7 @@ class TestContactRendering:
 
     def test_css_styles_present(self):
         html = _html(CONTACT)
-        assert ".lk-socialitem" in html
+        assert ".lk-connectitem" in html
 
     def test_href_mailto(self):
         html = _html(
@@ -712,7 +712,7 @@ ADDRESS = (
 class TestAddressRendering:
     def test_grid_section(self):
         html = _html(ADDRESS)
-        assert '<section class="lk-social"' in html
+        assert '<section class="lk-connect"' in html
         assert 'data-columns="1"' in html
 
     def test_direction_default_is_rtl(self):
@@ -745,13 +745,13 @@ class TestAddressRendering:
 
     def test_icon_present_with_brand_hexes(self):
         html = _html(ADDRESS)
-        assert 'class="lk-socialitem-icon"' in html
+        assert 'class="lk-connectitem-icon"' in html
         assert 'fill="#ea4335"' in html
         assert 'fill="#33CCFF"' in html
 
     def test_icon_precedes_title_and_no_icon_class(self):
         html = _html(ADDRESS)
-        assert html.index('class="lk-socialitem-icon"') < html.index(">Google Maps</span>")
+        assert html.index('class="lk-connectitem-icon"') < html.index(">Google Maps</span>")
         assert "lk-icon-" not in html
 
     def test_all_service_brand_hexes(self):

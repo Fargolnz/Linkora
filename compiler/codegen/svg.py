@@ -1007,4 +1007,4 @@ def _icon_svg(meta: dict[str, str], icon_color: str) -> str:
         svg = re.sub(
             r'stop-color="#[0-9a-fA-F]{3,8}"', f'stop-color="{tint}"', svg
         )
-    return f'<span class="lk-socialitem-icon" aria-hidden="true">{svg}</span>'
+    return f'<span class="lk-connectitem-icon" aria-hidden="true">{svg}</span>'

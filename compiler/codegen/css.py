@@ -57,9 +57,9 @@ _PROFILE_BLOCKS = frozenset(
     {"Profile", "Name", "Logo", "Bio", "Cover", "Title", "Text"}
 )
 
-#: Top-level block names whose markup needs the social grid CSS group
-#: (.lk-social, .lk-address-caption, .lk-socialitem).
-_SOCIAL_BLOCKS = frozenset(
+#: Top-level block names whose markup needs the connect grid CSS group
+#: (.lk-connect, .lk-address-caption, .lk-connectitem).
+_CONNECT_BLOCKS = frozenset(
     {"SocialMedia", "SocialNetwork", "Contact", "Address"}
 )
 
@@ -238,23 +238,23 @@ def _profile_css() -> str:
     return css
 
 
-def _social_css() -> str:
-    """Social grid + item styling (shared by SocialMedia, SocialNetwork,
+def _connect_css() -> str:
+    """Connect grid styling (shared by SocialMedia, SocialNetwork,
     Contact, and Address)."""
-    css = "\n.lk-social {"
+    css = "\n.lk-connect {"
     css += "\n    display: flex;"
     css += "\n    flex-wrap: wrap;"
     css += "\n    justify-content: center;"
     css += "\n    gap: 12px;"
     css += "\n    width: 100%;"
     css += "\n}"
-    css += "\n.lk-social .lk-socialitem { flex: 0 1 100%; }"
-    css += "\n.lk-social[data-columns='1'] .lk-socialitem { flex-basis: 100%; }"
-    css += "\n.lk-social[data-columns='2'] .lk-socialitem { flex-basis: calc((100% - 12px) / 2); }"
-    css += "\n.lk-social[data-columns='3'] .lk-socialitem { flex-basis: calc((100% - 24px) / 3); }"
-    css += "\n.lk-social[data-columns='4'] .lk-socialitem { flex-basis: calc((100% - 36px) / 4); }"
-    css += "\n.lk-social[data-direction='rtl'] { direction: rtl; }"
-    css += "\n.lk-social[data-direction='ltr'] { direction: ltr; }"
+    css += "\n.lk-connect .lk-connectitem { flex: 0 1 100%; }"
+    css += "\n.lk-connect[data-columns='1'] .lk-connectitem { flex-basis: 100%; }"
+    css += "\n.lk-connect[data-columns='2'] .lk-connectitem { flex-basis: calc((100% - 12px) / 2); }"
+    css += "\n.lk-connect[data-columns='3'] .lk-connectitem { flex-basis: calc((100% - 24px) / 3); }"
+    css += "\n.lk-connect[data-columns='4'] .lk-connectitem { flex-basis: calc((100% - 36px) / 4); }"
+    css += "\n.lk-connect[data-direction='rtl'] { direction: rtl; }"
+    css += "\n.lk-connect[data-direction='ltr'] { direction: ltr; }"
     css += "\n.lk-address-caption {"
     css += "\n    flex: 0 1 100%;"
     css += "\n    text-align: center;"
@@ -262,7 +262,7 @@ def _social_css() -> str:
     css += "\n    font-weight: 600;"
     css += "\n    margin-bottom: 12px;"
     css += "\n}"
-    css += "\n.lk-socialitem {"
+    css += "\n.lk-connectitem {"
     css += "\n    display: flex;"
     css += "\n    align-items: center;"
     css += "\n    justify-content: center;"
@@ -274,22 +274,22 @@ def _social_css() -> str:
     css += "\n    text-decoration: none;"
     css += "\n    transition: transform 120ms ease, opacity 120ms ease;"
     css += "\n}"
-    css += "\n.lk-socialitem:hover {"
+    css += "\n.lk-connectitem:hover {"
     css += "\n    transform: translateY(-2px);"
     css += "\n    opacity: 0.92;"
     css += "\n}"
-    css += "\n.lk-socialitem-icon {"
+    css += "\n.lk-connectitem-icon {"
     css += "\n    display: inline-flex;"
     css += "\n    width: 22px;"
     css += "\n    height: 22px;"
     css += "\n    flex: 0 0 auto;"
     css += "\n}"
-    css += "\n.lk-socialitem-icon svg {"
+    css += "\n.lk-connectitem-icon svg {"
     css += "\n    width: 100%;"
     css += "\n    height: 100%;"
     css += "\n    display: block;"
     css += "\n}"
-    css += "\n.lk-socialitem-title {"
+    css += "\n.lk-connectitem-title {"
     css += "\n    font-size: 15px;"
     css += "\n    font-weight: 600;"
     css += "\n    min-width: 0;"
@@ -742,8 +742,8 @@ def build_css(
         css += _link_css()
     if _css_wanted(used_blocks, _PROFILE_BLOCKS):
         css += _profile_css()
-    if _css_wanted(used_blocks, _SOCIAL_BLOCKS):
-        css += _social_css()
+    if _css_wanted(used_blocks, _CONNECT_BLOCKS):
+        css += _connect_css()
     if _css_wanted(used_blocks, _IMAGE_BLOCKS):
         css += _image_css()
     if _css_wanted(used_blocks, _BANNER_BLOCKS):
