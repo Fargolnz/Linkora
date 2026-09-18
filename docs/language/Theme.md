@@ -108,10 +108,26 @@ The compiler performs the following checks on the `Theme` block:
 | Font Family | `fontFamily` | Enum | *(unset)* | `vazirmatn`, `inter`, `poppins`, `rubik`, `roboto` |
 | Background Color | `backgroundColor` | Color | *(unset — `#ffffff`)* | Valid opaque Color |
 | Backdrop Color | `backdropColor` | Color | *(unset — `#e0f4f4`)* | Valid Color or `transparent` |
+| Background Image | `backgroundImage` | Image | *(unset — `none`)* | Valid `Image` |
+| Background Size | `backgroundSize` | Enum | *(unset — `cover`)* | `cover`, `contain`, `auto` |
+| Background Repeat | `backgroundRepeat` | Enum | *(unset — `noRepeat`)* | `repeat`, `noRepeat`, `repeatX`, `repeatY` |
 
 The page background and font. `backgroundColor` must be opaque (a *transparent*
 page would make the backdrop show through); `backdropColor` may be
 `transparent` to drop the desktop card backdrop.
+
+`backgroundImage` paints an image behind the page content; when it is
+*(unset)* or `none`, no image is drawn and the plain `backgroundColor`
+shows instead.
+
+`backgroundSize` controls how the image is scaled:
+`cover` fills the whole page (cropping if needed), `contain` fits the
+whole image inside it, and `auto` keeps its natural size.
+
+`backgroundRepeat` decides whether the image tiles: `repeat` tiles both
+ways, `noRepeat` shows it once, and `repeatX`/`repeatY` tile along one
+axis only. `repeatX`/`repeatY` are most useful with a small image whose
+size is left `auto`.
 
 ---
 

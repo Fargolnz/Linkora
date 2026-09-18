@@ -48,6 +48,17 @@ FONT_FAMILIES = {
     "roboto": "Roboto",
 }
 
+#: Maps the camelCase DSL ``backgroundRepeat`` enum values to the CSS
+#: ``background-repeat`` keyword they emit.
+_REPEAT_CSS = {
+    "repeat": "repeat",
+    "noRepeat": "no-repeat",
+    "repeatX": "repeat-x",
+    "repeatY": "repeat-y",
+}
+_REPEAT_CSS_DEFAULT = "noRepeat"
+
+
 #: Viewport width (px) above which the page becomes a floating card.
 DESKTOP_BREAKPOINT = "600px"
 
@@ -88,6 +99,9 @@ _BASE_CSS = """
     color-scheme: light;
     --lk-background: {background};
     --lk-backdrop: {backdrop};
+    --lk-background-image: {background_image};
+    --lk-background-size: {background_size};
+    --lk-background-repeat: {background_repeat};
     --lk-font-family: {font_family};
 }}
 
@@ -114,6 +128,9 @@ body {{
     margin: 0 auto;
     padding: 24px 16px;
     background-color: var(--lk-background);
+    background-image: var(--lk-background-image);
+    background-size: var(--lk-background-size);
+    background-repeat: var(--lk-background-repeat);
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -707,8 +724,9 @@ def build_css(
     """Return the complete stylesheet for a generated page.
 
     ``theme_data`` optionally carries the page background, the desktop
-    backdrop color, and the page font family read from a Theme block.
-    Every omitted key falls back to the built-in default.
+    backdrop color, the page background image (with optional size,
+    repeat, and position), and the page font family read from a Theme
+    block. Every omitted key falls back to the built-in default.
 
     ``used_blocks`` optionally names the top-level blocks present in the
     document; when provided, only the CSS groups those blocks need are
@@ -717,6 +735,14 @@ def build_css(
     theme_data = theme_data or {}
     background = theme_data.get("background", BACKGROUND)
     backdrop = theme_data.get("backdrop", BACKDROP)
+    background_image = theme_data.get("background_image", "none")
+    if background_image and background_image != "none":
+        background_image = f'url("{background_image}")'
+    background_size = theme_data.get("background_size", "cover")
+    background_repeat = _REPEAT_CSS.get(
+        theme_data.get("background_repeat", _REPEAT_CSS_DEFAULT),
+        _REPEAT_CSS[_REPEAT_CSS_DEFAULT],
+    )
     font = theme_data.get("font")
     if font:
         font_family = (
@@ -729,6 +755,9 @@ def build_css(
     css = _BASE_CSS.format(
         background=background,
         backdrop=backdrop,
+        background_image=background_image,
+        background_size=background_size,
+        background_repeat=background_repeat,
         font_family=font_family,
         desktop_breakpoint=DESKTOP_BREAKPOINT,
     )

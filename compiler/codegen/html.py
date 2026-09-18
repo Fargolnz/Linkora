@@ -236,7 +236,9 @@ def _page_data(document: Document) -> dict[str, str]:
 
 
 def _theme_data(theme_block: Block | None) -> dict[str, str]:
-    """Extract page-level theme values (background, backdrop, font)."""
+    """Extract page-level theme values read by the page shell: the page
+    background, backdrop, background image and its size/repeat, and the
+    page font family."""
     data: dict[str, str] = {}
     if theme_block is None:
         return data
@@ -252,6 +254,9 @@ def _theme_data(theme_block: Block | None) -> dict[str, str]:
         ("background", "backgroundColor"),
         ("backdrop", "backdropColor"),
         ("font", "fontFamily"),
+        ("background_image", "backgroundImage"),
+        ("background_size", "backgroundSize"),
+        ("background_repeat", "backgroundRepeat"),
     ):
         value = str(page_theme.resolved.get(src, ""))
         if value:

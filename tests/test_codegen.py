@@ -1784,3 +1784,33 @@ class TestThemeRendering:
         html = self._html(LINK)
         assert "--lk-background: #ffffff;" in html
         assert "--lk-backdrop: #e0f4f4;" in html
+
+    def test_page_background_image_applied(self):
+        html = self._html(
+            "Theme {\n"
+            '    PageTheme { backgroundImage: "./bg.jpg", '
+            "backgroundSize: contain, backgroundRepeat: noRepeat }\n"
+            "}\n"
+            + LINK
+        )
+        assert '--lk-background-image: url("./bg.jpg");' in html
+        assert "--lk-background-size: contain;" in html
+        assert "--lk-background-repeat: no-repeat;" in html
+        assert "background-image: var(--lk-background-image);" in html
+        assert "background-size: var(--lk-background-size);" in html
+        assert "background-repeat: var(--lk-background-repeat);" in html
+
+    def test_page_background_repeat_camelcase_maps_to_css(self):
+        html = self._html(
+            "Theme {\n"
+            '    PageTheme { backgroundRepeat: repeatX }\n'
+            "}\n"
+            + LINK
+        )
+        assert "--lk-background-repeat: repeat-x;" in html
+
+    def test_page_background_image_unset_uses_defaults(self):
+        html = self._html(LINK)
+        assert "--lk-background-image: none;" in html
+        assert "--lk-background-size: cover;" in html
+        assert "--lk-background-repeat: no-repeat;" in html

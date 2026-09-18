@@ -704,13 +704,7 @@ _PAGE_THEME = BlockDef(
             "backgroundRepeat",
             ValueType.ENUM,
             "",
-            enum_values=("repeat", "repeat-x", "repeat-y", "no-repeat"),
-        ),
-        PropertyDef(
-            "backgroundPosition",
-            ValueType.ENUM,
-            "",
-            enum_values=("left", "center", "right"),
+            enum_values=("repeat", "repeatX", "repeatY", "noRepeat"),
         ),
     ),
 )
