@@ -129,6 +129,13 @@ ways, `noRepeat` shows it once, and `repeatX`/`repeatY` tile along one
 axis only. `repeatX`/`repeatY` are most useful with a small image whose
 size is left `auto`.
 
+> Note that `backgroundRepeat` only has a visible effect when the image is
+smaller than the page. With the default `backgroundSize: cover`, the image
+is scaled to fill the whole page (cropping as needed), so it never has any
+room to tile and the repeat never shows. To actually see
+`repeat`/`repeatX`/`repeatY`, set `backgroundSize` to `contain` or `auto`
+first so there is empty space left over for the image to tile into.
+
 ---
 
 ### `TitleTheme`
