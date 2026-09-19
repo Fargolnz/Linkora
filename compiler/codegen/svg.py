@@ -1110,18 +1110,32 @@ SUPERLINK_SVG = (
 )
 
 
+#: Light fills that become transparent (instead of tinted) when
+#: ``iconColor`` is set, keyed by platform display name. Lets the card
+#: background show through light detail shapes instead of flattening
+#: the whole mark into one solid color.
+CLEAR_ON_TINT: dict[str, tuple[str, ...]] = {
+    "Soroush Plus": ("white", "#FEFEFE"),
+    "Rubika": ("white", "#E4E4E4", "#F1F1F1"),
+    "Balad": ("#fff",),
+}
+
+
 def _icon_svg(meta: dict[str, str], icon_color: str) -> str:
     """Wrap a platform's inline SVG, optionally forcing a single icon color.
 
     When ``icon_color`` is set, every hex fill, stroke and gradient stop is
     recolored, so both flat and full-color (gradient / multi-layer) icons are
-    tinted to the requested color.
+    tinted to the requested color. Fills listed in ``CLEAR_ON_TINT`` for the
+    platform become transparent instead, preserving light detail shapes.
     """
     svg = meta["icon"]
     if icon_color:
         import re
 
         tint = html.escape(icon_color, quote=True)
+        for clear in CLEAR_ON_TINT.get(str(meta.get("name", "")), ()):
+            svg = svg.replace('fill="%s"' % clear, 'fill="none"')
         svg = re.sub(r'fill="#[0-9a-fA-F]{3,8}"', f'fill="{tint}"', svg)
         svg = re.sub(r'stroke="#[0-9a-fA-F]{3,8}"', f'stroke="{tint}"', svg)
         svg = re.sub(

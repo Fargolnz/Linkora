@@ -869,6 +869,40 @@ class TestAddressRendering:
         assert 'fill="#123456"' in html
         assert 'fill="#ea4335"' not in html
 
+    def test_tinted_soroush_clears_light_fills(self):
+        html = _html(
+            "SocialNetwork {\n"
+            "    iconColor: \"#111111\"\n"
+            "    SocialNetworkItem { service: soroushPlus, url: \"https://splus.ir/x\" }\n"
+            "}\n"
+        )
+        assert 'fill="#111111"' in html
+        assert 'fill="#FEFEFE"' not in html
+        assert html.count('fill="none"') == 2
+
+    def test_tinted_balad_clears_dot(self):
+        html = _html(
+            "Address {\n"
+            "    iconColor: \"#111111\"\n"
+            "    AddressItem { service: balad, url: \"https://b/x\" }\n"
+            "}\n"
+        )
+        assert 'fill="#111111"' in html
+        assert 'fill="#fff"' not in html
+        assert html.count('fill="none"') == 1
+
+    def test_tinted_rubika_clears_light_fills(self):
+        html = _html(
+            "SocialNetwork {\n"
+            "    iconColor: \"#111111\"\n"
+            "    SocialNetworkItem { service: rubika, url: \"https://rubika.ir/x\" }\n"
+            "}\n"
+        )
+        assert 'fill="#111111"' in html
+        assert 'fill="#E4E4E4"' not in html
+        assert 'fill="#F1F1F1"' not in html
+        assert 'fill="none"' in html
+
     def test_item_color_inheritance(self):
         html = _html(
             "Address {\n"
