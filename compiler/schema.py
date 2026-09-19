@@ -241,6 +241,7 @@ _SOCIAL_NETWORK_PLATFORMS = (
     "bale",
     "eitaa",
     "rubika",
+    "soroushPlus",
 )
 
 _SOCIALMEDIA = BlockDef(

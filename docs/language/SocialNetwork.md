@@ -244,6 +244,7 @@ The `service` property accepts one of the following values:
 | `bale` | Bale |
 | `eitaa` | Eitaa |
 | `rubika` | Rubika |
+| `soroushPlus` | Soroush Plus |
 
 #### Property Details
 

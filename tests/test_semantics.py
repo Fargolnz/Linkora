@@ -721,6 +721,7 @@ class TestSocialNetwork:
             "    SocialNetworkItem { service: bale, url: \"https://ble.ir/x\" }\n"
             "    SocialNetworkItem { service: eitaa, url: \"https://eitaa.com/x\" }\n"
             "    SocialNetworkItem { service: rubika, url: \"https://rubika.ir/x\" }\n"
+            "    SocialNetworkItem { service: soroushPlus, url: \"https://splus.ir/x\" }\n"
             "}\n")
 
     def test_socialmedia_service_rejected_in_socialnetwork(self):

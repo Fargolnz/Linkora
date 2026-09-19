@@ -601,12 +601,14 @@ class TestSocialNetworkRendering:
             "    SocialNetworkItem { service: bale, url: \"https://ble.ir/x\" }\n"
             "    SocialNetworkItem { service: eitaa, url: \"https://eitaa.com/x\" }\n"
             "    SocialNetworkItem { service: rubika, url: \"https://rubika.ir/x\" }\n"
+            "    SocialNetworkItem { service: soroushPlus, url: \"https://splus.ir/x\" }\n"
             "}\n"
         )
         assert 'fill="#0ACA9B"' in html  # Bale
         assert 'fill="#ee7f22"' in html  # Eitaa
         assert 'fill="#49BDCA"' in html  # Rubika
         assert 'fill="#0F68A0"' in html  # Rubika
+        assert 'fill="#196FF0"' in html  # Soroush Plus
 
     def test_default_title_color_is_3b3b3b(self):
         html = _html(SOCIAL_NETWORK)
