@@ -27,7 +27,7 @@ Multiple `Video` blocks may appear within the same document.
 |----------|---------|------|---------|----------------|
 | Video URL | `url` | Video | `""` (required) | YouTube URL, Aparat URL, or local video file |
 | Thumbnail | `thumbnail` | Image | `""` | Any valid image path/URL |
-| Shape | `shape` | Enum | `rounded` | `sharp`, `slightlyRounded`, `rounded`, `pill` |
+| Shape | `shape` | Enum | `rounded` | `sharp`, `slightlyRounded`, `rounded` |
 | Border Color | `borderColor` | Color | `transparent` | Valid Color |
 
 ---
@@ -93,7 +93,6 @@ Supported values:
 | `sharp` | Sharp rectangular corners |
 | `slightlyRounded` | Small corner radius |
 | `rounded` | Standard rounded corners |
-| `pill` | Fully rounded pill-shaped box |
 
 ---
 
@@ -176,7 +175,7 @@ Video {
 Video {
     url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
     thumbnail: "./assets/custom-thumb.jpg"
-    shape: pill
+    shape: rounded
     borderColor: "#333333"
 }
 ```
@@ -213,7 +212,7 @@ Invalid shape value:
 Video { url: "https://www.youtube.com/watch?v=abc123", shape: circle }
 ```
 
-❌ `shape` must be one of `sharp`, `slightlyRounded`, `rounded`, `pill`.
+❌ `shape` must be one of `sharp`, `slightlyRounded`, `rounded`.
 
 ---
 

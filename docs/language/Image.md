@@ -33,7 +33,7 @@ Multiple `Image` blocks may appear within the same document.
 | Description Color | `descriptionColor` | Color | `#3B3B3B` | Valid Color |
 | Background Color | `backgroundColor` | Color | `#FFFFFF` | Valid Color |
 | Border Color | `borderColor` | Color | `transparent` | Valid Color |
-| Shape | `shape` | Enum | `rounded` | `sharp`, `slightlyRounded`, `rounded`, `pill` |
+| Shape | `shape` | Enum | `rounded` | `sharp`, `slightlyRounded`, `rounded` |
 | Image Shadow | `shadow` | Boolean | `true` | `true`, `false` |
 
 ---
@@ -159,7 +159,6 @@ Supported values:
 | `sharp` | Sharp rectangular corners |
 | `slightlyRounded` | Small corner radius |
 | `rounded` | Standard rounded corners |
-| `pill` | Fully rounded pill-shaped box |
 
 ---
 

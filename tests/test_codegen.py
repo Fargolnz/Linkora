@@ -1272,9 +1272,15 @@ class TestVideoRendering:
         assert 'src="./thumb.jpg"' in html
         assert "img.youtube.com" not in html
 
-    def test_custom_shape(self):
-        html = _html('Video { url: "https://www.youtube.com/watch?v=abc123", shape: pill }\n')
-        assert "lk-shape-pill" in html
+    def test_pill_shape_rejected(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            'Video { url: "https://www.youtube.com/watch?v=abc123", shape: pill }\n'
+        ).errors
+        assert len(errors) == 1
+        assert "not a valid value" in errors[0].message
+        assert "Allowed values: sharp, slightlyRounded, rounded." in errors[0].message
 
     def test_border_color(self):
         html = _html(

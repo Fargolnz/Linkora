@@ -201,7 +201,7 @@ cannot both be `false`, and `columns` may only be 4 when one of them is `false`.
 
 | Property | Keyword | Type | Default |
 |----------|---------|------|---------|
-| Shape | `shape` | Enum | `sharp`, `slightlyRounded`, `rounded`, `pill` |
+| Shape | `shape` | Enum | `sharp`, `slightlyRounded`, `rounded` |
 | Title Color | `titleColor` | Color | *(inherited)* |
 | Description Color | `descriptionColor` | Color | *(inherited)* |
 | Background Color | `backgroundColor` | Color | *(inherited)* |
@@ -216,7 +216,7 @@ Applies to every `Image` block.
 
 | Property | Keyword | Type | Default |
 |----------|---------|------|---------|
-| Shape | `shape` | Enum | `sharp`, `slightlyRounded`, `rounded`, `pill` |
+| Shape | `shape` | Enum | `sharp`, `slightlyRounded`, `rounded` |
 | Title Color | `titleColor` | Color | *(inherited)* |
 | Description Color | `descriptionColor` | Color | *(inherited)* |
 | Border Color | `borderColor` | Color | *(inherited)* |
@@ -229,7 +229,7 @@ Applies to every `Banner` block.
 
 | Property | Keyword | Type | Default |
 |----------|---------|------|---------|
-| Shape | `shape` | Enum | `sharp`, `slightlyRounded`, `rounded`, `pill` |
+| Shape | `shape` | Enum | `sharp`, `slightlyRounded`, `rounded` |
 | Border Color | `borderColor` | Color | *(inherited)* |
 
 Applies to every `Video` block.

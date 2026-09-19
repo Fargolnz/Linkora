@@ -1490,10 +1490,15 @@ class TestVideo:
             'Video { url: "https://www.youtube.com/watch?v=abc123", thumbnail: "./thumb.jpg" }\n'
         )
 
-    def test_custom_shape(self):
-        compile_ok(
+    def test_pill_shape_rejected(self):
+        from compiler import compile_source
+
+        errors = compile_source(
             'Video { url: "https://www.youtube.com/watch?v=abc123", shape: pill }\n'
-        )
+        ).errors
+        assert len(errors) == 1
+        assert "not a valid value" in errors[0].message
+        assert "Allowed values: sharp, slightlyRounded, rounded." in errors[0].message
 
     def test_invalid_shape(self):
         from compiler import compile_source

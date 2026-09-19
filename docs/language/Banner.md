@@ -31,7 +31,7 @@ Multiple `Banner` blocks may appear within the same document.
 | Title Color | `titleColor` | Color | `#FFFFFF` | Valid Color |
 | Description Color | `descriptionColor` | Color | `#FFFFFF` | Valid Color |
 | Border Color | `borderColor` | Color | `transparent` | Valid Color |
-| Shape | `shape` | Enum | `rounded` | `sharp`, `slightlyRounded`, `rounded`, `pill` |
+| Shape | `shape` | Enum | `rounded` | `sharp`, `slightlyRounded`, `rounded` |
 
 ---
 
@@ -123,7 +123,6 @@ Supported values:
 | `sharp` | Sharp rectangular corners |
 | `slightlyRounded` | Small corner radius |
 | `rounded` | Standard rounded corners |
-| `pill` | Fully rounded pill-shaped box |
 
 ---
 
