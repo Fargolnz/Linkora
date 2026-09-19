@@ -402,6 +402,12 @@ _ADDRESS = BlockDef(
     properties=_properties(
         PropertyDef("address", ValueType.STRING, ""),
         PropertyDef("addressColor", ValueType.COLOR, "#000000"),
+        PropertyDef(
+            "align",
+            ValueType.ENUM,
+            "center",
+            enum_values=("left", "center", "right"),
+        ),
         PropertyDef("columns", ValueType.NUMBER, 1),
         PropertyDef("showTitle", ValueType.BOOLEAN, True),
         PropertyDef("showIcon", ValueType.BOOLEAN, True),

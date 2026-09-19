@@ -28,6 +28,7 @@ Multiple `Address` blocks may appear within the same document.
 |----------|---------|------|---------|----------------|
 | Address | `address` | String | `""` | Any valid string |
 | Address Color | `addressColor` | Color | `#000000` | Valid Color |
+| Address Alignment | `align` | Enum | `center` | `left`, `center`, `right` |
 | Columns | `columns` | Number | `1` | `1`, `2`, `3`, `4` |
 | Show Title | `showTitle` | Boolean | `true` | `true`, `false` |
 | Show Icon | `showIcon` | Boolean | `true` | `true`, `false` |
@@ -65,6 +66,20 @@ Defines the color of the `address` caption text.
 | Type | Color |
 | Required | ❌ No |
 | Default | `#000000` |
+
+---
+
+### `align`
+
+Controls the horizontal alignment of the `address` caption text.
+
+| Field | Value |
+|-------|-------|
+| Type | Enum |
+| Required | ❌ No |
+| Default | `center` |
+
+Supported values: `left`, `center`, `right`.
 
 ---
 

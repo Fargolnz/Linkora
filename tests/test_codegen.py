@@ -828,6 +828,35 @@ class TestAddressRendering:
         html = _html(ADDRESS)
         assert "Tehran, Iran" not in html
 
+    def test_caption_align_defaults_to_center(self):
+        html = _html(
+            "Address {\n"
+            "    address: \"Tehran, Iran\"\n"
+            "    AddressItem { service: googleMap, url: \"https://g/x\" }\n"
+            "}\n"
+        )
+        assert "text-align: center" in html
+
+    def test_caption_align_left(self):
+        html = _html(
+            "Address {\n"
+            "    address: \"Tehran, Iran\"\n"
+            "    align: left\n"
+            "    AddressItem { service: googleMap, url: \"https://g/x\" }\n"
+            "}\n"
+        )
+        assert "text-align: left" in html
+
+    def test_caption_align_right(self):
+        html = _html(
+            "Address {\n"
+            "    address: \"Tehran, Iran\"\n"
+            "    align: right\n"
+            "    AddressItem { service: googleMap, url: \"https://g/x\" }\n"
+            "}\n"
+        )
+        assert "text-align: right" in html
+
     def test_icon_color_recolors_address_icons(self):
         html = _html(
             "Address {\n"

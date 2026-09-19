@@ -1046,6 +1046,32 @@ class TestAddress:
         assert result.ast is not None
         assert result.ast.blocks[0].resolved["addressColor"] == "#000000"
 
+    def test_align_default_is_center(self):
+        result = compile_ok(self.SRC)
+        assert result.ast is not None
+        assert result.ast.blocks[0].resolved["align"] == "center"
+
+    def test_align_values_accepted(self):
+        for align in ("left", "center", "right"):
+            compile_ok(
+                "Address {\n"
+                f"    align: {align}\n"
+                "    AddressItem { service: googleMap, url: \"https://g/x\" }\n"
+                "}\n"
+            )
+
+    def test_align_invalid_value_rejected(self):
+        from compiler import compile_source
+
+        errors = compile_source(
+            "Address {\n"
+            "    align: justify\n"
+            "    AddressItem { service: googleMap, url: \"https://g/x\" }\n"
+            "}\n"
+        ).errors
+        assert len(errors) == 1
+        assert "not a valid value" in errors[0].message
+
     def test_invalid_columns_value(self):
         from compiler import compile_source
 

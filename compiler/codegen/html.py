@@ -620,11 +620,13 @@ def render_address(block: Block) -> str:
     resolved = block.resolved
     address = str(resolved["address"])
     address_color = str(resolved["addressColor"]) or "#000000"
+    align = str(resolved["align"])
 
     caption = ""
     if address:
         caption = (
-            f'  <div class="lk-address-caption" style="color: {address_color};">'
+            f'  <div class="lk-address-caption" '
+            f'style="color: {address_color}; text-align: {align};">'
             f"{html.escape(address)}</div>\n"
         )
     return _render_connect_container(block, caption=caption)
