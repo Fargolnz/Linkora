@@ -406,6 +406,8 @@ def _image_css() -> str:
     css += "\n.lk-image-slider-dot {"
     css += "\n    width: 10px;"
     css += "\n    height: 10px;"
+    css += "\n    box-sizing: border-box;"
+    css += "\n    aspect-ratio: 1 / 1;"
     css += "\n    padding: 0;"
     css += "\n    margin: 0 0 14px;"
     css += "\n    border: 2px solid rgba(255, 255, 255, 0.95);"

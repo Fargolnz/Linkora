@@ -38,11 +38,18 @@ SLIDER_JS = """<script>
   sliders.forEach(function (slider) {
     var track = slider.querySelector('.lk-image-slider-track');
     var dots = slider.querySelectorAll('.lk-image-slider-dot');
-    if (!track || !dots.length) return;
+    var slides = track ? track.querySelectorAll('.lk-imagecard') : null;
+    if (!track || !dots.length || !slides || !slides.length) return;
     var current = -1;
     function slideIndex() {
-      var width = track.clientWidth || 1;
-      return Math.max(0, Math.min(dots.length - 1, Math.round(track.scrollLeft / width)));
+      var trackRect = track.getBoundingClientRect();
+      var best = 0, bestOverlap = -1;
+      for (var i = 0; i < slides.length; i++) {
+        var r = slides[i].getBoundingClientRect();
+        var overlap = Math.min(r.right, trackRect.right) - Math.max(r.left, trackRect.left);
+        if (overlap > bestOverlap) { bestOverlap = overlap; best = i; }
+      }
+      return best;
     }
     function update() {
       var index = slideIndex();
@@ -55,7 +62,9 @@ SLIDER_JS = """<script>
     dots.forEach(function (dot) {
       dot.addEventListener('click', function () {
         var i = Number(dot.getAttribute('data-slide'));
-        track.scrollTo({ left: i * track.clientWidth, behavior: 'smooth' });
+        var left = slides[i].getBoundingClientRect().left
+          - track.getBoundingClientRect().left + track.scrollLeft;
+        track.scrollTo({ left: left, behavior: 'smooth' });
       });
     });
     track.addEventListener('scroll', update, { passive: true });
