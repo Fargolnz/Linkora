@@ -1,53 +1,48 @@
+Page {
+    language: en
+    title: "Seyyedeh Fargol Nazemzadeh"
+    description: "My Links At a Glance"
+    favicon: "./assets/logo.jpg"
+}
+
+
 Profile {
     Cover { image: "./assets/cover.svg" }
     Logo { image: "./assets/logo.jpg" }
     Name { title: "Seyyedeh Fargol Nazemzadeh", subtitle: "Developer & Designer" }
-    Bio { text: "Building Linkora — a DSL for customizable link-in-bio pages." }
+    Bio { text: "Building Linkora!" }
 }
 
-Title { title: "My Links Customized", align: left, titleColor: "#c7006e" }
+
+Divider { style: bloom }
+
+
+Title { title: "My Pages" }
 
 Link {
     title: "My GitHub"
     url: "https://github.com/Fargolnz"
 }
 
-Link {
-    title: "My GitHub, But Customized"
-    url: "https://github.com/Fargolnz"
-    align: left
-    titleColor: "#c7006e"
-    backgroundColor: "#ffa8d8"
-    borderColor: "#f63ba2"
-    shape: pill
-}
-
-Link { title: "لینکدین من", url: "https://www.linkedin.com/in/seyyedeh-fargol-nazemzadeh" }
-
-Link { title: "لینکدین من شخصی‌سازی شده", url: "https://www.linkedin.com/in/seyyedeh-fargol-nazemzadeh", align: right, titleColor: "#4F46E5", backgroundColor: "#FFFFFF", borderColor: "#4F46E5", shape: sharp }
-
-Title { title: "Highlights" }
-
-SuperLink {
-    title: "سفارش طراحی سایت"
-    description: "مشاهده نمونه‌کارها و تعرفه‌ها"
-    url: "https://example.com/index"
+Link { 
+    title: "My Linkedin"
+    url: "https://www.linkedin.com/in/seyyedeh-fargol-nazemzadeh"
 }
 
 SuperLink {
     title: "My Portfolio"
-    description: "Browse my latest projects and case studies"
-    url: "https://example.com/portfolio"
-    direction: ltr
-    titleColor: "#1F2937"
-    descriptionColor: "#4B5563"
-    iconColor: "#2051ff"
-    backgroundColor: "#FFFFFF"
-    borderColor: "#00B4B0"
-    shape: pill
+    description: "Latest Projects and Activities"
+    url: "https://github.com/Fargolnz"
 }
 
-Text { text: "A short paragraph describing my work and interests." }
+
+Title { title: "A Brief Introduction to Linkora" }
+
+Text { text: "Linkora is A DSL for building customizable link-in-bio pages!" }
+
+
+Divider { style: diamond }
+
 
 Title { title: "Social Media" }
 
@@ -67,7 +62,8 @@ SocialMedia {
     SocialMediaItem { service: patreon, url: "https://www.patreon.com" }
 }
 
-Title { title: "Messaging" }
+
+Title { title: "Messengers" }
 
 SocialNetwork {
     columns: 3
@@ -82,10 +78,11 @@ SocialNetwork {
     SocialNetworkItem { service: bale, url: "https://ble.ir/linkora" }
     SocialNetworkItem { service: eitaa, url: "https://eitaa.com/linkora" }
     SocialNetworkItem { service: rubika, url: "https://rubika.ir/linkora" }
+    SocialNetworkItem { service: soroushPlus, url: "https://splus.ir/linkora" }
 }
 
 
-Title { title: "Contact" }
+Title { title: "Contact Information" }
 
 Contact {
     columns: 1
@@ -102,7 +99,6 @@ Title { title: "Address" }
 Address {
     columns: 2
     address: "Tehran, Iran"
-    addressColor: "#111111"
     AddressItem { service: googleMap, url: "https://maps.google.com/?q=Tehran" }
     AddressItem { service: waze, url: "https://waze.com/ul?q=Tehran" }
     AddressItem { service: neshan, url: "https://neshan.org/maps/@35.689,51.389" }
@@ -110,38 +106,34 @@ Address {
 }
 
 
+Divider { style: diamond }
+
+
 Title { title: "Gallery" }
 
 Image {
     columns: 2
-    shape: rounded
-    imageShadow: true
     ImageItem { image: "./assets/single-1.jpg", title: "Scenery", description: "A scenery image." }
     ImageItem { image: "./assets/single-2.jpg", title: "Scenery" }
 }
 
-
-Title { title: "Highlights" }
-
 Image {
     displayMode: slider
-    shape: slightlyRounded
-    ImageItem { image: "./assets/slider-1.jpg", title: "Slide One", description: "First highlight slide." }
+    ImageItem { image: "./assets/slider-1.jpg", title: "Slide One", description: "First slide." }
     ImageItem { image: "./assets/slider-2.jpg", title: "Slide Two" }
     ImageItem { image: "./assets/slider-3.jpg" }
 }
 
 
-Title { title: "Promotions" }
+Title { title: "Examples of Promotions" }
 
 Banner {
     columns: 2
-    shape: rounded
     BannerItem {
         image: "./assets/banner-1.png"
         url: "https://example.com/banner-1"
-        title: "Summer Sale"
-        description: "Up to 50% off on selected items."
+        title: "Special Sale"
+        description: "Up to 50% off!"
     }
     BannerItem {
         image: "./assets/slider-2.jpg"
@@ -164,40 +156,24 @@ Video {
     thumbnail: "./assets/slider-3.jpg"
 }
 
-Video {
-    url: "https://www.aparat.com/v/abc123" 
-    shape: slightlyRounded
-}
 
+Divider { style: beads }
 
-Divider { style: bloom, marginTop: 32, marginBottom: 32, color: "#C7006E" }
 
 Title { title: "FAQ" }
 
 FAQ {
-    shape: rounded
-    direction: ltr
     FAQItem { question: "What is Linkora?", answer: "A DSL for building customizable link-in-bio pages." }
     FAQItem { question: "Can I customize each block?", answer: "Yes — every block supports colors, shapes, and layout options so your page matches your style." }
 }
 
-Divider { style: orb }
-Divider { style: diamond }
 
-
-Title { title: "Launch Countdown" }
-
-Countdown {
-    date: "1405/07/13"
-    time: "23:59"
-    expiredText: "لینکورا منتشر شد!"
-}
+Title { title: "Launch Countdown!" }
 
 Countdown {
     date: "2026/10/05"
     time: "23:59"
     calendar: gregorian
-    language: en
     expiredText: "Linkora is live!"
 }
 

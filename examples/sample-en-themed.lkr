@@ -1,0 +1,217 @@
+Page {
+    language: en
+    title: "Seyyedeh Fargol Nazemzadeh"
+    description: "My Links At a Glance"
+    favicon: "./assets/logo.jpg"
+}
+
+
+Theme {
+    primaryColor: "#C7006E"
+    PageTheme {
+        fontFamily: inter
+        backgroundColor: "#0F172A"
+        backdropColor: "#1E293B"
+    }
+    TitleTheme { align: left, titleColor: "#FFFFFF" }
+    LinkTheme { shape: pill }
+    SuperLinkTheme {
+        shape: pill
+        backgroundColor: "#1E293B"
+        titleColor: "#FFFFFF"
+        iconColor: "#C7006E"
+    }
+    GridTheme {
+        columns: 4
+        showTitle: false
+        backgroundColor: "#1E293B"
+        borderColor: "#C7006E"
+        iconColor: "#C7006E"
+        shape: pill
+    }
+    ImageTheme { 
+        titleColor: "#FFFFFF"
+        descriptionColor: "#FFFFFF"
+        backgroundColor: "#C7006E"
+        shape: rounded
+        shadow: false
+    }
+    BannerTheme { shape: rounded }
+    DividerTheme { color: "#C7006E" }
+    VideoTheme { shape: rounded }
+}
+
+
+Profile {
+    Cover { image: "./assets/cover-dark.svg" }
+    Logo { image: "./assets/logo.jpg", borderColor: "#C7006E" }
+    Name { title: "Seyyedeh Fargol Nazemzadeh", subtitle: "Developer & Designer", titleColor: "#FFFFFF", subtitleColor: "#FFFFFF" }
+    Bio { text: "Building Linkora!", textColor: "#FFFFFF" }
+}
+
+
+Divider { style: bloom }
+
+
+Title { title: "My Pages" }
+
+Link {
+    title: "My GitHub"
+    url: "https://github.com/Fargolnz"
+}
+
+Link { 
+    title: "My Linkedin"
+    url: "https://www.linkedin.com/in/seyyedeh-fargol-nazemzadeh"
+}
+
+SuperLink {
+    title: "My Portfolio"
+    description: "Latest Projects and Activities"
+    url: "https://github.com/Fargolnz"
+}
+
+
+Title { title: "A Brief Introduction to Linkora" }
+
+Text { text: "Linkora is A DSL for building customizable link-in-bio pages!", align: left, textColor: "#FFFFFF" }
+
+
+Divider { style: diamond }
+
+
+Title { title: "Social Media" }
+
+SocialMedia {
+    SocialMediaItem { service: instagram, url: "https://instagram.com" }
+    SocialMediaItem { service: telegram, url: "https://t.me/linkora" }
+    SocialMediaItem { service: youtube, url: "https://youtube.com" }
+    SocialMediaItem { service: tiktok, url: "https://tiktok.com" }
+    SocialMediaItem { service: x, url: "https://x.com" }
+    SocialMediaItem { service: linkedin, url: "https://www.linkedin.com/in/seyyedeh-fargol-nazemzadeh" }
+    SocialMediaItem { service: github, url: "https://github.com/Fargolnz" }
+    SocialMediaItem { service: spotify, url: "https://open.spotify.com" }
+    SocialMediaItem { service: twitch, url: "https://www.twitch.tv" }
+    SocialMediaItem { service: pinterest, url: "https://www.pinterest.com" }
+    SocialMediaItem { service: facebook, url: "https://www.facebook.com" }
+    SocialMediaItem { service: patreon, url: "https://www.patreon.com" }
+}
+
+
+Title { title: "Messengers" }
+
+SocialNetwork {
+    SocialNetworkItem { service: telegram, url: "https://t.me/linkora" }
+    SocialNetworkItem { service: whatsapp, url: "https://wa.me/1234567890" }
+    SocialNetworkItem { service: discord, url: "https://discord.gg/linkora" }
+    SocialNetworkItem { service: skype, url: "https://join.skype.com/linkora" }
+    SocialNetworkItem { service: line, url: "https://line.me/ti/p/linkora" }
+    SocialNetworkItem { service: viber, url: "https://viber.me/linkora" }
+    SocialNetworkItem { service: kik, url: "https://kik.me/linkora" }
+    SocialNetworkItem { service: facebookMessenger, url: "https://m.me/linkora" }
+    SocialNetworkItem { service: bale, url: "https://ble.ir/linkora" }
+    SocialNetworkItem { service: eitaa, url: "https://eitaa.com/linkora" }
+    SocialNetworkItem { service: rubika, url: "https://rubika.ir/linkora" }
+    SocialNetworkItem { service: soroushPlus, url: "https://splus.ir/linkora" }
+}
+
+
+Title { title: "Contact Information" }
+
+Contact {
+    columns: 2
+    ContactItem { service: mobile, value: "+1 234 567 8901" }
+    ContactItem { service: phone, value: "+1 234 567 8901" }
+    ContactItem { service: email, value: "hi@example.com" }
+    ContactItem { service: sms, value: "+1 234 567 8901" }
+    ContactItem { service: website, value: "https://example.com" }
+}
+
+
+Title { title: "Address" }
+
+Address {
+    address: "Tehran, Iran"
+    addressColor: "#FFFFFF"
+    align: left
+    AddressItem { service: googleMap, url: "https://maps.google.com/?q=Tehran" }
+    AddressItem { service: waze, url: "https://waze.com/ul?q=Tehran" }
+    AddressItem { service: neshan, url: "https://neshan.org/maps/@35.689,51.389" }
+    AddressItem { service: balad, url: "https://balad.ir/place?q=Tehran" }
+}
+
+
+Divider { style: diamond }
+
+
+Title { title: "Gallery" }
+
+Image {
+    columns: 2
+    ImageItem { image: "./assets/single-1.jpg", title: "Scenery", description: "A scenery image." }
+    ImageItem { image: "./assets/single-2.jpg", title: "Scenery" }
+}
+
+Image {
+    displayMode: slider
+    ImageItem { image: "./assets/slider-1.jpg", title: "Slide One", description: "First slide." }
+    ImageItem { image: "./assets/slider-2.jpg", title: "Slide Two" }
+    ImageItem { image: "./assets/slider-3.jpg" }
+}
+
+
+Title { title: "Examples of Promotions" }
+
+Banner {
+    columns: 2
+    BannerItem {
+        image: "./assets/banner-1.png"
+        url: "https://example.com/banner-1"
+        title: "Special Sale"
+        description: "Up to 50% off!"
+    }
+    BannerItem {
+        image: "./assets/slider-2.jpg"
+        url: "https://example.com/banner-2"
+        title: "New Collection"
+        description: "Check out the latest arrivals."
+    }
+    BannerItem {
+        image: "./assets/banner-2.jpg"
+        url: "https://example.com/banner-3"
+        title: "Featured"
+    }
+}
+
+
+Title { title: "Videos" }
+
+Video {
+    url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+    thumbnail: "./assets/slider-3.jpg"
+}
+
+
+Divider { style: beads }
+
+
+Title { title: "FAQ" }
+
+FAQ {
+    shape: pill
+    backgroundColor: "#1E293B"
+    answerColor: "#FFFFFF"
+    FAQItem { question: "What is Linkora?", answer: "A DSL for building customizable link-in-bio pages." }
+    FAQItem { question: "Can I customize each block?", answer: "Yes — every block supports colors, shapes, and layout options so your page matches your style." }
+}
+
+
+Title { title: "Launch Countdown!" }
+
+Countdown {
+    date: "2026/10/05"
+    time: "23:59"
+    calendar: gregorian
+    expiredText: "Linkora is live!"
+}
+

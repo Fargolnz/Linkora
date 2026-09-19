@@ -1,0 +1,177 @@
+Page {
+    language: fa
+    title: "سیده فرگل ناظم زاده"
+    description: "لینک‌های من در یک نگاه"
+    favicon: "./assets/logo.jpg"
+}
+
+
+Profile {
+    Cover { image: "./assets/cover.svg" }
+    Logo { image: "./assets/logo.jpg" }
+    Name { title: "سیده فرگل ناظم زاده", subtitle: "توسعه‌دهنده و طراح" }
+    Bio { text: "در حال ساخت لینکورا!" }
+}
+
+
+Divider { style: bloom }
+
+
+Title { title: "صفحات من" }
+
+Link {
+    title: "گیت‌هاب من"
+    url: "https://github.com/Fargolnz"
+}
+
+Link { 
+    title: "لینکدین من"
+    url: "https://www.linkedin.com/in/seyyedeh-fargol-nazemzadeh"
+}
+
+SuperLink {
+    title: "نمونه کارهای من"
+    description: "آخرین پروژه‌ها و فعالیت‌ها"
+    url: "https://github.com/Fargolnz"
+}
+
+
+Title { title: "معرفی کوتاه لینکورا" }
+
+Text { text: "لینکورا یک DSL برای ساختن صفحات «لینک در بیو» با قابلیت شخصی‌سازیه!" }
+
+
+Divider { style: diamond }
+
+
+Title { title: "شبکه‌های اجتماعی" }
+
+SocialMedia {
+    columns: 3
+    SocialMediaItem { service: instagram, url: "https://instagram.com", title: "اینستاگرام" }
+    SocialMediaItem { service: telegram, url: "https://t.me/linkora", title: "تلگرام" }
+    SocialMediaItem { service: youtube, url: "https://youtube.com", title: "یوتیوب" }
+    SocialMediaItem { service: tiktok, url: "https://tiktok.com", title: "تیک‌تاک" }
+    SocialMediaItem { service: x, url: "https://x.com", title: "ایکس" }
+    SocialMediaItem { service: linkedin, url: "https://www.linkedin.com/in/seyyedeh-fargol-nazemzadeh", title: "لینکدین" }
+    SocialMediaItem { service: github, url: "https://github.com/Fargolnz", title: "گیت‌هاب" }
+    SocialMediaItem { service: spotify, url: "https://open.spotify.com", title: "اسپاتیفای" }
+    SocialMediaItem { service: twitch, url: "https://www.twitch.tv", title: "توییچ" }
+    SocialMediaItem { service: pinterest, url: "https://www.pinterest.com", title: "پینترست" }
+    SocialMediaItem { service: facebook, url: "https://www.facebook.com", title: "فیسبوک" }
+    SocialMediaItem { service: patreon, url: "https://www.patreon.com", title: "پیتریون" }
+}
+
+
+Title { title: "پیام‌رسان‌ها" }
+
+SocialNetwork {
+    columns: 3
+    SocialNetworkItem { service: telegram, url: "https://t.me/linkora", title: "تلگرام" }
+    SocialNetworkItem { service: whatsapp, url: "https://wa.me/1234567890", title: "واتساپ" }
+    SocialNetworkItem { service: discord, url: "https://discord.gg/linkora", title: "دیسکورد" }
+    SocialNetworkItem { service: skype, url: "https://join.skype.com/linkora", title: "اسکایپ" }
+    SocialNetworkItem { service: line, url: "https://line.me/ti/p/linkora", title: "لاین" }
+    SocialNetworkItem { service: viber, url: "https://viber.me/linkora", title: "وایبر" }
+    SocialNetworkItem { service: kik, url: "https://kik.me/linkora", title: "کیک" }
+    SocialNetworkItem { service: facebookMessenger, url: "https://m.me/linkora", title: "فیسبوک مسنجر" }
+    SocialNetworkItem { service: bale, url: "https://ble.ir/linkora", title: "بله" }
+    SocialNetworkItem { service: eitaa, url: "https://eitaa.com/linkora", title: "ایتا" }
+    SocialNetworkItem { service: rubika, url: "https://rubika.ir/linkora", title: "روبیکا" }
+    SocialNetworkItem { service: soroushPlus, url: "https://splus.ir/linkora", title: "سروش پلاس" }
+}
+
+
+Title { title: "اطلاعات تماس" }
+
+Contact {
+    columns: 1
+    ContactItem { service: mobile, value: "+98 912 345 6789", title: "موبایل" }
+    ContactItem { service: phone, value: "+0253 1234567", title: "تلفن" }
+    ContactItem { service: email, value: "hi@example.com", title: "ایمیل" }
+    ContactItem { service: sms, value: "+98 912 345 6789", title: "پیامک" }
+    ContactItem { service: website, value: "https://example.com", title: "وب‌سایت" }
+}
+
+
+Title { title: "آدرس" }
+
+Address {
+    columns: 2
+    address: "تهران، ایران"
+    AddressItem { service: googleMap, url: "https://maps.google.com/?q=Tehran", title: "گوگل‌ مپ" }
+    AddressItem { service: waze, url: "https://waze.com/ul?q=Tehran", title: "ویز" }
+    AddressItem { service: neshan, url: "https://neshan.org/maps/@35.689,51.389", title: "نشان" }
+    AddressItem { service: balad, url: "https://balad.ir/place?q=Tehran", title: "بلد" }
+}
+
+
+Divider { style: diamond }
+
+
+Title { title: "گالری" }
+
+Image {
+    columns: 2
+    ImageItem { image: "./assets/single-1.jpg", title: "منظره", description: "تصویر یک منظره." }
+    ImageItem { image: "./assets/single-2.jpg", title: "منظره" }
+}
+
+Image {
+    displayMode: slider
+    ImageItem { image: "./assets/slider-1.jpg", title: "اسلاید اول", description: "اولین تصویر اسلایدر" }
+    ImageItem { image: "./assets/slider-2.jpg", title: "اسلاید دوم" }
+    ImageItem { image: "./assets/slider-3.jpg" }
+}
+
+
+Title { title: "نمونه پیشنهادات ویژه" }
+
+Banner {
+    columns: 2
+    BannerItem {
+        image: "./assets/banner-1.png"
+        url: "https://example.com/banner-1"
+        title: "فروش ویژه"
+        description: "تا ۵۰ درصد تخفیف!"
+    }
+    BannerItem {
+        image: "./assets/slider-2.jpg"
+        url: "https://example.com/banner-2"
+        title: "کالکشن جدید"
+        description: "جدیدترین محصولات رو چک کن!"
+    }
+    BannerItem {
+        image: "./assets/banner-2.jpg"
+        url: "https://example.com/banner-3"
+        title: "ویژه"
+    }
+}
+
+
+Title { title: "ویدیوها" }
+
+Video {
+    url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+    thumbnail: "./assets/slider-3.jpg"
+}
+
+
+Divider { style: beads }
+
+
+Title { title: "سوالات پرتکرار" }
+
+FAQ {
+    FAQItem { question: "لینکورا چیه؟", answer: "لینکورا یک DSL برای ساختن صفحات «لینک در بیو» با قابلیت شخصی‌سازیه." }
+    FAQItem { question: "می‌تونم هر بلوکی رو شخصی‌سازی بکنم؟", answer: "بله؛ همه بلوک‌ها از رنگ‌ها، اشکال و چیدمان‌های مختلف پشتیبانی می‌کنن تا صفحه شما با سبک و سلیقه خودتون هماهنگ باشه." }
+}
+
+
+Title { title: "شمارش معکوس انتشار!" }
+
+Countdown {
+    date: "1405/07/13"
+    time: "23:59"
+    expiredText: "لینکورا منتشر شد!"
+}
