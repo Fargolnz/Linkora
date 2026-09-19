@@ -1205,7 +1205,7 @@ class TestImage:
         assert block.resolved["backgroundColor"] == "#FFFFFF"
         assert block.resolved["borderColor"] == "transparent"
         assert block.resolved["shape"] == "rounded"
-        assert block.resolved["imageShadow"] is True
+        assert block.resolved["shadow"] is True
         assert block.resolved["direction"] == "rtl"
 
     def test_item_color_defaults_inherit(self):
@@ -2113,7 +2113,7 @@ class TestThemeValidation:
             "    SuperLinkTheme { shape: rounded }\n"
             "    GridTheme { columns: 2 }\n"
             "    TitleTheme { align: left }\n"
-            "    ImageTheme { imageShadow: true }\n"
+            "    ImageTheme { shadow: true }\n"
             "    BannerTheme { shape: rounded }\n"
             "    DividerTheme { marginTop: 40 }\n"
             "    VideoTheme { shape: slightlyRounded }\n"

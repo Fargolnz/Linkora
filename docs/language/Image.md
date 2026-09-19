@@ -34,7 +34,7 @@ Multiple `Image` blocks may appear within the same document.
 | Background Color | `backgroundColor` | Color | `#FFFFFF` | Valid Color |
 | Border Color | `borderColor` | Color | `transparent` | Valid Color |
 | Shape | `shape` | Enum | `rounded` | `sharp`, `slightlyRounded`, `rounded`, `pill` |
-| Image Shadow | `imageShadow` | Boolean | `true` | `true`, `false` |
+| Image Shadow | `shadow` | Boolean | `true` | `true`, `false` |
 
 ---
 
@@ -163,7 +163,7 @@ Supported values:
 
 ---
 
-### `imageShadow`
+### `shadow`
 
 Controls whether the image receives a soft drop shadow.
 
@@ -299,7 +299,7 @@ The `Image` block renders each child as a display card containing the image foll
 - Caption space is reserved **per row**: a row reserves equal caption space for every card in it only when at least one card in that row has a caption. Rows where no card has a caption leave no caption space, keeping the cards as pure images.
 - In `slider` mode, cards are placed in a horizontal scroll-snap carousel (one card per view) with a light dot indicator overlaid at the bottom edge of the image: one dot per slide, the current slide filled and the rest empty outlines. The dots highlight live while swiping and jump to a slide on tap (backed by a small embedded script).
 - Each card's corner shape follows `shape`, and the image is always cropped to a consistent ratio (`aspect-ratio`) with `object-fit: cover`.
-- `imageShadow` adds a soft drop shadow to the image.
+- `shadow` adds a soft drop shadow to the image.
 - Color defaults are applied at the container level and inherited by each item.
 
 ---
@@ -330,7 +330,7 @@ Image {
 
     shape: slightlyRounded
 
-    imageShadow: true
+    shadow: true
 
     titleColor: "#111111"
 

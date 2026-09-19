@@ -468,7 +468,7 @@ _IMAGE = BlockDef(
             "rounded",
             enum_values=("sharp", "slightlyRounded", "rounded", "pill"),
         ),
-        PropertyDef("imageShadow", ValueType.BOOLEAN, True),
+        PropertyDef("shadow", ValueType.BOOLEAN, True),
         PropertyDef("direction", ValueType.ENUM, "rtl", enum_values=("ltr", "rtl")),
     ),
 )
@@ -802,7 +802,7 @@ _IMAGE_THEME = BlockDef(
         PropertyDef("descriptionColor", ValueType.COLOR, ""),
         PropertyDef("backgroundColor", ValueType.COLOR, ""),
         PropertyDef("borderColor", ValueType.COLOR, ""),
-        PropertyDef("imageShadow", ValueType.BOOLEAN, None),
+        PropertyDef("shadow", ValueType.BOOLEAN, None),
     ),
 )
 

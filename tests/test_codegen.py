@@ -1043,10 +1043,10 @@ class TestImageRendering:
         assert 'id="lk-slider-1"' in html
         assert 'id="lk-slider-2"' in html
 
-    def test_image_shadow_class(self):
+    def test_shadow_class(self):
         html = _html(
             "Image {\n"
-            "    imageShadow: true\n"
+            "    shadow: true\n"
             "    ImageItem { image: \"./a.jpg\" }\n"
             "}\n"
         )
@@ -1056,18 +1056,18 @@ class TestImageRendering:
         html = _html(
             "Image {\n"
             "    displayMode: slider\n"
-            "    imageShadow: true\n"
+            "    shadow: true\n"
             "    ImageItem { image: \"./a.jpg\" }\n"
             "}\n"
         )
         assert 'class="lk-image lk-image-slider lk-image-slider--shadow lk-shape-rounded"' in html
         assert 'lk-imagecard--shadow"' not in html
 
-    def test_slider_no_shadow_with_explicit_image_shadow_false(self):
+    def test_slider_no_shadow_with_explicit_shadow_false(self):
         html = _html(
             "Image {\n"
             "    displayMode: slider\n"
-            "    imageShadow: false\n"
+            "    shadow: false\n"
             "    ImageItem { image: \"./a.jpg\" }\n"
             "}\n"
         )
@@ -1078,7 +1078,7 @@ class TestImageRendering:
         html = _html(
             "Image {\n"
             "    displayMode: slider\n"
-            "    imageShadow: true\n"
+            "    shadow: true\n"
             "    ImageItem { image: \"./a.jpg\" }\n"
             "}\n"
         )

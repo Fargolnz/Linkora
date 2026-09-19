@@ -206,7 +206,7 @@ cannot both be `false`, and `columns` may only be 4 when one of them is `false`.
 | Description Color | `descriptionColor` | Color | *(inherited)* |
 | Background Color | `backgroundColor` | Color | *(inherited)* |
 | Border Color | `borderColor` | Color | *(inherited)* |
-| Image Shadow | `imageShadow` | Boolean | *(inherited)* |
+| Image Shadow | `shadow` | Boolean | *(inherited)* |
 
 Applies to every `Image` block.
 
