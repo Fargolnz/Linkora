@@ -667,6 +667,7 @@ def _countdown_css() -> str:
     css += "\n}"
     css += "\n.lk-countdown-row {"
     css += "\n    display: flex;"
+    css += "\n    direction: ltr;"
     css += "\n    justify-content: center;"
     css += "\n    gap: 24px;"
     css += "\n}"
