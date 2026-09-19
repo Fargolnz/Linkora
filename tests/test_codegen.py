@@ -36,6 +36,40 @@ class TestPageShell:
         assert '<main class="lk-page">' in html
         assert "</main>" in html
 
+    def test_brand_footer_fa(self):
+        html = _html()
+        assert 'class="lk-brand"' in html
+        assert 'href="https://github.com/Fargolnz"' in html
+        assert "ساخته شده با لینکورا" in html
+        assert "Made With Linkora" not in html
+        assert "mix-blend-mode: difference" in html
+        assert 'viewBox="0 0 128.2367 62.1405"' in html
+        assert "<g fill=\"#fff\">" in html
+        assert "font-family: \"Vazirmatn\"" in html
+        assert '<span class="lk-brand-divider" aria-hidden="true"></span>' in html
+        assert "linear-gradient(to right, transparent, #fff, transparent)" in html
+        divider_pos = html.index("lk-brand-divider")
+        logo_pos = html.index('viewBox="0 0 128.2367 62.1405"')
+        assert divider_pos < logo_pos
+
+    def test_brand_footer_en(self):
+        html = _html('Page { language: en }\nLink { title: "GitHub", url: "https://github.com" }')
+        assert 'class="lk-brand"' in html
+        assert "Made With Linkora" in html
+        assert "ساخته شده با لینکورا" not in html
+        assert "font-family: \"Inter\"" in html
+
+    def test_brand_font_preloaded_with_theme_font(self):
+        html = _html(
+            "Theme {\n"
+            '    PageTheme { fontFamily: inter }\n'
+            "}\n"
+            'Link { title: "GitHub", url: "https://github.com" }'
+        )
+        assert html.count('rel="stylesheet"') == 2
+        assert "family=Inter" in html
+        assert "family=Vazirmatn" in html
+
     def test_styles_embedded(self):
         html = _html()
         assert "<style>" in html
@@ -892,7 +926,7 @@ class TestAddressRendering:
         assert 'fill="#7868f6"' not in html
         assert 'fill="#f8d748"' not in html
         assert 'fill="#ef8b32"' not in html
-        assert 'fill="#fff"' not in html
+        assert '<path fill="#fff"' not in html
         assert 'fill="none"' not in html
 
     def test_tinted_rubika_clears_light_fills(self):
@@ -1347,7 +1381,8 @@ class TestVideoRendering:
 
     def test_local_video_no_link_tag(self):
         html = _html('Video { url: "./assets/intro.mp4" }\n')
-        assert "<a " not in html
+        assert html.count("<a ") == 1
+        assert '<a class="lk-brand"' in html
 
     def test_play_icon_always_present(self):
         html = _html('Video { url: "https://www.youtube.com/watch?v=abc123" }\n')

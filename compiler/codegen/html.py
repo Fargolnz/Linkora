@@ -1,4 +1,4 @@
-"""HTML generation for validated Linkora documents.
+﻿"""HTML generation for validated Linkora documents.
 
 Every block type has a ``render_<block>`` function. The dispatch table at the
 bottom of this module maps block names to their renderer, so adding a new
@@ -16,6 +16,7 @@ from compiler.ast import Block, Document
 from compiler.codegen.css import FONT_FAMILIES, build_css
 from compiler.codegen.svg import (
     ADDRESS_META,
+    BRAND_PATHS,
     CONTACT_META,
     DIVIDER_SVGS,
     NETWORK_META,
@@ -210,10 +211,47 @@ def render_html(document: Document) -> str:
         f"{head}"
         "</head>\n"
         "<body>\n"
-        f"  <main class=\"lk-page\">\n{body}\n  </main>\n"
+        f"  <main class=\"lk-page\">\n{body}\n{render_brand(page_data['lang'])}\n  </main>\n"
         f"{scripts}"
         "</body>\n"
         "</html>\n"
+    )
+
+
+#: GitHub URL behind the page-bottom branding mark.
+BRAND_URL = "https://github.com/Fargolnz/Linkora"
+
+#: Branding caption per page language. Pinned (never themed).
+BRAND_CAPTIONS = {
+    "fa": "ساخته شده با لینکورا",
+    "en": "Made With Linkora",
+}
+
+#: Caption font stacks per page language. Pinned (never themed), so the
+#: branding caption renders identically on every page.
+_BRAND_FONT_TAIL = (
+    '-apple-system, BlinkMacSystemFont, "Segoe UI", '
+    "Roboto, Helvetica, Arial, sans-serif"
+)
+BRAND_FONTS = {
+    "fa": '"Vazirmatn", ' + _BRAND_FONT_TAIL,
+    "en": '"Inter", ' + _BRAND_FONT_TAIL,
+}
+
+
+def render_brand(lang: str) -> str:
+    """Render the page-bottom branding mark linking to the project repo."""
+    caption = BRAND_CAPTIONS.get(lang, BRAND_CAPTIONS["en"])
+    family = BRAND_FONTS.get(lang, BRAND_FONTS["en"])
+    paths = "".join(BRAND_PATHS)
+    return (
+        f'  <a class="lk-brand" href="{BRAND_URL}" target="_blank" rel="noopener">\n'
+        f'    <span class="lk-brand-divider" aria-hidden="true"></span>\n'
+        f'    <svg viewBox="0 0 128.2367 62.1405" xmlns="http://www.w3.org/2000/svg" '
+        f'aria-hidden="true"><g fill="#fff">{paths}</g></svg>\n'
+        f'    <span class="lk-brand-caption" style="font-family: {family};">'
+        f"{html.escape(caption)}</span>\n"
+        "  </a>"
     )
 
 
@@ -274,7 +312,12 @@ def _theme_data(theme_block: Block | None) -> dict[str, str]:
 
 
 def _theme_font_stylesheet_link(theme_data: dict[str, str]) -> str:
-    """Return the Google Fonts <link> URL for the active page font."""
+    """Return the Google Fonts <link> URL for the active page font.
+
+    The page branding caption is pinned to Vazirmatn (fa) or Inter (en),
+    so the default Vazirmatn stylesheet is also emitted whenever the
+    active theme font is a different family.
+    """
     font = theme_data.get("font")
     if not font:
         return (
@@ -285,7 +328,13 @@ def _theme_font_stylesheet_link(theme_data: dict[str, str]) -> str:
         "https://fonts.googleapis.com/css2?"
         f"family={family}:wght@400;600;700&display=swap"
     )
-    return f'<link href="{href}" rel="stylesheet">'
+    link = f'<link href="{href}" rel="stylesheet">'
+    if font != "vazirmatn":
+        link += (
+            "\n"
+            f'  <link href="{_DEFAULT_FONT_STYLESHEET}" rel="stylesheet">'
+        )
+    return link
 
 
 def _render_block(block: Block) -> str:

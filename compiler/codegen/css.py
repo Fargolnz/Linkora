@@ -170,6 +170,40 @@ def _utilities_css() -> str:
     return css
 
 
+def _brand_css() -> str:
+    """Page-bottom branding mark. Always emitted: the mark renders on
+    every page. White ink plus ``difference`` blending keeps it visible
+    on any solid or image background."""
+    css = "\n.lk-brand {"
+    css += "\n    display: flex;"
+    css += "\n    flex-direction: column;"
+    css += "\n    align-items: center;"
+    css += "\n    justify-content: center;"
+    css += "\n    gap: 8px;"
+    css += "\n    margin-top: 24px;"
+    css += "\n    color: #fff;"
+    css += "\n    mix-blend-mode: difference;"
+    css += "\n    text-decoration: none;"
+    css += "\n    opacity: 0.9;"
+    css += "\n}"
+    css += "\n.lk-brand-divider {"
+    css += "\n    height: 1px;"
+    css += "\n    width: 480px;"
+    css += "\n    max-width: 90%;"
+    css += "\n    background: linear-gradient(to right, transparent, #fff, transparent);"
+    css += "\n}"
+    css += "\n.lk-brand svg {"
+    css += "\n    height: 28px;"
+    css += "\n    width: auto;"
+    css += "\n    display: block;"
+    css += "\n}"
+    css += "\n.lk-brand-caption {"
+    css += "\n    font-size: 12px;"
+    css += "\n    font-weight: 400;"
+    css += "\n}"
+    return css
+
+
 def _link_css() -> str:
     """Link button styling."""
     css = "\n.lk-link {"
@@ -772,6 +806,7 @@ def build_css(
     )
 
     css += _utilities_css()
+    css += _brand_css()
     if _css_wanted(used_blocks, _LINK_BLOCKS):
         css += _link_css()
     if _css_wanted(used_blocks, _PROFILE_BLOCKS):
