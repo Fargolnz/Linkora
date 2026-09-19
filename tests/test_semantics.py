@@ -2187,23 +2187,24 @@ class TestThemeValidation:
     def test_page_backdrop_allows_transparent(self):
         compile_ok("Theme { PageTheme { backdropColor: transparent } }")
 
-    def test_invalid_font_family(self):
+    def test_custom_font_family_accepted(self):
+        result = compile_ok('Theme { PageTheme { fontFamily: "Caveat" } }')
+        assert result.ast is not None
+
+    def test_quoted_font_family_accepted(self):
+        result = compile_ok('Theme { PageTheme { fontFamily: "Open Sans" } }')
+        assert result.ast is not None
+        theme = result.ast.blocks[0].children[0]
+        assert theme.resolved["fontFamily"] == "Open Sans"
+
+    def test_invalid_font_family_rejected(self):
         from compiler import compile_source
 
         errors = compile_source(
-            "Theme { PageTheme { fontFamily: comicSans } }"
+            'Theme { PageTheme { fontFamily: "Caveat!" } }'
         ).errors
         assert len(errors) == 1
-        assert "not a valid value" in errors[0].message
-
-    def test_quoted_font_family_rejected(self):
-        from compiler import compile_source
-
-        errors = compile_source(
-            'Theme { PageTheme { fontFamily: "inter" } }'
-        ).errors
-        assert len(errors) == 1
-        assert "quotation marks" in errors[0].message
+        assert "family name" in errors[0].message
 
 
 class TestGridThemeRules:

@@ -32,6 +32,7 @@ class ValueType(Enum):
     DATE = "Date"
     TIME = "Time"
     ENUM = "Enum"
+    FONT = "Font"
 
 
 @dataclass(frozen=True)
@@ -663,6 +664,9 @@ _DIVIDER = BlockDef(
     ),
 )
 
+#: Built-in font families with known display names (see ``FONT_FAMILIES`` in
+#: ``compiler.codegen.css``). ``PageTheme.fontFamily`` also accepts any other
+#: Google Fonts family name; these are the tested suggestions.
 _FONT_FAMILIES = ("vazirmatn", "inter", "poppins", "rubik", "roboto")
 
 _THEME_CHILDREN = (
@@ -694,9 +698,8 @@ _PAGE_THEME = BlockDef(
     properties=_properties(
         PropertyDef(
             "fontFamily",
-            ValueType.ENUM,
+            ValueType.FONT,
             "",
-            enum_values=_FONT_FAMILIES,
         ),
         PropertyDef("backgroundColor", ValueType.COLOR, ""),
         PropertyDef("backdropColor", ValueType.COLOR, ""),

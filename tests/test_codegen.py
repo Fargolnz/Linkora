@@ -70,6 +70,16 @@ class TestPageShell:
         assert "family=Inter" in html
         assert "family=Vazirmatn" in html
 
+    def test_custom_font_family_url_and_stack(self):
+        html = _html(
+            "Theme {\n"
+            '    PageTheme { fontFamily: "Caveat" }\n'
+            "}\n"
+            'Link { title: "GitHub", url: "https://github.com" }'
+        )
+        assert "family=Caveat" in html
+        assert '"Caveat", -apple-system' in html
+
     def test_styles_embedded(self):
         html = _html()
         assert "<style>" in html

@@ -502,6 +502,14 @@ class Validator:
                     f"'{value}' is not a valid value. "
                     f"Allowed values: {allowed}."
                 )
+        elif expected is ValueType.FONT:
+            if prop.kind not in (KIND_IDENTIFIER, KIND_STRING):
+                fail(f"expected a font family name, found {_describe(prop)}.")
+            elif not types.is_font_name(value):
+                fail(
+                    "expected a Google Fonts family name (letters, digits, "
+                    f"spaces, '+' or '-'), found {_describe(prop)}."
+                )
 
     # -- Default resolution -----------------------------------------------------
 

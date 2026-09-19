@@ -32,6 +32,16 @@ def is_url(value: object) -> bool:
     return isinstance(value, str) and bool(_URL_RE.match(value))
 
 
+#: Google Fonts family name: letters, digits, spaces, plus and hyphen,
+#: starting with a letter or digit.
+_FONT_NAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9 +\-]*$")
+
+
+def is_font_name(value: object) -> bool:
+    """True for a plausible Google Fonts family name."""
+    return isinstance(value, str) and bool(_FONT_NAME_RE.match(value))
+
+
 def is_file_path(value: object) -> bool:
     """True for a plausible relative file path."""
     if not isinstance(value, str) or not value.strip():

@@ -105,7 +105,7 @@ The compiler performs the following checks on the `Theme` block:
 
 | Property | Keyword | Type | Default | Allowed Values |
 |----------|---------|------|---------|----------------|
-| Font Family | `fontFamily` | Enum | *(unset)* | `vazirmatn`, `inter`, `poppins`, `rubik`, `roboto` |
+| Font Family | `fontFamily` | Font | *(unset)* | Any Google Fonts family — `vazirmatn`, `inter`, `poppins`, `rubik`, `roboto`, `Caveat` … |
 | Background Color | `backgroundColor` | Color | *(unset — `#ffffff`)* | Valid opaque Color |
 | Backdrop Color | `backdropColor` | Color | *(unset — `#e0f4f4`)* | Valid Color or `transparent` |
 | Background Image | `backgroundImage` | Image | *(unset — `none`)* | Valid `Image` |
@@ -119,6 +119,10 @@ page would make the backdrop show through); `backdropColor` may be
 `backgroundImage` paints an image behind the page content; when it is
 *(unset)* or `none`, no image is drawn and the plain `backgroundColor`
 shows instead.
+
+`fontFamily` accepts any Google Fonts family name: single lowercase words
+stay bare (`fontFamily: inter`), anything else goes in quotation marks
+(`fontFamily: "Caveat"`, `fontFamily: "Open Sans"`).
 
 `backgroundSize` controls how the image is scaled:
 `cover` fills the whole page (cropping if needed), `contain` fits the
