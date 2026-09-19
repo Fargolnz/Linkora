@@ -1205,7 +1205,7 @@ class TestImage:
         assert block.resolved["backgroundColor"] == "#FFFFFF"
         assert block.resolved["borderColor"] == "transparent"
         assert block.resolved["shape"] == "rounded"
-        assert block.resolved["imageShadow"] is False
+        assert block.resolved["imageShadow"] is True
         assert block.resolved["direction"] == "rtl"
 
     def test_item_color_defaults_inherit(self):

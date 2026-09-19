@@ -854,12 +854,12 @@ class TestImageRendering:
             "    ImageItem { image: \"./a.jpg\" }\n"
             "}\n"
         )
-        assert 'class="lk-image lk-image-slider" id="' in html
-        assert 'data-direction="' not in html.split('class="lk-image lk-image-slider"')[1].split('>', 1)[0]
+        assert 'class="lk-image lk-image-slider lk-image-slider--shadow lk-shape-rounded" id="' in html
+        assert 'data-direction="' not in html.split('class="lk-image lk-image-slider lk-image-slider--shadow lk-shape-rounded"')[1].split('>', 1)[0]
 
     def test_card_and_image_alt(self):
         html = _html(self.SRC)
-        assert 'class="lk-imagecard lk-shape-rounded lk-imagecard--has-caption"' in html
+        assert 'class="lk-imagecard lk-shape-rounded lk-imagecard--has-caption lk-imagecard--shadow"' in html
         assert 'src="./assets/one.jpg"' in html
         assert 'alt="Two"' in html
         assert 'alt="Image"' in html
@@ -941,7 +941,7 @@ class TestImageRendering:
             "    ImageItem { image: \"./b.jpg\" }\n"
             "}\n"
         )
-        assert 'class="lk-image lk-image-slider"' in html
+        assert 'class="lk-image lk-image-slider lk-image-slider--shadow lk-shape-rounded"' in html
         assert 'class="lk-image-slider-track"' in html
         assert "lk-imagecard" in html
 
@@ -1063,10 +1063,11 @@ class TestImageRendering:
         assert 'class="lk-image lk-image-slider lk-image-slider--shadow lk-shape-rounded"' in html
         assert 'lk-imagecard--shadow"' not in html
 
-    def test_slider_no_shadow_without_image_shadow(self):
+    def test_slider_no_shadow_with_explicit_image_shadow_false(self):
         html = _html(
             "Image {\n"
             "    displayMode: slider\n"
+            "    imageShadow: false\n"
             "    ImageItem { image: \"./a.jpg\" }\n"
             "}\n"
         )

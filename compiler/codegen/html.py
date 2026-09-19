@@ -638,7 +638,7 @@ def render_image(block: Block) -> str:
 
     if display_mode == "slider":
         slider_id = _new_slider_id()
-        image_shadow = bool(resolved.get("imageShadow", False))
+        image_shadow = bool(resolved.get("imageShadow", True))
         shape = str(resolved.get("shape") or "rounded")
         section_classes = ["lk-image", "lk-image-slider"]
         if image_shadow:
@@ -726,7 +726,7 @@ def _render_image_item(block: Block, reserve_caption: bool, card_id: str | None 
     description = str(resolved["description"])
     alt = str(resolved["alt"]) or title or description or "Image"
     shape = str(parent.get("shape", "rounded"))
-    image_shadow = bool(parent.get("imageShadow", False))
+    image_shadow = bool(parent.get("imageShadow", True))
 
     background_color = _inherit(
         parent, resolved, "backgroundColor", "backgroundColor"

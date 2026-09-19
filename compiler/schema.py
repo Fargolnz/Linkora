@@ -468,7 +468,7 @@ _IMAGE = BlockDef(
             "rounded",
             enum_values=("sharp", "slightlyRounded", "rounded", "pill"),
         ),
-        PropertyDef("imageShadow", ValueType.BOOLEAN, False),
+        PropertyDef("imageShadow", ValueType.BOOLEAN, True),
         PropertyDef("direction", ValueType.ENUM, "rtl", enum_values=("ltr", "rtl")),
     ),
 )

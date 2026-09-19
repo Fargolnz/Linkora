@@ -34,7 +34,7 @@ Multiple `Image` blocks may appear within the same document.
 | Background Color | `backgroundColor` | Color | `#FFFFFF` | Valid Color |
 | Border Color | `borderColor` | Color | `transparent` | Valid Color |
 | Shape | `shape` | Enum | `rounded` | `sharp`, `slightlyRounded`, `rounded`, `pill` |
-| Image Shadow | `imageShadow` | Boolean | `false` | `true`, `false` |
+| Image Shadow | `imageShadow` | Boolean | `true` | `true`, `false` |
 
 ---
 
