@@ -266,7 +266,7 @@ class TestTextRendering:
             'Text { text: "Custom", align: left, textColor: "#333333", '
             'backgroundColor: "#F3F4F6", borderColor: "#2563EB", shape: pill }'
         )
-        assert 'class="lk-text lk-shape-pill"' in html
+        assert 'class="lk-text lk-shape-pill lk-text--boxed"' in html
         assert (
             'style="color: #333333; background-color: #F3F4F6; '
             'border-color: #2563EB; text-align: left;"'
@@ -286,6 +286,25 @@ class TestTextRendering:
         html = _html('Text { text: "Hello" }')
         assert ".lk-text" in html
         assert "font-size: 14px" in html
+
+    def test_no_boxed_class_by_default(self):
+        html = _html('Text { text: "Hello", align: left }')
+        assert "lk-text--boxed\"" not in html
+        assert 'class="lk-text lk-shape-rounded"' in html
+
+    def test_boxed_class_with_background(self):
+        html = _html('Text { text: "Hi", backgroundColor: "#F3F4F6" }')
+        assert 'class="lk-text lk-shape-rounded lk-text--boxed"' in html
+
+    def test_boxed_class_with_border_only(self):
+        html = _html('Text { text: "Hi", borderColor: "#2563EB" }')
+        assert "lk-text--boxed" in html
+
+    def test_boxed_css_rule(self):
+        html = _html('Text { text: "Hello" }')
+        assert ".lk-text--boxed" in html
+        assert "padding: 12px 20px" in html
+        assert "padding: 12px 0" in html
 
 
 PROFILE = (
@@ -340,6 +359,19 @@ class TestProfileRendering:
     def test_bio_text(self):
         html = _html(PROFILE)
         assert "Building things" in html
+
+    def test_bio_no_boxed_class_by_default(self):
+        html = _html(PROFILE)
+        assert "lk-bio--boxed\"" not in html
+        assert 'class="lk-bio lk-shape-rounded"' in html
+
+    def test_bio_boxed_class_with_background(self):
+        html = _html(
+            'Profile {\n'
+            '    Bio { text: "Hi", backgroundColor: "#F3F4F6" }\n'
+            "}\n"
+        )
+        assert 'class="lk-bio lk-shape-rounded lk-bio--boxed"' in html
 
     def test_empty_profile(self):
         html = _html("Profile {}")

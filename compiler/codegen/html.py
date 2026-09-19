@@ -362,6 +362,14 @@ def render_logo(block: Block) -> str:
     )
 
 
+def _is_boxed(bg_color: str, border_color: str) -> bool:
+    """Whether a Bio/Text block draws a visible box needing inner padding."""
+    return bg_color.strip().lower() not in (
+        "",
+        "transparent",
+    ) or border_color.strip().lower() not in ("", "transparent")
+
+
 def render_bio(block: Block) -> str:
     """Render a Bio block as a styled paragraph."""
     resolved = block.resolved
@@ -372,7 +380,10 @@ def render_bio(block: Block) -> str:
     border_color = str(resolved["borderColor"])
     shape = str(resolved["shape"])
 
-    classes = " ".join(["lk-bio", f"lk-shape-{shape}"])
+    classes = ["lk-bio", f"lk-shape-{shape}"]
+    if _is_boxed(bg_color, border_color):
+        classes.append("lk-bio--boxed")
+    classes = " ".join(classes)
     style = (
         f"color: {text_color}; "
         f"background-color: {bg_color}; "
@@ -450,7 +461,10 @@ def render_text(block: Block) -> str:
     border_color = str(resolved["borderColor"])
     shape = str(resolved["shape"])
 
-    classes = " ".join(["lk-text", f"lk-shape-{shape}"])
+    classes = ["lk-text", f"lk-shape-{shape}"]
+    if _is_boxed(bg_color, border_color):
+        classes.append("lk-text--boxed")
+    classes = " ".join(classes)
     style = (
         f"color: {text_color}; "
         f"background-color: {bg_color}; "
