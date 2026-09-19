@@ -915,6 +915,20 @@ ADDRESS_META: dict[str, dict[str, str]] = {
             ',4.1406,4.1406Z"/>'
             "</g></svg>"
         ),
+        "tint_icon": (
+            '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">'
+            '<g transform="translate(1.32 1.32) scale(0.10552)">'
+            '<path fill="#262057" d="M171.9399,0h-20.1137v101.0013c0,28.07-22.755,50.825-50.825,50.825H.0001v20.1137C.0001,188.782,1'
+            '3.6532,202.435,30.4952,202.435h141.4448c16.842,0,30.495-13.653,30.495-30.495V30.495c0-16.8418-1'
+            '3.653-30.495-30.495-30.495Z"/>'
+            '<path fill="#262057" d="M30.495.0001h20.1137v50.6087H0v-20.1137C0,13.6645,13.6644.0001,30.495.0001Z"/>'
+            '<path fill="#262057" d="M101.2175,50.6089h-50.6087v50.6087c0,27.9504,22.6582,50.6087,50.6087,50.6087s50.6087-22.6582,50'
+            '.6087-50.6087-22.6582-50.6087-50.6087-50.6087ZM101.2175,134.5242c-18.3947,0-33.3066-14.9119-33.'
+            '3066-33.3066s14.9119-33.3066,33.3066-33.3066,33.3066,14.9119,33.3066,33.3066-14.9119,33.3066-33'
+            '.3066,33.3066Z"/>'
+            '<circle fill="#262057" cx="101.2175" cy="101.2176" r="16.4371"/>'
+            "</g></svg>"
+        ),
     },
 }
 
@@ -1117,7 +1131,6 @@ SUPERLINK_SVG = (
 CLEAR_ON_TINT: dict[str, tuple[str, ...]] = {
     "Soroush Plus": ("white", "#FEFEFE"),
     "Rubika": ("white", "#E4E4E4", "#F1F1F1"),
-    "Balad": ("#fff",),
 }
 
 
@@ -1134,6 +1147,8 @@ def _icon_svg(meta: dict[str, str], icon_color: str) -> str:
         import re
 
         tint = html.escape(icon_color, quote=True)
+        if "tint_icon" in meta:
+            svg = meta["tint_icon"]
         for clear in CLEAR_ON_TINT.get(str(meta.get("name", "")), ()):
             svg = svg.replace('fill="%s"' % clear, 'fill="none"')
         svg = re.sub(r'fill="#[0-9a-fA-F]{3,8}"', f'fill="{tint}"', svg)

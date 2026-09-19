@@ -880,7 +880,7 @@ class TestAddressRendering:
         assert 'fill="#FEFEFE"' not in html
         assert html.count('fill="none"') == 2
 
-    def test_tinted_balad_clears_dot(self):
+    def test_tinted_balad_uses_simplified_mark(self):
         html = _html(
             "Address {\n"
             "    iconColor: \"#111111\"\n"
@@ -888,8 +888,12 @@ class TestAddressRendering:
             "}\n"
         )
         assert 'fill="#111111"' in html
+        assert 'fill="#241957"' not in html
+        assert 'fill="#7868f6"' not in html
+        assert 'fill="#f8d748"' not in html
+        assert 'fill="#ef8b32"' not in html
         assert 'fill="#fff"' not in html
-        assert html.count('fill="none"') == 1
+        assert 'fill="none"' not in html
 
     def test_tinted_rubika_clears_light_fills(self):
         html = _html(
