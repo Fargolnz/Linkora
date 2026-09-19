@@ -39,7 +39,7 @@ class TestPageShell:
     def test_brand_footer_fa(self):
         html = _html()
         assert 'class="lk-brand"' in html
-        assert 'href="https://github.com/Fargolnz"' in html
+        assert 'href="https://github.com/Fargolnz/Linkora"' in html
         assert "ساخته شده با لینکورا" in html
         assert "Made With Linkora" not in html
         assert "mix-blend-mode: difference" in html
