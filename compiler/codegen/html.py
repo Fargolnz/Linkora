@@ -317,7 +317,7 @@ def render_name(block: Block) -> str:
     subtitle = str(resolved["subtitle"])
     align = str(resolved["align"])
     title_color = str(resolved["titleColor"])
-    sub_color = str(resolved["subColor"])
+    sub_color = str(resolved["subtitleColor"])
 
     parts = []
     if title:

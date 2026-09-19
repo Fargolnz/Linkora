@@ -70,7 +70,7 @@ Displays the user's identity — main title and subtitle.
 | Subtitle | `subtitle` | String | `""` | Any valid string |
 | Text Alignment | `align` | Enum | `center` | `left`, `center`, `right` |
 | Title Color | `titleColor` | Color | `#000000` | Valid Color |
-| Subtitle Color | `subColor` | Color | `#000000` | Valid Color |
+| Subtitle Color | `subtitleColor` | Color | `#000000` | Valid Color |
 
 #### Rendering
 
@@ -87,7 +87,7 @@ Name {
     subtitle: "Developer & Designer"
     align: center
     titleColor: "#000000"
-    subColor: "#666666"
+    subtitleColor: "#666666"
 }
 ```
 
@@ -261,7 +261,7 @@ Profile {
         title: "Seyyedeh Fargol Nazemzadeh"
         subtitle: "Developer & Designer"
         titleColor: "#000000"
-        subColor: "#666666"
+        subtitleColor: "#666666"
     }
     Bio {
         text: "Building Linkora — a DSL for customizable link-in-bio pages."

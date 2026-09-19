@@ -115,7 +115,7 @@ _NAME = BlockDef(
             enum_values=("left", "center", "right"),
         ),
         PropertyDef("titleColor", ValueType.COLOR, "#000000"),
-        PropertyDef("subColor", ValueType.COLOR, "#000000"),
+        PropertyDef("subtitleColor", ValueType.COLOR, "#000000"),
     ),
 )
 
