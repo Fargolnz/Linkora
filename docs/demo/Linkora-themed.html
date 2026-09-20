@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="assets/logo.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700&display=swap" rel="stylesheet">
+  <title>Seyyedeh Fargol Nazemzadeh</title>
+  <meta name="description" content="My Links At a Glance">
+  <style>
+
+:root {
+    color-scheme: light;
+    --lk-background: #0F172A;
+    --lk-backdrop: #1E293B;
+    --lk-background-image: none;
+    --lk-background-size: cover;
+    --lk-background-repeat: no-repeat;
+    --lk-font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+}
+
+body {
+    min-height: 100vh;
+    min-height: 100dvh;
+    background-color: var(--lk-backdrop);
+    font-family: var(--lk-font-family);
+}
+
+/* Mobile-first: the page fills the phone viewport. */
+.lk-page {
+    max-width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+    margin: 0 auto;
+    padding: 24px 16px;
+    background-color: var(--lk-background);
+    background-image: var(--lk-background-image);
+    background-size: var(--lk-background-size);
+    background-repeat: var(--lk-background-repeat);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.lk-page * {
+    unicode-bidi: plaintext;
+}
+
+/* Larger screens: a column slightly wider than a phone, floating on the
+   tinted background as a card, centered with equal space above and below. */
+@media (min-width: 600px) {
+    body {
+        display: flex;
+    }
+
+    .lk-page {
+        max-width: 560px;
+        min-height: 0;
+        margin: auto;
+        padding: 24px 24px;
+        border-radius: 20px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    }
+}
+
+.lk-shape-sharp { border-radius: 0; }
+.lk-shape-slightlyRounded { border-radius: 6px; }
+.lk-shape-rounded { border-radius: 12px; }
+.lk-shape-pill { border-radius: 999px; }
+.lk-align-left { justify-content: flex-start; }
+.lk-align-center { justify-content: center; }
+.lk-align-right { justify-content: flex-end; }
+.lk-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 24px;
+    color: #fff;
+    mix-blend-mode: difference;
+    text-decoration: none;
+    opacity: 0.9;
+}
+.lk-brand-divider {
+    height: 1px;
+    width: 480px;
+    max-width: 90%;
+    background: linear-gradient(to right, transparent, #fff, transparent);
+}
+.lk-brand svg {
+    height: 28px;
+    width: auto;
+    display: block;
+}
+.lk-brand-caption {
+    font-size: 12px;
+    font-weight: 400;
+}
+.lk-link {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 52px;
+    padding: 16px 24px;
+    border: 2px solid transparent;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform 120ms ease, opacity 120ms ease;
+}
+.lk-link:hover {
+    transform: translateY(-2px);
+    opacity: 0.92;
+}
+.lk-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding-bottom: 16px;
+}
+.lk-name {
+    text-align: center;
+    width: 100%;
+}
+.lk-name-title {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.5;
+}
+.lk-name-subtitle {
+    margin: 8px 0 0;
+    font-size: 14px;
+    line-height: 1.5;
+    font-weight: 400;
+    opacity: 0.8;
+}
+.lk-logo {
+    width: 96px;
+    height: 96px;
+    object-fit: cover;
+    border: 3px solid transparent;
+}
+.lk-bio,
+.lk-text {
+    margin: 0;
+    padding: 12px 0;
+    font-size: 14px;
+    line-height: 1.6;
+    width: 100%;
+    border: 1px solid transparent;
+}
+.lk-bio--boxed,
+.lk-text--boxed {
+    padding: 12px 20px;
+}
+.lk-cover {
+    width: 100%;
+    overflow: hidden;
+}
+.lk-cover-img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    display: block;
+}
+.lk-title {
+    margin: 32px 0 0;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.3;
+    width: 100%;
+}
+.lk-connect {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+}
+.lk-connect .lk-connectitem { flex: 0 1 100%; }
+.lk-connect[data-columns='1'] .lk-connectitem { flex-basis: 100%; }
+.lk-connect[data-columns='2'] .lk-connectitem { flex-basis: calc((100% - 12px) / 2); }
+.lk-connect[data-columns='3'] .lk-connectitem { flex-basis: calc((100% - 24px) / 3); }
+.lk-connect[data-columns='4'] .lk-connectitem { flex-basis: calc((100% - 36px) / 4); }
+.lk-connect[data-direction='rtl'] { direction: rtl; }
+.lk-connect[data-direction='ltr'] { direction: ltr; }
+.lk-address-caption {
+    flex: 0 1 100%;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+.lk-connectitem {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 52px;
+    min-width: 0;
+    padding: 12px 12px;
+    border: 2px solid transparent;
+    text-decoration: none;
+    transition: transform 120ms ease, opacity 120ms ease;
+}
+.lk-connectitem:hover {
+    transform: translateY(-2px);
+    opacity: 0.92;
+}
+.lk-connectitem-icon {
+    display: inline-flex;
+    width: 22px;
+    height: 22px;
+    flex: 0 0 auto;
+}
+.lk-connectitem-icon svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+.lk-connectitem-title {
+    font-size: 15px;
+    font-weight: 600;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.lk-image {
+    width: 100%;
+}
+.lk-image-grid .lk-image-row {
+    display: flex;
+    gap: 12px;
+    align-items: stretch;
+    margin-bottom: 12px;
+}
+.lk-image-grid .lk-image-row:last-child {
+    margin-bottom: 0;
+}
+.lk-image-grid[data-direction='rtl'] { direction: rtl; }
+.lk-image-grid[data-direction='ltr'] { direction: ltr; }
+.lk-image-row .lk-imagecard {
+    flex: 1 1 0;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    background-color: #FFFFFF;
+    border: 2px solid transparent;
+}
+.lk-imagecard-img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    flex: 0 0 auto;
+}
+.lk-imagecard--shadow,
+.lk-image-slider--shadow {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+.lk-imagecard--has-caption .lk-imagecard-img {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.lk-imagecard-caption {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-height: 60px;
+}
+.lk-imagecard-caption--empty {
+    min-height: 60px;
+}
+.lk-imagecard-title {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+.lk-imagecard-desc {
+    font-size: 13px;
+    line-height: 1.5;
+}
+.lk-image-slider {
+    position: relative;
+    overflow: hidden;
+}
+.lk-image-slider .lk-image-slider-track {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+}
+.lk-image-slider .lk-image-slider-track::-webkit-scrollbar {
+    display: none;
+}
+.lk-image-slider .lk-imagecard {
+    flex: 0 0 100%;
+    margin: 0;
+    scroll-snap-align: center;
+}
+.lk-image-slider-dots {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    aspect-ratio: 4 / 3;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 8px;
+    pointer-events: none;
+}
+.lk-image-slider-dot {
+    width: 10px;
+    height: 10px;
+    box-sizing: border-box;
+    aspect-ratio: 1 / 1;
+    padding: 0;
+    margin: 0 0 14px;
+    border: 2px solid rgba(255, 255, 255, 0.95);
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+    pointer-events: auto;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+    transition: background-color 150ms ease;
+}
+.lk-image-slider-dot.is-active {
+    background: #FFFFFF;
+}
+.lk-banner {
+    width: 100%;
+}
+.lk-banner[data-direction='rtl'] { direction: rtl; }
+.lk-banner[data-direction='ltr'] { direction: ltr; }
+.lk-banner .lk-banner-row {
+    display: flex;
+    gap: 12px;
+    align-items: stretch;
+    margin-bottom: 12px;
+}
+.lk-banner .lk-banner-row:last-child {
+    margin-bottom: 0;
+}
+.lk-banner-row .lk-banneritem {
+    flex: 1 1 0;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+    display: block;
+    text-decoration: none;
+    border: 2px solid transparent;
+    transition: transform 120ms ease, opacity 120ms ease;
+}
+.lk-banner-row .lk-banneritem:hover {
+    transform: translateY(-2px);
+    opacity: 0.92;
+}
+.lk-banneritem-img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+}
+.lk-banneritem-mask {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 4px;
+}
+.lk-banneritem-title {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+.lk-banneritem-desc {
+    font-size: 13px;
+    line-height: 1.5;
+}
+.lk-video {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    border: 2px solid transparent;
+    text-decoration: none;
+    transition: transform 120ms ease, opacity 120ms ease;
+}
+.lk-video:hover {
+    transform: translateY(-2px);
+    opacity: 0.92;
+}
+.lk-video-img,
+.lk-video-player {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+}
+.lk-video-no-thumbnail {
+    aspect-ratio: 16 / 9;
+    background: linear-gradient(135deg, #e0e0e0, #c8c8c8);
+}
+.lk-video-play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 56px;
+    height: 56px;
+    background: rgba(0, 0, 0, 0.55);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+.lk-video-play-triangle {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 10px 0 10px 18px;
+    border-color: transparent transparent transparent #FFFFFF;
+    margin-left: 4px;
+}
+.lk-faq {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+}
+.lk-faq[data-direction='rtl'] { direction: rtl; }
+.lk-faq[data-direction='ltr'] { direction: ltr; }
+.lk-faqitem {
+    margin: 0;
+    padding: 0;
+    border: 2px solid;
+    overflow: hidden;
+}
+.lk-faqitem-summary {
+    appearance: none;
+    -webkit-appearance: none;
+    margin: 0;
+    padding: 16px;
+    border: 0;
+    background: transparent;
+    font-family: inherit;
+    color: inherit;
+    text-align: start;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    cursor: pointer;
+    user-select: none;
+}
+.lk-faqitem-question {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+.lk-faqitem-arrow {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    transition: transform 180ms ease;
+}
+.lk-faqitem.is-open .lk-faqitem-arrow {
+    transform: rotate(180deg);
+}
+.lk-faqitem-answer-wrap {
+    overflow: hidden;
+    height: 0;
+    transition: height 260ms ease;
+}
+.lk-faqitem-answer {
+    padding: 0 16px 16px;
+    font-size: 14px;
+    line-height: 1.6;
+}
+.lk-superlink {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 72px;
+    padding: 16px 24px;
+    border: 2px solid transparent;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform 120ms ease, opacity 120ms ease;
+    gap: 12px;
+}
+.lk-superlink:hover {
+    transform: translateY(-2px);
+    opacity: 0.92;
+}
+.lk-superlink[data-direction='rtl'] { direction: rtl; }
+.lk-superlink[data-direction='ltr'] { direction: ltr; }
+.lk-superlink-icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+}
+.lk-superlink-icon--tinted {
+    display: inline-block;
+    -webkit-mask: center / contain no-repeat;
+    mask: center / contain no-repeat;
+}
+.lk-superlink-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+.lk-superlink-title {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+    text-align: start;
+}
+.lk-superlink-desc {
+    font-size: 13px;
+    font-weight: 400;
+    opacity: 0.85;
+    line-height: 1.4;
+    text-align: start;
+}
+.lk-countdown {
+    width: 100%;
+    box-sizing: border-box;
+    border: 2px solid transparent;
+    padding: 20px 16px;
+    text-align: center;
+}
+.lk-countdown-transparent {
+    background: transparent;
+}
+.lk-countdown-row {
+    display: flex;
+    direction: ltr;
+    justify-content: center;
+    gap: 24px;
+}
+.lk-countdown-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 60px;
+}
+.lk-countdown-digit {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.2;
+    font-variant-numeric: tabular-nums;
+}
+.lk-countdown-label {
+    font-size: 12px;
+    opacity: 0.7;
+    margin-top: 4px;
+}
+.lk-countdown-expired {
+    margin-top: 12px;
+    font-size: 14px;
+    font-weight: 600;
+}
+@media (max-width: 600px) {
+    .lk-countdown-row {
+        gap: 16px;
+    }
+    .lk-countdown-digit {
+        font-size: 24px;
+    }
+}
+.lk-divider {
+    width: 100%;
+    line-height: 0;
+    text-align: center;
+}
+.lk-divider-svg {
+    width: 100%;
+    height: auto;
+    display: inline-block;
+    vertical-align: middle;
+}
+  </style>
+</head>
+<body>
+  <main class="lk-page">
+  <section class="lk-profile">
+  <div class="lk-cover lk-shape-rounded">
+    <img class="lk-cover-img" src="assets/cover-dark.svg" alt="Cover">
+  </div>
+    <img class="lk-logo lk-shape-pill" style="border-color: #C7006E;" src="assets/logo.jpg" alt="Logo">
+  <div class="lk-name lk-align-center">
+    <h1 class="lk-name-title" style="color: #FFFFFF;">Seyyedeh Fargol Nazemzadeh</h1>
+    <p class="lk-name-subtitle" style="color: #FFFFFF;">Developer &amp; Designer</p>
+  </div>
+    <p class="lk-bio lk-shape-rounded" style="color: #FFFFFF; background-color: transparent; border-color: transparent; text-align: center;">Building Linkora!</p>
+  </section>
+  <div class="lk-divider" style="color: #C7006E; margin-top: 20px; margin-bottom: 20px;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="-0.2 0 212.86 8.84" class="lk-divider-svg" aria-hidden="true">  <defs>    <style>      .cls-1, .cls-2 {        fill: currentColor;      }      .cls-2 {        fill-rule: evenodd;        stroke: currentColor;        stroke-miterlimit: 10;        stroke-width: .2437px;      }    </style>  </defs>  <g id="Layer_1-2" data-name="Layer 1">    <g>      <g>        <path class="cls-1" d="M106.513.1497c-.1227-.1996-.4398-.1996-.5626,0-.046.0742-1.1269,1.8532-.8643,3.2472.1125.5918.5728.9911,1.1456.9911s1.0331-.3993,1.1457-.9911c.2642-1.3939-.8184-3.1729-.8644-3.2472ZM106.7211,3.2626c-.0597.3197-.2915.4328-.4893.4328-.0989,0-.2046-.0283-.2967-.0972-.0886-.0671-.1637-.1749-.1926-.3357-.1364-.7208.2183-1.6413.491-2.2119.2916.6148.6172,1.5282.4876,2.2119Z"/>        <path class="cls-1" d="M121.5957,5.3791s-.0937.4381-.162.6908c-.1245.3639-.3052.712-.5388,1.0318-.878,1.196-2.1242,1.7366-3.3312,1.4451-1.1133-.2685-1.9725-1.196-2.1907-2.3638-.121-.6502.0375-1.3427.4364-1.8956.5915-.8233,1.4389-1.196,2.2657-1,.7638.182,1.3519.8145,1.5002,1.613.1739.9275-.4109,1.8267-1.3025,2.0069-.1806.0371-.3563-.0866-.3921-.2738-.0341-.1872.0836-.3692.2642-.4063.5303-.106.8781-.6431.7757-1.196-.0989-.5282-.4893-.9487-.9939-1.0688-.5711-.1343-1.1474.1343-1.582.7385-.2864.3975-.4007.8904-.3154,1.3515.1671.8993.8302,1.613,1.686,1.8197.9581.2314,1.9231-.2014,2.6477-1.1908.5063-.689.7007-1.5087.5489-2.309-.0153-.0883-.0358-.1767-.0579-.2633-.2881-1.1042-1.0706-1.9468-2.1481-2.3108-1.1405-.3851-2.3765-.1537-3.3056.6201l-.0989.0813c-.7211.5689-1.5446,1.6077-2.1567,2.7189-1.8259,3.3743-4.4853,3.415-4.7769,3.4079-.0563.0035-.1125.0071-.1672.0071-.5489,0-1.074-.2014-1.4951-.5759-.191-.1678-.3495-.3621-.474-.5777-.1245.2156-.283.4099-.4739.5777-.4211.3746-.9462.5759-1.4935.5759-.0563,0-.1125-.0035-.1687-.0071-.2864.0053-2.9494-.0318-4.7787-3.4114-.6086-1.1077-1.432-2.1465-2.1464-2.7083l-.1074-.0883c-.9274-.7738-2.1652-1.0052-3.3057-.6201-1.0775.3639-1.86,1.2066-2.1464,2.3108-.0239.0866-.0444.1749-.0597.2633-.1518.8003.0426,1.62.5489,2.309.7246.9894,1.6895,1.424,2.6477,1.1908.8575-.2067,1.519-.9205,1.6861-1.8197.0869-.4611-.0291-.954-.3154-1.3515-.4348-.6042-1.011-.8727-1.5804-.7385-.5064.1201-.8968.5406-.9956,1.0688-.1023.5529.2454,1.09.7757,1.196.1807.0371.3.2191.2642.4063-.0358.1873-.2131.311-.3921.2738-.8916-.1802-1.4764-1.0794-1.3025-2.0069.1483-.7985.7382-1.431,1.5003-1.613.8302-.1961,1.6758.1784,2.2657,1,.3989.5529.5574,1.2455.4364,1.8974-.2182,1.166-1.0774,2.0935-2.1906,2.3621-1.207.2915-2.4533-.2473-3.3313-1.4451-.2336-.318-.4126-.666-.5371-1.0282-.0937-.2879-.1637-.6925-.1637-.6925-.0511-.3798-.0443-.765.0273-1.1413.0205-.106.0426-.2102.0699-.3127.3478-1.3321,1.2888-2.3479,2.5845-2.7861,1.3571-.4594,2.8266-.1837,3.9314.7367l.1006.083c.786.6183,1.6555,1.7101,2.3186,2.9132,1.6844,3.1164,4.0882,3.0617,4.1905,3.0599.0119,0,.0273,0,.0392.0018.4364.0353.861-.1077,1.1934-.4028.3341-.2968.5371-.7102.5711-1.166.0017-.0336.0034-.0672.0034-.1007v-.0035c-.0017-.6625-.491-1.2314-1.1354-1.2897-.2455-.0212-.5029.0777-.6938.2685-.2813.2809-.3818.613-.2779.9134.0903.2615.3187.4434.583.4647.1841.0159.3205.182.3068.3727-.0153.1908-.1705.3304-.3597.318-.5268-.0442-.9819-.4046-1.1593-.9204-.1944-.56-.0273-1.1748.4432-1.6466.3273-.3268.7808-.4982,1.2173-.4593.5916.053,1.0979.3869,1.4099.8621.3137-.4752.82-.8092,1.4116-.8621.4347-.0389.8882.1325,1.2155.4593.4722.4699.6376,1.0865.4432,1.6466-.1772.5159-.6325.8763-1.1593.9204-.1807.0124-.3444-.1272-.358-.318-.0153-.1908.1211-.3568.3052-.3727.2643-.0212.4944-.2032.5831-.4647.104-.3003.0033-.6325-.278-.9134-.1892-.1908-.4501-.2898-.6938-.2685-.6445.0583-1.1354.6289-1.1354,1.2932,0,.0336.0017.0671.0034.1007.0358.4558.237.8692.5711,1.166.3325.2951.7569.4399,1.1934.4028.0136-.0018.0273-.0018.041-.0018.0971.0018,2.5043.0548,4.1888-3.0564.6649-1.2067,1.5344-2.2985,2.3271-2.9221l.0921-.0777c1.1047-.9204,2.5743-1.196,3.9314-.7367,1.2957.4364,2.2384,1.454,2.5845,2.7878.0273.1007.0494.2049.0699.3109.0716.3763.0784.7596.0273,1.1395Z"/>      </g>      <g>        <circle class="cls-1" cx="126.3222" cy="4.3167" r=".821"/>        <g>          <path class="cls-1" d="M209.7835,4.67h-80.8844c-.1829,0-.3312-.1582-.3312-.3533s.1483-.3533.3312-.3533h80.8844c.1829,0,.3312.1582.3312.3533s-.1483.3533-.3312.3533Z"/>          <path class="cls-2" d="M211.0369,3.0169c-.7198,0-1.3046.5822-1.3046,1.2996s.5848,1.2999,1.3046,1.2999c.7202,0,1.3047-.5825,1.3047-1.2999s-.5845-1.2996-1.3047-1.2996ZM211.0369,3.295c.5662,0,1.0255.4579,1.0255,1.0215s-.4594,1.0214-1.0255,1.0214c-.5658,0-1.0254-.4576-1.0254-1.0214s.4596-1.0215,1.0254-1.0215"/>        </g>      </g>      <g>        <circle class="cls-1" cx="86.1413" cy="4.3167" r=".821"/>        <g>          <path class="cls-1" d="M2.68,3.9633h80.8844c.1829,0,.3312.1582.3312.3533s-.1483.3533-.3312.3533H2.68c-.1829,0-.3312-.1582-.3312-.3533s.1483-.3533.3312-.3533Z"/>          <path class="cls-2" d="M1.4266,5.6164c.7198,0,1.3046-.5822,1.3046-1.2996s-.5848-1.2999-1.3046-1.2999C.7064,3.0169.1219,3.5994.1219,4.3168s.5845,1.2996,1.3047,1.2996ZM1.4266,5.3383c-.5662,0-1.0255-.4579-1.0255-1.0215s.4594-1.0214,1.0255-1.0214c.5658,0,1.0254.4576,1.0254,1.0214s-.4596,1.0215-1.0254,1.0215"/>        </g>      </g>    </g>  </g></svg>
+  </div>
+  <h2 class="lk-title" style="color: #FFFFFF; text-align: left;">My Pages</h2>
+    <a class="lk-link lk-shape-pill lk-align-center" style="color: #FFFFFF; background-color: #C7006E; border-color: transparent;" href="https://github.com/Fargolnz">My GitHub</a>
+    <a class="lk-link lk-shape-pill lk-align-center" style="color: #FFFFFF; background-color: #C7006E; border-color: transparent;" href="https://www.linkedin.com/in/seyyedeh-fargol-nazemzadeh">My Linkedin</a>
+  <a class="lk-superlink lk-shape-pill" style="color: #FFFFFF; background-color: #1E293B; border-color: transparent;" href="https://github.com/Fargolnz" data-direction="ltr">
+    <div class="lk-superlink-text">
+      <span class="lk-superlink-title" style="color: #FFFFFF;">My Portfolio</span>
+      <span class="lk-superlink-desc" style="color: #FFFFFF;">Latest Projects and Activities</span>
+    </div>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="lk-superlink-icon" aria-hidden="true" fill="#C7006E"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7zM19 19H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7z"/></svg>
+  </a>
+  <h2 class="lk-title" style="color: #FFFFFF; text-align: left;">A Brief Introduction to Linkora</h2>
+  <p class="lk-text lk-shape-rounded" style="color: #FFFFFF; background-color: transparent; border-color: transparent; text-align: left;">Linkora is A DSL for building customizable link-in-bio pages!</p>
+  <div class="lk-divider" style="color: #C7006E; margin-top: 20px; margin-bottom: 20px;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 212.2977 12.4" class="lk-divider-svg" aria-hidden="true">  <defs>    <style>      .cls-1 {        fill: currentColor;      }      .cls-2 {        fill: none;        stroke: currentColor;        stroke-miterlimit: 10;        stroke-width: .5268px;      }      .cls-3 {        fill: currentColor;      }      .cls-4 {        fill: currentColor;        fill-rule: evenodd;      }    </style>  </defs>  <g id="Layer_1-2" data-name="Layer 1">    <g>      <g>        <path class="cls-4" d="M106.1461,8.7971c.2086-.6169.8264-2.0894,2.1151-2.6481-1.2886-.5587-1.9065-2.0312-2.1151-2.6481-.2085.617-.8264,2.0894-2.1151,2.6481,1.2886.5587,1.9066,2.031,2.1151,2.6481h0Z"/>        <path class="cls-4" d="M106.2697,1.8166c.0025.0096.8415,3.3648,3.3476,4.2078.1285.032.1249.2165.0091.2455-2.4321.8106-3.2982,3.9863-3.3539,4.1995-.02.1254-.1972.1585-.2502.0114-.0025-.0097-.8414-3.3648-3.3476-4.2078-.123-.0306-.132-.2057-.0093-.2454,2.4321-.8107,3.2982-3.9863,3.3539-4.1995.0212-.1324.2115-.1505.2502-.0114h0ZM106.0225,12.2009c.0437.1428.2296.118.2502-.0115.0648-.2503,1.278-4.769,4.73-5.9196.1299-.0564.1085-.2162-.0093-.2455-3.5383-1.187-4.7202-5.9142-4.7238-5.9278-.0398-.1398-.2292-.1203-.2501.0114-.0649.2503-1.2782,4.769-4.7301,5.9196-.1298.0571-.1085.2162.0092.2454,3.5383,1.187,4.7203,5.9142,4.7238,5.9279h0Z"/>      </g>      <g>        <g>          <line class="cls-2" x1="6.6099" y1="6.1488" x2="90.0822" y2="6.149"/>          <circle class="cls-1" cx="6.4406" cy="6.149" r=".9866"/>          <circle class="cls-1" cx="90.0822" cy="6.1487" r=".9866"/>        </g>        <path class="cls-4" d="M4.4367,6.1488c-.5168-.1747-1.7503-.6923-2.2183-1.7718-.4681,1.0795-1.7016,1.5971-2.2183,1.7718.5168.1746,1.7503.6923,2.2183,1.7718.468-1.0795,1.7014-1.5972,2.2183-1.7718h0Z"/>      </g>      <g>        <g>          <line class="cls-2" x1="122.3792" y1="6.1488" x2="205.8516" y2="6.149"/>          <circle class="cls-1" cx="122.2099" cy="6.149" r=".9866"/>          <circle class="cls-1" cx="205.8516" cy="6.1487" r=".9866"/>        </g>        <path class="cls-4" d="M207.8555,6.1488c.5168.1747,1.7503.6923,2.2183,1.7718.4681-1.0795,1.7016-1.5971,2.2183-1.7718-.5168-.1746-1.7503-.6923-2.2183-1.7718-.468,1.0795-1.7014,1.5972-2.2183,1.7718h0Z"/>      </g>      <path class="cls-3" d="M94.3932,6.4791c.547.2705,1.1576.63,1.7417,1.1392.5841-.5091,1.1946-.8687,1.7417-1.1392.1513-.0762.2989-.1457.4408-.2118.0904-.0411.1781-.0806.264-.1185-.0859-.0379-.1736-.0775-.264-.1185-.142-.0661-.2896-.1356-.4408-.2119-.547-.2704-1.1575-.6299-1.7417-1.139-.5842.5092-1.1947.8687-1.7417,1.139-.1513.0763-.2989.1458-.4409.2119-.0903.041-.1781.0806-.264.1185.0859.0379.1737.0775.264.1185.142.0661.2896.1356.4409.2118Z"/>      <path class="cls-3" d="M117.899,5.8186c-.547-.2705-1.1576-.63-1.7417-1.1392-.5841.5091-1.1946.8687-1.7417,1.1392-.1513.0762-.2989.1457-.4408.2118-.0904.0411-.1781.0806-.264.1185.0859.0379.1736.0775.264.1185.142.0661.2896.1356.4408.2119.547.2704,1.1575.6299,1.7417,1.139.5842-.5092,1.1947-.8687,1.7417-1.139.1513-.0763.2989-.1458.4409-.2119.0903-.041.1781-.0806.264-.1185-.0859-.0379-.1737-.0775-.264-.1185-.142-.0661-.2896-.1356-.4409-.2118Z"/>    </g>  </g></svg>
+  </div>
+  <h2 class="lk-title" style="color: #FFFFFF; text-align: left;">Social Media</h2>
+  <section class="lk-connect" data-columns="4" data-direction="ltr">
+    <a class="lk-connectitem lk-shape-pill" style="color: #1A1A1A; background-color: #1E293B; border-color: #C7006E;" href="https://instagram.com"><span class="lk-connectitem-icon" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="ig" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#C7006E"/><stop offset="0.25" stop-color="#C7006E"/><stop offset="0.5" stop-color="#C7006E"/><stop offset="0.75" stop-color="#C7006E"/><stop offset="1" stop-color="#C7006E"/></linearGradient></defs><path fill="url(#ig)" d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077"/></svg></span></a>
+    <a class="lk-connectitem lk-shape-pill" style="color: #1A1A1A; background-color: #1E293B; border-color: #C7006E;" href="https://t.me/linkora"><span class="lk-connectitem-icon" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="#C7006E" d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg></span></a>
+    <a class="lk-connectitem lk-shape-pill" style="color: #1A1A1A; background-color: #1E293B; border-color: #C7006E;" href="https://youtube.com"><span class="lk-connectitem-icon" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="#C7006E" d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></span></a>
+    <a class="lk-connectitem lk-shape-pill" style="color: #1A1A1A; background-color: #1E293B; border-color: #C7006E;" href="https://tiktok.com"><span class="lk-connectitem-icon" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="#C7006E" d="M14.293 1.155a6.21 6.21 0 0 1 2.579 3.133 5.36 5.36 0 0 0 4.728 2.213v3.25c-1.605.02-3.143-.33-4.368-1.049v5.785a6.673 6.673 0 1 1-6.673-6.672c.341 0 .678.025 1.008.074v3.368a3.26 3.26 0 0 0-1.008-.157 3.29 3.29 0 1 0 3.29 3.29V1.155z"/><path fill="#C7006E" d="M14.293.012c.084 1.77 1.025 3.374 2.416 4.332a5.37 5.37 0 0 0 4.891.787v3.633c-1.476.133-2.912-.25-4.195-1.019v6.98a6.673 6.673 0 1 1-6.673-6.673c.314 0 .623.022.925.064v3.686c-.3-.05-.6-.077-.94-.077a3.067 3.067 0 1 0 3.066 3.067V.012h1.51z"/></svg></span></a>
+    <a class="lk-connectitem lk-shape-pill" style="color: #1A1A1A; background-color: #1E293B; border-color: #C7006E;" href="https://x.com"><span class="lk-connectitem-icon" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="#C7006E" d="M14.234 10.162 22.977 0h-2.072l-7.591 8.824L7.251 0H.258l9.168 13.343L.258 24H2.33l8.016-9.318L16.749 24h6.993zm-2.837 3.299-.929-1.329L3.076 1.56h3.182l5.965 8.532.929 1.329 7.754 11.09h-3.182z"/></svg></span></a>
+    <a class="lk-connectitem lk-shape-pill" style="color: #1A1A1A; background-color: #1E293B; border-color: #C7006E;" href="https://www.linkedin.com/in/seyyedeh-fargol-nazemzadeh"><span class="lk-connectitem-icon" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="#C7006E" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></span></a>
+    <a class="lk-connectitem lk-shape-pill" style="color: #1A1A1A; background-color: #1E293B; border-color: #C7006E;" href="https://github.com/Fargolnz"><span class="lk-connectitem-icon" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="#C7006E" d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></span></a>
+    <a class="lk-connectitem lk-shape-pill" style="color: #1A1A1A; background-color: #1E293B; border-color: #C7006E;" href="https://open.spotify.com"><span class="lk-connectitem-icon" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="#C7006E" d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg></span></a>
+    <a class="lk-connectitem lk-shape-pill" style="color: #1A1A1A; background-color: #1E293B; border-color: #C7006E;" href="https://www.twitch.tv"><span class="lk-connectitem-icon" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="#C7006E" d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/></svg></span></a>
+    <a class="lk-connectitem lk-shape-pill" style="color: #1A1A1A; background-color: #1E293B; border-color: #C7006E;" href="https://www.pinterest.com"><span class="lk-connectitem-icon" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="#C7006E" d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.401.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.354-.629-2.758-1.379l-.749 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.607 0 11.985-5.365 11.985-11.987C23.97 5.39 18.592.026 11.985.026L12.017 0z"/></svg></span></a>
+    <a class="lk-connectitem lk-shape-pill" style="color: #1A1A1A; background-color: #1E293B; border-color: #C7006E;" href="https://www.facebook.com"><span class="lk-connectitem-icon" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="#C7006E" d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z"/></svg></span></a>
+    <a class="lk-connectitem lk-shape-pill" style="color: #1A1A1A; background-color: #1E293B; border-color: #C7006E;" href="https://www.patreon.com"><span class="lk-connectitem-icon" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="#C7006E" d="M22.957 7.21c-.004-3.064-2.391-5.576-5.191-6.482-3.478-1.125-8.064-.962-11.384.604C2.357 3.231 1.093 7.391 1.046 11.54c-.039 3.411.302 12.396 5.369 12.46 3.765.047 4.326-4.804 6.068-7.141 1.24-1.662 2.836-2.132 4.801-2.618 3.376-.836 5.678-3.501 5.673-7.031Z"/></svg></span></a>
+  </section>
+  <h2 class="lk-title" style="color: #FFFFFF; text-align: left;">Messengers</h2>
+  <section class="lk-connect" data-columns="4" data-direction="ltr">
+    <a class="lk-connectitem lk-shape-pill" style="color: #3B3B3B; background-color: #1E293B; border-color: #C7006E;" href="https://t.me/linkora"><span class="lk-connectitem-icon" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="#C7006E" d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg></span></a>
+    <a class="lk-connectitem lk-shape-pill" style="color: #3B3B3B; background-color: #1E293B; border-color: #C7006E;" href="https://wa.me/1234567890"><span class="lk-connectitem-icon" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="#C7006E" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></span></a>
+    <a class="lk-connectitem lk-shape-pill" style="color: #3B3B3B; background-color: #1E293B; border-color: #C7006E;" href="https://discord.gg/linkora"><span class="lk-connectitem-icon" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="#C7006E" d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg></span></a>
+    <a class="lk-connectitem lk-shape-pill" style="color: #3B3B3B; background-color: #1E293B; border-color: #C7006E;" href="https://join.skype.com/linkora"><span class="lk-connectitem-icon" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="#C7006E" d="M12.069 18.874c-4.023 0-5.82-1.979-5.82-3.464c0-.765.561-1.296 1.333-1.296c1.723 0 1.273 2.477 4.487 2.477c1.641 0 2.55-.895 2.55-1.811c0-.551-.269-1.16-1.354-1.429l-3.576-.895c-2.88-.724-3.403-2.286-3.403-3.751c0-3.047 2.861-4.191 5.549-4.191c2.471 0 5.393 1.373 5.393 3.199c0 .784-.688 1.24-1.453 1.24c-1.469 0-1.198-2.037-4.164-2.037c-1.469 0-2.292.664-2.292 1.617s1.153 1.258 2.157 1.487l2.637.587c2.891.649 3.624 2.346 3.624 3.944c0 2.476-1.902 4.324-5.722 4.324m11.084-4.882l-.029.135l-.044-.24c.015.045.044.074.059.12c.12-.675.181-1.363.181-2.052a11.32 11.32 0 0 0-3.325-8.016a11.5 11.5 0 0 0-3.595-2.426c-1.318-.631-2.801-.93-4.328-.93c-.72 0-1.444.07-2.143.204l.119.06l-.239-.033l.119-.025A6.7 6.7 0 0 0 6.731 0c-1.789 0-3.47.698-4.736 1.967A6.68 6.68 0 0 0 .032 6.716c0 1.143.292 2.265.844 3.258l.02-.124l.041.239l-.06-.115a11.4 11.4 0 0 0 .712 6.371a10.9 10.9 0 0 0 2.427 3.609a11.3 11.3 0 0 0 3.595 2.442c1.394.6 2.877.898 4.404.898c.659 0 1.334-.06 1.977-.179l-.119-.062l.24.046l-.135.03a6.64 6.64 0 0 0 3.294.871a6.64 6.64 0 0 0 4.733-1.963a6.68 6.68 0 0 0 1.962-4.749a6.8 6.8 0 0 0-.853-3.266"/></svg></span></a>
+    <a class="lk-connectitem lk-shape-pill" style="color: #3B3B3B; background-color: #1E293B; border-color: #C7006E;" href="https://line.me/ti/p/linkora"><span class="lk-connectitem-icon" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="#C7006E" d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg></span></a>
+    <a class="lk-connectitem lk-shape-pill" style="color: #3B3B3B; background-color: #1E293B; border-color: #C7006E;" href="https://viber.me/linkora"><span class="lk-connectitem-icon" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="#C7006E" d="M11.4 0C9.473.028 5.333.344 3.02 2.467 1.302 4.187.696 6.7.633 9.817.57 12.933.488 18.776 6.12 20.36h.003l-.004 2.416s-.037.977.61 1.177c.777.242 1.234-.5 1.98-1.302.407-.44.972-1.084 1.397-1.58 3.85.326 6.812-.416 7.15-.525.776-.252 5.176-.816 5.892-6.657.74-6.02-.36-9.83-2.34-11.546-.596-.55-3.006-2.3-8.375-2.323 0 0-.395-.025-1.037-.017zm.058 1.693c.545-.004.88.017.88.017 4.542.02 6.717 1.388 7.222 1.846 1.675 1.435 2.53 4.868 1.906 9.897v.002c-.604 4.878-4.174 5.184-4.832 5.395-.28.09-2.882.737-6.153.524 0 0-2.436 2.94-3.197 3.704-.12.12-.26.167-.352.144-.13-.033-.166-.188-.165-.414l.02-4.018c-4.762-1.32-4.485-6.292-4.43-8.895.054-2.604.543-4.738 1.996-6.173 1.96-1.773 5.474-2.018 7.11-2.03zm.38 2.602c-.167 0-.303.135-.304.302 0 .167.133.303.3.305 1.624.01 2.946.537 4.028 1.592 1.073 1.046 1.62 2.468 1.633 4.334.002.167.14.3.307.3.166-.002.3-.138.3-.304-.014-1.984-.618-3.596-1.816-4.764-1.19-1.16-2.692-1.753-4.447-1.765zm-3.96.695c-.19-.032-.4.005-.616.117l-.01.002c-.43.247-.816.562-1.146.932-.002.004-.006.004-.008.008-.267.323-.42.638-.46.948-.008.046-.01.093-.007.14 0 .136.022.27.065.4l.013.01c.135.48.473 1.276 1.205 2.604.42.768.903 1.5 1.446 2.186.27.344.56.673.87.984l.132.132c.31.308.64.6.984.87.686.543 1.418 1.027 2.186 1.447 1.328.733 2.126 1.07 2.604 1.206l.01.014c.13.042.265.064.402.063.046.002.092 0 .138-.008.31-.036.627-.19.948-.46.004 0 .003-.002.008-.005.37-.33.683-.72.93-1.148l.003-.01c.225-.432.15-.842-.18-1.12-.004 0-.698-.58-1.037-.83-.36-.255-.73-.492-1.113-.71-.51-.285-1.032-.106-1.248.174l-.447.564c-.23.283-.657.246-.657.246-3.12-.796-3.955-3.955-3.955-3.955s-.037-.426.248-.656l.563-.448c.277-.215.456-.737.17-1.248-.217-.383-.454-.756-.71-1.115-.25-.34-.826-1.033-.83-1.035-.137-.165-.31-.265-.502-.297zm4.49.88c-.158.002-.29.124-.3.282-.01.167.115.312.282.324 1.16.085 2.017.466 2.645 1.15.63.688.93 1.524.906 2.57-.002.168.13.306.3.31.166.003.305-.13.31-.297.025-1.175-.334-2.193-1.067-2.994-.74-.81-1.777-1.253-3.05-1.346h-.024zm.463 1.63c-.16.002-.29.127-.3.287-.008.167.12.31.288.32.523.028.875.175 1.113.422.24.245.388.62.416 1.164.01.167.15.295.318.287.167-.008.295-.15.287-.317-.03-.644-.215-1.178-.58-1.557-.367-.378-.893-.574-1.52-.607h-.018z"/></svg></span></a>
+    <a class="lk-connectitem lk-shape-pill" style="color: #3B3B3B; background-color: #1E293B; border-color: #C7006E;" href="https://kik.me/linkora"><span class="lk-connectitem-icon" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="#C7006E" d="M11.482 16.752c-.01.688-.56 1.242-1.238 1.242-.689 0-1.23-.541-1.244-1.23h-.016v-6.243H9v-.029c0-.693.556-1.256 1.237-1.256s1.236.563 1.236 1.258v.045h.016v6.225h-.016l.009-.012zm11.137-4.889c.75 0 1.381.618 1.381 1.377 0 .76-.631 1.375-1.381 1.375-.766 0-1.395-.615-1.395-1.379 0-.766.615-1.381 1.379-1.381l.016.008zm-2.084 4.186c.121.195.193.432.193.686 0 .703-.553 1.26-1.244 1.26-.463 0-.869-.256-1.08-.631l-2.053-2.746-.631.586v1.635h-.014c-.039.652-.57 1.168-1.225 1.168-.674 0-1.221-.553-1.221-1.238v-.025h-.016v-9.45h.027v-.047c0-.69.551-1.253 1.23-1.253.674 0 1.225.562 1.225 1.253v.07h.016l.01 4.597 2.311-2.261c.229-.255.559-.405.928-.405.689 0 1.248.57 1.248 1.26 0 .346-.133.646-.344.871l.012.015-1.621 1.605 2.281 3.061-.016.016-.016-.027zm-13.246 0c.12.195.195.432.195.686 0 .703-.555 1.26-1.244 1.26-.466 0-.871-.256-1.081-.631l-2.054-2.746-.63.586v1.631H2.46c-.036.654-.57 1.17-1.221 1.17-.676 0-1.225-.555-1.225-1.238v-.027H0V7.29h.031c-.004-.015-.004-.029-.004-.044 0-.69.551-1.252 1.23-1.252.675 0 1.225.559 1.225 1.25v.07h.016l.01 4.6 2.311-2.261c.23-.255.562-.405.931-.405.687 0 1.245.57 1.245 1.26 0 .33-.131.646-.346.871l.016.015-1.627 1.605 2.271 3.061-.016.016-.004-.027z"/></svg></span></a>
+    <a class="lk-connectitem lk-shape-pill" style="color: #3B3B3B; background-color: #1E293B; border-color: #C7006E;" href="https://m.me/linkora"><span class="lk-connectitem-icon" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="#C7006E" d="M12 0C5.24 0 0 4.952 0 11.64c0 3.499 1.434 6.521 3.769 8.61a.96.96 0 0 1 .323.683l.065 2.135a.96.96 0 0 0 1.347.85l2.381-1.053a.96.96 0 0 1 .641-.046A13 13 0 0 0 12 23.28c6.76 0 12-4.952 12-11.64S18.76 0 12 0m6.806 7.44c.522-.03.971.567.63 1.094l-4.178 6.457a.707.707 0 0 1-.977.208l-3.87-2.504a.44.44 0 0 0-.49.007l-4.363 3.01c-.637.438-1.415-.317-.995-.966l4.179-6.457a.706.706 0 0 1 .977-.21l3.87 2.505c.15.097.344.094.491-.007l4.362-3.008a.7.7 0 0 1 .364-.13"/></svg></span></a>
+    <a class="lk-connectitem lk-shape-pill" style="color: #3B3B3B; background-color: #1E293B; border-color: #C7006E;" href="https://ble.ir/linkora"><span class="lk-connectitem-icon" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g transform="translate(1.32 1.32) scale(0.50857)"><path fill="#C7006E" d="M23.6232 0.195914H23.5857C23.2734 0.145928 22.9611 0.120924 22.6488 0.0834079L22.3241 0.0584043L21.6371 0.0209091H19.7631L19.3259 0.0459127L18.9385 0.0709163L18.5013 0.120924L18.1141 0.158419L17.6894 0.220918L17.3146 0.283438L16.8899 0.358449L16.515 0.43344L16.0903 0.520963L15.728 0.608466L15.3158 0.720973L14.9535 0.820987L14.5412 0.946006L14.1915 1.05851L13.7917 1.19602L13.4419 1.32104L13.0422 1.48356L12.7048 1.62107L12.3051 1.79607L11.9803 1.9336L11.5805 2.13361L11.2682 2.28363L10.8809 2.49616L10.5811 2.65867L10.1814 2.8962L9.90654 3.05871L9.48179 3.32124L8.60732 3.92129C8.60732 3.92129 4.82211 1.046 3.31051 0.258434C2.96525 0.0774114 2.57912 -0.011212 2.18954 0.00113421C1.79995 0.0134805 1.42019 0.126402 1.08709 0.328922C0.753967 0.531442 0.478822 0.816692 0.288357 1.15699C0.0978932 1.49729 -0.0014368 1.88108 1.57039e-05 2.27112V20.7604C-0.00162355 26.0317 2.00131 31.1059 5.60218 34.9532C9.20306 38.8002 14.132 41.1321 19.3884 41.4749H19.5758L20.2003 41.5H21.7369C21.9242 41.5 22.0992 41.4751 22.2865 41.4624L22.7988 41.4251L23.3359 41.3624L23.8357 41.3L24.3603 41.2124L24.8599 41.1124C25.0349 41.0875 25.2098 41.0375 25.3847 40.9999L25.8719 40.8875L26.384 40.7499L26.8588 40.6123L27.3585 40.4498L27.8332 40.2874L28.3204 40.0998L28.7701 39.9124L29.2448 39.7124L29.6947 39.4997L30.1568 39.2748L30.594 39.0498L31.0439 38.7871L31.4686 38.5498L31.9058 38.2746L32.3181 38.0121L32.7302 37.7121L33.1301 37.4245C33.2687 37.3274 33.4021 37.223 33.5297 37.112L33.9171 36.812L34.3043 36.4746L34.6791 36.1621L35.0538 35.7994L35.3912 35.4744L35.7535 35.0994L36.0907 34.7494L36.4281 34.3618L36.7404 33.9993L37.0651 33.5868L37.3649 33.2116L37.6648 32.7867L37.9397 32.399C38.0395 32.249 38.1271 32.099 38.2269 31.9616L38.4894 31.5489C38.5767 31.3989 38.6643 31.2491 38.7392 31.0991C38.8141 30.949 38.9141 30.8239 38.989 30.6863L39.2264 30.2114L39.4511 29.7864C39.5263 29.6237 39.6012 29.4613 39.6636 29.2988C39.7261 29.1363 39.801 29.0112 39.8634 28.8612C39.9259 28.7111 40.0008 28.5238 40.0633 28.3611L40.2382 27.9237C40.3006 27.7486 40.3507 27.5736 40.4131 27.3985L40.5631 26.9486C40.6256 26.7735 40.6629 26.5859 40.7254 26.411C40.7879 26.2361 40.813 26.111 40.8503 25.9609C40.8879 25.8109 40.9379 25.586 40.9752 25.4109C41.0128 25.2359 41.0503 25.1108 41.0752 24.9608L41.1877 24.3734L41.2626 23.9357C41.3002 23.7233 41.3126 23.5232 41.3375 23.3108C41.3626 23.0983 41.3751 23.0356 41.4 22.8856C41.4251 22.7356 41.4375 22.4231 41.45 22.1857C41.4645 22.0695 41.4728 21.9527 41.4751 21.8356C41.4875 21.498 41.5 21.1604 41.5 20.823V20.7604C41.5 15.7515 39.6906 10.9113 36.4055 7.13212C33.1201 3.35294 28.5806 0.889525 23.6232 0.195914ZM32.8678 18.1102L20.8125 30.1614C20.0534 30.9202 19.0246 31.3464 17.9516 31.3464C16.8789 31.3464 15.8499 30.9202 15.0909 30.1614L8.63231 23.7108C7.93585 22.9375 7.56264 21.9261 7.58964 20.8853C7.61664 19.8447 8.04182 18.8541 8.77743 18.1179C9.51304 17.3819 10.503 16.9563 11.5429 16.9293C12.5829 16.9023 13.5935 17.2758 14.3663 17.9726L17.9516 21.5729L27.1337 12.3721C27.9065 11.6752 28.9172 11.3017 29.957 11.3287C30.997 11.3557 31.9869 11.7812 32.7225 12.5174C33.4581 13.2535 33.8833 14.2441 33.9103 15.2848C33.9375 16.3255 33.5642 17.3368 32.8678 18.1102Z"/></g></svg></span></a>
+    <a class="lk-connectitem lk-shape-pill" style="color: #3B3B3B; background-color: #1E293B; border-color: #C7006E;" href="https://eitaa.com/linkora"><span class="lk-connectitem-icon" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g transform="translate(1.57889 1.32) scale(0.00581)"><path fill="#C7006E" d="M1071.43,2.75H2607.66C3171,2.75,3631.82,462.91,3631.82,1026.2v493.93c-505,227-1014.43,1348.12-1756.93,1104.51-61.16,43.46-202.11,222.55-212,358.43-257.11-34.24-553.52-328.88-517.95-646.62C717,2026.91,1070.39,1455.5,1409.74,1225.51c727.32-492.94,1737.05-69,1175.39,283.45-341.52,214.31-1071.84,355.88-995.91-170.24-200.34,57.78-328.58,431.34-87.37,626-223.45,219.53-180.49,623.07,58.36,755.57,241.56-625.87,1082.31-544.08,1422-1291.2,255.57-562-123.34-1202.37-880.91-1104C1529.56,399.34,993.64,881.63,725.62,1453.64,453.68,2034,494.15,2811.15,1052.55,3202.82c657.15,460.92,1356.78,34.13,1780.52-523.68,249.77-328.78,468-693,798.75-903.37v875.72c0,563.28-460.88,1024.86-1024.16,1024.86H1071.43c-563.29,0-1024.16-460.87-1024.16-1024.16V1026.9C47.27,463.61,508.14,2.74,1071.43,2.74Z"/></g></svg></span></a>
+    <a class="lk-connectitem lk-shape-pill" style="color: #3B3B3B; background-color: #1E293B; border-color: #C7006E;" href="https://rubika.ir/linkora"><span class="lk-connectitem-icon" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g transform="translate(2.33714 1.32) scale(0.50857)"><path fill="#C7006E" d="M18.8561 0.000766101H18.9909C19.0277 3.27112 18.9718 9.83096 18.9718 9.83096C15.8407 8.07677 12.6882 6.36391 9.55868 4.60437C11.6088 3.44001 13.6604 2.27897 15.7135 1.12124C16.6859 0.573251 17.7319 0.102558 18.8561 0.000766101Z"/><path fill="#C7006E" d="M19.2132 0C20.4308 0.109445 21.5312 0.688817 22.5803 1.27661C24.5338 2.37719 26.4848 3.48287 28.4332 4.59365C25.2914 6.3333 22.1151 8.1005 18.9688 9.83479C18.9419 6.56443 19.017 3.27035 18.9802 0H19.2132Z"/><path fill="#C7006E" d="M9.56099 4.60054L18.9741 9.82714L9.49586 15.3576C9.49586 15.3576 9.49126 11.8484 9.50199 10.0988C9.49356 8.28189 9.56099 4.60054 9.56099 4.60054Z"/><path fill="#C7006E" d="M28.4439 4.59442L28.4707 4.60896C28.4631 7.8686 28.4707 11.1282 28.4707 14.3879C28.4654 14.707 28.4623 15.3652 28.4623 15.3652L18.9749 9.83097C18.9749 9.83097 25.3029 6.33407 28.447 4.59442H28.4439Z"/><path fill="#C7006E" d="M28.463 4.60819C30.5534 5.79526 32.6293 7.00834 34.706 8.21836C35.7106 8.78166 36.7749 9.40619 37.3236 10.4677C34.3826 12.0941 28.4592 15.366 28.4592 15.366C28.4592 15.366 28.4546 14.707 28.4592 14.3879C28.4592 11.1282 28.4546 7.8686 28.4592 4.60896L28.463 4.60819Z"/><path fill="#C7006E" d="M3.56322 8.03851C5.52876 6.89048 9.55484 4.6036 9.55484 4.6036L9.49967 15.3576C9.49967 15.3576 3.59924 12.1087 0.667412 10.4815C1.3065 9.34726 2.46053 8.65768 3.56322 8.03851Z"/><path fill="none" d="M18.9656 9.83019L28.4531 15.3637C28.4531 15.3637 25.4002 17.0513 23.8844 17.8618C22.2645 18.7802 18.9733 20.6033 18.9733 20.6033L9.49737 15.3576L18.9656 9.83019Z"/><path fill="#C7006E" d="M0 14.7736C0.00842919 13.3302 -0.0176194 11.7979 0.663612 10.4815C3.59774 12.1086 9.49586 15.3576 9.49586 15.3576C6.32572 17.1883 3.17091 19.0466 0.00230026 20.8796C-0.00229748 18.8438 0.00230026 16.8087 0.00230026 14.7736H0Z"/><path fill="#C7006E" d="M37.3236 10.4677C37.9014 11.5469 37.9858 12.8021 37.9536 14.0029C37.9536 16.2844 37.9536 20.8995 37.9536 20.8995L28.4608 15.3652C28.4608 15.3652 34.3826 12.0941 37.3236 10.4677Z"/><path fill="none" d="M9.49586 15.3576C9.51042 15.3515 18.9718 20.6033 18.9718 20.6033C18.9718 20.6033 18.9757 26.0901 18.9772 28.7742C18.9925 29.6383 18.9718 31.3848 18.9718 31.3848C15.8094 29.6414 12.6637 27.8826 9.50048 26.1391L9.49513 26.1154C9.49513 22.5295 9.49586 18.9435 9.49586 15.3576Z"/><path fill="#C7006E" d="M0.00230026 20.8796C3.17091 19.0427 6.32572 17.1883 9.49586 15.3576C9.4928 18.944 9.49206 22.53 9.49513 26.1154C9.00853 25.9126 8.56633 25.6233 8.10196 25.3776C5.40232 23.8951 2.71111 22.3782 0.00151062 20.9102V20.8819L0.00230026 20.8796Z"/><path fill="none" d="M28.4592 15.366C28.4592 17.5651 28.4592 19.763 28.4592 21.961C28.4493 23.3593 28.4945 24.7523 28.4592 26.1498C25.3014 27.8642 18.9718 31.3848 18.9718 31.3848C18.9718 31.3848 18.9925 29.6383 18.9772 28.7742C18.9772 26.0901 18.9718 20.6033 18.9718 20.6033L28.4592 15.366Z"/><path fill="#C7006E" d="M28.4592 15.366C28.4592 15.366 37.9521 20.8865 37.9521 20.8995C34.7972 22.646 28.4592 26.1498 28.4592 26.1498C28.4945 24.7523 28.4493 23.3593 28.4592 21.961C28.4592 19.7619 28.4608 17.5633 28.4608 15.3652L28.4592 15.366Z"/><path fill="#C7006E" d="M0.00151062 20.9102C2.71111 22.3805 5.39849 23.8951 8.10119 25.3799C8.56556 25.6256 9.00849 25.9156 9.49508 26.1177L9.50044 26.1414C6.58854 27.8369 3.67818 29.5332 0.769341 31.2302C0.462825 30.7641 0.309565 30.2207 0.193855 29.6804C0.010712 28.7796 0.000747681 27.8566 0.000747681 26.9412C0.000747681 24.9309 0.00151062 22.9205 0.00151062 20.9102Z"/><path fill="#C7006E" d="M37.9521 20.8995C37.9566 23.0157 37.952 25.1319 37.952 27.2481C37.9827 28.6051 37.9428 30.0508 37.2187 31.2471C34.598 29.7164 28.4577 26.1498 28.4577 26.1498C28.4577 26.1498 34.7972 22.646 37.9521 20.8995Z"/><path fill="#C7006E" d="M0.769356 31.2279C3.67819 29.5289 6.58859 27.8326 9.50048 26.1391C9.48133 29.7233 9.50658 33.3082 9.48819 36.8916C7.42687 35.7308 5.37092 34.5608 3.32033 33.3816C2.3617 32.8153 1.38009 32.1854 0.769356 31.2279Z"/><path fill="#C7006E" d="M9.50048 26.1391C12.6637 27.8826 15.8094 29.6414 18.9718 31.3848C15.8147 33.2217 9.49278 36.8954 9.48819 36.8916C9.50658 33.3082 9.48133 29.7233 9.50048 26.1391Z"/><path fill="#C7006E" d="M28.4447 26.1567L28.4592 26.1498C28.4684 29.7347 28.4409 33.3204 28.4746 36.9053L28.4508 36.9168C25.9481 35.4236 23.4155 33.9779 20.9013 32.5023C20.2684 32.1425 18.9718 31.3848 18.9718 31.3848C18.9718 31.3848 25.2868 27.8749 28.4447 26.1567Z"/><path fill="#C7006E" d="M28.4592 26.1498C28.7389 26.3404 34.6003 29.7179 37.221 31.2471C36.8486 31.8823 36.2585 32.3484 35.6639 32.7655C34.7045 33.41 33.6807 33.9495 32.683 34.5297C31.2799 35.3218 29.8861 36.13 28.4746 36.9023C28.4408 33.3174 28.4692 29.7317 28.46 26.1468L28.4592 26.1498Z"/><path fill="#C7006E" d="M18.9718 31.3848L18.9718 41.5587C18.1863 41.4431 17.3304 41.2625 16.6346 40.8637C14.2507 39.5427 11.8629 38.2294 9.48819 36.8916C12.6453 35.0509 15.8147 33.2255 18.9718 31.3848Z"/><path fill="#C7006E" d="M18.9718 31.3848C18.9718 31.3848 20.2684 32.1425 20.9013 32.5023C23.4155 33.9779 25.9481 35.4236 28.4508 36.9168C26.0094 38.2659 23.5683 39.618 21.1274 40.9732C20.5174 41.3113 19.8408 41.5121 19.145 41.5617C19.1021 41.5617 18.9718 41.5617 18.9718 41.5617L18.9718 31.3848Z"/></g></svg></span></a>
+    <a class="lk-connectitem lk-shape-pill" style="color: #3B3B3B; background-color: #1E293B; border-color: #C7006E;" href="https://splus.ir/linkora"><span class="lk-connectitem-icon" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g transform="translate(1.32 1.32) scale(0.11125)"><path fill="none" d="M6.19336 95.9849C6.19336 93.506 6.29559 91.0302 6.50004 88.5571C7.90744 72.223 13.2849 57.3255 22.8132 43.9785C33.0193 29.6637 46.295 19.2055 62.6403 12.604C67.8915 10.4833 73.3388 8.88468 78.9032 7.8315C81.4519 7.34417 84.0173 6.96466 86.5996 6.69298C89.9569 6.33536 93.3317 6.16844 96.7077 6.19304C99.4006 6.19304 102.089 6.33588 104.77 6.61316C124.435 8.65494 141.669 16.2339 156.327 29.5054C169.245 41.2015 177.988 55.5527 182.651 72.3573C183.612 75.8368 184.347 79.3746 184.853 82.9485C185.298 86.0575 185.579 89.179 185.722 92.3213C185.858 95.3875 185.83 98.4588 185.638 101.522C184.684 117.318 179.558 132.579 170.783 145.748C170.716 145.849 170.653 145.945 170.581 146.042C170.518 146.125 170.474 146.222 170.452 146.324C170.429 146.426 170.429 146.532 170.451 146.634C170.644 147.92 170.816 149.205 171.001 150.491C171.262 152.335 171.531 154.179 171.795 156.024L172.56 161.405L173.341 166.867L174.135 172.404C174.379 174.106 174.665 175.807 174.862 177.517C174.953 178.258 174.867 179.01 174.61 179.711C174.353 180.412 173.933 181.041 173.385 181.548C172.836 182.054 172.175 182.423 171.456 182.624C170.737 182.824 169.981 182.851 169.249 182.701C168.031 182.42 166.83 182.075 165.624 181.748C157.062 179.445 148.501 177.14 139.942 174.833C139.755 174.77 139.557 174.747 139.361 174.766C139.165 174.785 138.975 174.845 138.804 174.942C131.566 178.889 123.813 181.808 115.768 183.613C113.248 184.173 110.719 184.625 108.181 184.97C105.582 185.314 102.975 185.554 100.358 185.688C98.0226 185.806 95.6867 185.822 93.3511 185.76C90.9437 185.693 88.5407 185.516 86.1459 185.256C80.8437 184.687 75.6042 183.636 70.4924 182.117C57.0617 178.115 44.7498 171.035 34.5357 161.439C24.3217 151.844 16.4871 139.997 11.6549 126.843C9.84832 121.925 8.48727 116.854 7.58815 111.693C7.14003 109.206 6.80253 106.705 6.57567 104.19C6.3208 101.459 6.19336 98.7239 6.19336 95.9849Z"/><path fill="none" d="M45.5403 164.229C44.6454 163.574 43.7463 162.927 42.8556 162.268C42.5154 162.015 42.1919 161.738 41.8641 161.469C36.2065 156.787 31.1768 151.394 26.8995 145.425C26.8029 145.291 26.7021 145.16 26.6055 145.03C27.0845 144.824 27.2903 145.232 27.5339 145.48C28.9065 146.878 30.401 148.152 31.9998 149.286C35.2813 151.629 39.0807 153.144 43.0742 153.701C48.3142 154.454 53.6604 153.782 58.5512 151.756C62.7127 150.024 66.4021 147.327 69.3147 143.887C70.9488 142.014 72.5118 140.106 73.5159 137.791C74.7665 135.089 75.5561 132.197 75.8517 129.234C76.2424 124.532 75.3476 120.029 74.0578 115.563C72.2009 109.139 69.5709 102.98 67.5543 96.6115C66.3486 92.8094 65.0337 89.0494 64.1473 85.1423C62.9192 80.1201 62.0307 75.0209 61.4879 69.8793C61.1836 67.0177 61.0531 64.1402 61.0971 61.2628C61.2206 54.7178 62.2861 48.2248 64.2606 41.9836C65.533 38.034 67.223 34.2314 69.302 30.6404C72.4614 25.2504 76.9188 21.1793 82.3257 18.1209C87.8125 15.0036 93.7782 13.4324 100.021 12.756C103.126 12.482 106.245 12.395 109.36 12.4955C111.031 12.5358 112.693 12.7341 114.326 13.0879C117.331 13.6799 120.29 14.4829 123.182 15.4909C125.752 16.351 128.276 17.3424 130.744 18.4612C130.929 18.5452 131.164 18.583 131.278 18.7679C131.021 18.9947 130.74 18.8771 130.467 18.8183C127.982 18.2612 125.409 18.2199 122.907 18.6968C120.406 19.1737 118.028 20.1588 115.922 21.5911C111.591 24.4437 109.201 28.5818 108.39 33.6527C107.731 37.3182 108.281 41.0985 109.957 44.4244C110.761 45.9549 111.77 47.3684 112.957 48.6255C115.868 51.7934 119.376 54.2426 122.712 56.8978C126.047 59.5528 129.072 62.3593 132.093 65.3001C135.205 68.3258 138.099 71.5689 140.751 75.0048C143.169 78.1244 145.279 81.4701 147.053 84.9952C147.99 86.9551 148.814 88.9664 149.524 91.0198C151.287 95.784 152.521 100.728 153.204 105.762C153.456 107.627 153.632 109.504 153.733 111.391C153.809 112.832 153.868 114.265 153.842 115.706C153.739 124.25 151.92 132.686 148.494 140.514C145.725 146.708 142.057 152.46 137.609 157.583C133.612 162.23 128.731 166.036 123.249 168.779C119.265 170.842 115.129 172.597 110.877 174.031C105.941 175.657 100.855 176.783 95.6939 177.392C86.0247 178.484 76.2343 177.573 66.9325 174.716C62.9194 173.468 59.0137 171.899 55.2534 170.023C51.8387 168.405 48.5863 166.465 45.5403 164.229Z"/><path fill="#C7006E" d="M114.32 13.1601C114.131 13.1601 113.943 13.1601 113.758 13.1601C110.338 12.737 106.889 12.605 103.448 12.7655C98.9427 12.9261 94.4791 13.6841 90.1737 15.0198C85.3787 16.4777 80.9171 18.864 77.0425 22.043C75.6521 23.2142 74.3409 24.4764 73.1174 25.8211C70.7582 28.3819 69.0328 31.3498 67.5593 34.4731C66.7659 36.1523 66.0523 37.8776 65.305 39.582C65.2043 39.8213 65.1203 40.0648 65.0406 40.3125C64.7845 41.1227 64.5578 41.9413 64.2807 42.7431C63.506 45.1669 62.8986 47.6412 62.463 50.1483C62.0149 52.4637 61.7148 54.8053 61.5647 57.1589C61.4429 58.8758 61.3506 60.597 61.3464 62.3181C61.3449 65.2893 61.5159 68.2581 61.8585 71.2094C62.2783 75.0295 63.0046 78.8035 63.7938 82.5649C64.6879 86.8426 66.0187 90.9902 67.3159 95.1587C68.613 99.3273 70.1201 103.362 71.602 107.438C72.7984 110.742 73.9067 114.071 74.8134 117.467C75.3611 119.468 75.7514 121.509 75.9804 123.57C76.3352 126.502 76.2133 129.472 75.6194 132.365C75.5355 132.735 75.4473 133.1 75.3382 133.461C74.8995 134.929 74.3753 136.37 73.7681 137.776C73.3528 138.729 72.8453 139.639 72.2527 140.492C70.1466 143.576 67.5534 146.297 64.5746 148.548C61.0812 151.145 57.0234 152.88 52.7322 153.611C50.921 153.937 49.0855 154.108 47.2454 154.123C41.0544 154.215 35.0331 152.098 30.2605 148.154C29.2005 147.324 28.2171 146.401 27.322 145.396C27.2002 145.253 27.0533 145.131 26.9022 145.001C26.751 144.871 26.73 144.963 26.6461 145.001C26.4866 144.921 26.432 144.753 26.3438 144.619C25.2146 142.852 24.0224 141.126 22.9603 139.313C21.4031 136.673 19.9837 133.955 18.7078 131.169C17.206 127.863 15.9147 124.466 14.8414 120.997C13.9501 118.116 13.2172 115.189 12.6459 112.228C12.2639 110.267 11.949 108.29 11.7266 106.3C11.5544 104.755 11.3991 103.21 11.3068 101.657C11.227 100.503 11.227 99.3483 11.164 98.1981C11.1053 97.2283 11.0801 96.2628 11.1011 95.2973C11.1304 93.9077 11.1556 92.514 11.2438 91.1287C11.3445 89.5293 11.4705 87.9299 11.6636 86.343C12.2512 81.1916 13.3093 76.1049 14.8246 71.1464C15.7971 67.994 16.9478 64.8993 18.2712 61.8774C20.4116 56.9943 23.0121 52.3261 26.0374 47.9359C29.6361 42.7021 33.8082 37.8866 38.4759 33.5789C44.5194 28.0103 51.3359 23.3443 58.7143 19.7257C64.0825 17.0811 69.7209 15.0248 75.5313 13.5925C78.05 12.9796 80.5688 12.4632 83.1464 12.0728C84.4477 11.8741 85.7561 11.709 87.0714 11.5775C88.4778 11.4347 89.8883 11.3592 91.2946 11.2248C91.7857 11.1787 92.2853 11.1871 92.7807 11.1787C95.2994 11.1199 97.7804 11.1199 100.278 11.208C101.244 11.2416 102.205 11.3592 103.166 11.4305C103.729 11.4725 104.291 11.5271 104.846 11.5817C106.866 11.7748 108.87 12.0546 110.857 12.4212C111.873 12.6102 112.889 12.8117 113.909 13.0048C114.06 13.005 114.207 13.0602 114.32 13.1601Z"/><path fill="#C7006E" d="M45.5957 164.178C45.7532 164.213 45.8983 164.29 46.0155 164.401C48.3931 166.023 50.8753 167.485 53.4459 168.779C58.083 171.265 62.9646 173.266 68.0128 174.749C71.1802 175.666 74.406 176.367 77.6681 176.848C82.1305 177.492 86.6443 177.707 91.1477 177.49C93.9515 177.363 96.7446 177.059 99.51 176.579C101.067 176.315 102.612 175.996 104.153 175.651C108.38 174.669 112.516 173.33 116.516 171.647C119.939 170.233 123.257 168.578 126.444 166.693C130.376 164.38 133.901 161.437 136.88 157.982C139.879 154.584 142.557 150.916 144.882 147.026C148.442 140.948 150.969 134.322 152.362 127.417C152.823 125.151 153.152 122.861 153.349 120.557C153.577 117.973 153.65 115.376 153.567 112.783C153.305 104.941 151.709 97.2016 148.849 89.8956C148.29 88.4683 147.703 87.0536 147.119 85.6347C147.001 85.3534 146.863 85.0805 146.72 84.7951C143.867 79.3878 140.341 74.3635 136.225 69.842C133.555 66.874 130.655 64.1412 127.75 61.4125C125.651 59.4562 123.422 57.6889 121.176 55.9258C119.601 54.6664 117.977 53.5119 116.47 52.1854C115.979 51.7089 115.454 51.2684 114.9 50.8672C114.726 50.7456 114.567 50.6048 114.425 50.4474C113.741 49.7338 113.04 49.0327 112.381 48.2981C110.25 45.9673 108.819 43.0839 108.25 39.9777C107.671 36.5492 108.009 33.0286 109.228 29.7725C111.222 24.6636 114.858 21.2465 119.983 19.4036C123.393 18.1447 127.097 17.9112 130.638 18.7319C131.347 18.891 132.561 19.3686 132.842 19.5043C137.953 21.9741 142.805 24.9484 147.325 28.383C149.239 29.8383 151.089 31.3775 152.874 33.0007C154.766 34.7079 156.578 36.4976 158.311 38.3699C167.656 48.4402 174.404 60.6379 177.97 73.9056C178.625 76.3446 179.162 78.8046 179.611 81.2856C179.871 82.7465 180.084 84.2144 180.249 85.6892C180.421 87.2593 180.573 88.8293 180.669 90.4035C180.74 91.3901 180.766 92.3808 180.799 93.3715C180.824 94.2111 180.887 95.0171 180.875 95.8441C180.854 97.4939 180.837 99.1479 180.732 100.793C180.617 102.624 180.452 104.453 180.237 106.28C178.999 116.674 175.835 126.746 170.909 135.981C169.549 138.543 168.045 141.027 166.404 143.42C166.267 143.608 166.169 143.822 166.115 144.049C166.062 144.276 166.055 144.512 166.094 144.742C166.274 145.93 166.438 147.118 166.602 148.31C166.765 149.502 166.925 150.737 167.085 151.95C167.257 153.255 167.429 154.565 167.597 155.871C167.71 156.786 167.807 157.697 167.92 158.608C168.042 159.615 168.176 160.619 168.298 161.622C168.419 162.625 168.524 163.54 168.638 164.497C168.751 165.455 168.852 166.324 168.965 167.235C169.083 168.217 169.209 169.199 169.33 170.173C169.465 171.248 169.595 172.327 169.725 173.401C169.838 174.337 169.943 175.269 170.052 176.206C170.272 178.037 170.052 178.184 168.273 177.805L157.689 174.976C154.331 174.081 150.998 173.196 147.656 172.293C145.108 171.609 142.564 170.904 140.02 170.194C139.546 170.064 139.063 169.942 138.593 169.774C138.461 169.728 138.32 169.712 138.181 169.728C138.042 169.744 137.909 169.791 137.791 169.867C135.994 170.908 134.139 171.844 132.267 172.738C129.605 174.001 126.878 175.122 124.097 176.096C121.14 177.134 118.127 178.006 115.072 178.708C113.212 179.127 111.344 179.518 109.455 179.782C108.267 179.95 107.083 180.164 105.891 180.294C104.581 180.433 103.267 180.555 101.949 180.643C99.5016 180.802 97.05 180.907 94.5984 180.861C93.3474 180.836 92.0992 180.788 90.8538 180.718C89.7246 180.651 88.5954 180.567 87.4703 180.441C85.8583 180.257 84.2463 180.059 82.6427 179.803C80.8039 179.509 78.9778 179.169 77.1853 178.758C72.4498 177.679 67.8152 176.197 63.3321 174.329C60.7853 173.263 58.2959 172.076 55.8639 170.769C52.4375 168.924 49.1414 166.847 45.9987 164.552C45.8266 164.464 45.6419 164.384 45.5957 164.178Z"/></g></svg></span></a>
+  </section>
+  <h2 class="lk-title" style="color: #FFFFFF; text-align: left;">Contact Information</h2>
+  <section class="lk-connect" data-columns="2" data-direction="ltr">
+    <a class="lk-connectitem lk-shape-pill" style="color: #C7006E; background-color: #1E293B; border-color: #C7006E;" href="tel:+1 234 567 8901"><span class="lk-connectitem-icon" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="#C7006E" d="M16 1H8a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zm-4 20a1.1 1.1 0 1 1 0-2.2 1.1 1.1 0 0 1 0 2.2zM17 18H7V4h10v14z"/></svg></span></a>
+    <a class="lk-connectitem lk-shape-pill" style="color: #C7006E; background-color: #1E293B; border-color: #C7006E;" href="tel:+1 234 567 8901"><span class="lk-connectitem-icon" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="#C7006E" d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></span></a>
+    <a class="lk-connectitem lk-shape-pill" style="color: #C7006E; background-color: #1E293B; border-color: #C7006E;" href="mailto:hi@example.com"><span class="lk-connectitem-icon" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="#C7006E" d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4.24-8 5.2-8-5.2V6.5l8 5.2 8-5.2v1.74z"/></svg></span></a>
+    <a class="lk-connectitem lk-shape-pill" style="color: #C7006E; background-color: #1E293B; border-color: #C7006E;" href="sms:+1 234 567 8901"><span class="lk-connectitem-icon" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="#C7006E" d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zM7.5 11a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm4.5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm4.5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg></span></a>
+    <a class="lk-connectitem lk-shape-pill" style="color: #C7006E; background-color: #1E293B; border-color: #C7006E;" href="https://example.com"><span class="lk-connectitem-icon" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none" stroke="#C7006E" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><ellipse cx="12" cy="12" rx="9.5" ry="4"/><ellipse cx="12" cy="12" rx="4" ry="9.5"/><path d="M12 2.5a7.2 7.2 0 0 0 0 19"/><path d="M12 2.5a7.2 7.2 0 0 1 0 19"/></g></svg></span></a>
+  </section>
+  <h2 class="lk-title" style="color: #FFFFFF; text-align: left;">Address</h2>
+  <section class="lk-connect" data-columns="4" data-direction="ltr">
+  <div class="lk-address-caption" style="color: #FFFFFF; text-align: left;">Tehran, Iran</div>
+    <a class="lk-connectitem lk-shape-pill" style="color: #3B3B3B; background-color: #1E293B; border-color: #C7006E;" href="https://maps.google.com/?q=Tehran"><span class="lk-connectitem-icon" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g transform="translate(4.54902 1.32) scale(0.16145)"><path fill="#C7006E" d="M60.2 2.2C55.8.8 51 0 46.1 0 32 0 19.3 6.4 10.8 16.5l21.8 18.3L60.2 2.2z"/><path fill="#C7006E" d="M10.8 16.5C4.1 24.5 0 34.9 0 46.1c0 8.7 1.7 15.7 4.6 22l28-33.3-21.8-18.3z"/><path fill="#C7006E" d="M46.2 28.5c9.8 0 17.7 7.9 17.7 17.7 0 4.3-1.6 8.3-4.2 11.4 0 0 13.9-16.6 27.5-32.7-5.6-10.8-15.3-19-27-22.7L32.6 34.8c3.3-3.8 8.1-6.3 13.6-6.3"/><path fill="#C7006E" d="M46.2 63.8c-9.8 0-17.7-7.9-17.7-17.7 0-4.3 1.5-8.3 4.1-11.3l-28 33.3c4.8 10.6 12.8 19.2 21 29.9l34.1-40.5c-3.3 3.9-8.1 6.3-13.5 6.3"/><path fill="#C7006E" d="M59.1 109.2c15.4-24.1 33.3-35 33.3-63 0-7.7-1.9-14.9-5.2-21.3L25.6 98c2.6 3.4 5.3 7.3 7.9 11.3 9.4 14.5 6.8 23.1 12.8 23.1s3.4-8.7 12.8-23.2"/></g></svg></span></a>
+    <a class="lk-connectitem lk-shape-pill" style="color: #3B3B3B; background-color: #1E293B; border-color: #C7006E;" href="https://waze.com/ul?q=Tehran"><span class="lk-connectitem-icon" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g transform="translate(1.32 1.32) scale(0.04172)"><path fill="#C7006E" d="M502.17 201.67C516.69 287.53 471.23 369.59 389 409.8c13 34.1-12.4 70.2-48.32 70.2a51.68 51.68 0 0 1-51.57-49c-6.44.19-64.2 0-76.33-.64A51.69 51.69 0 0 1 159 479.92c-33.86-1.36-57.95-34.84-47-67.92-37.21-13.11-72.54-34.87-99.62-70.8-13-17.28-.48-41.8 20.84-41.8 46.31 0 32.22-54.17 43.15-110.26C94.8 95.2 193.12 32 288.09 32c102.48 0 197.15 70.67 214.08 169.67zM373.51 388.28c42-19.18 81.33-56.71 96.29-102.14 40.48-123.09-64.15-228-181.71-228-83.45 0-170.32 55.42-186.07 136-9.53 48.91 5 131.35-68.75 131.35C58.21 358.6 91.6 378.11 127 389.54c24.66-21.8 63.87-15.47 79.83 14.34 14.22 1 79.19 1.18 87.9.82a51.69 51.69 0 0 1 78.78-16.42zM205.12 187.13c0-34.74 50.84-34.75 50.84 0s-50.84 34.74-50.84 0zm116.57 0c0-34.74 50.86-34.75 50.86 0s-50.86 34.75-50.86 0zm-122.61 70.69c-3.44-16.94 22.18-22.18 25.62-5.21l.06.28c4.14 21.42 29.85 44 64.12 43.07 35.68-.94 59.25-22.21 64.11-42.77 4.46-16.05 28.6-10.36 25.47 6-5.23 22.18-31.21 62-91.46 62.9-42.55 0-80.88-27.84-87.9-64.25z"/></g></svg></span></a>
+    <a class="lk-connectitem lk-shape-pill" style="color: #3B3B3B; background-color: #1E293B; border-color: #C7006E;" href="https://neshan.org/maps/@35.689,51.389"><span class="lk-connectitem-icon" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g transform="translate(1.74725 1.32) scale(0.89948)"><path fill="#C7006E" d="M16.048,14.534c.5364-.8575.6063-1.927.186-2.847l.771-1.334-1.337-.773c-.2267-1.765-1.8413-3.012-3.6062-2.7853-.2863.0368-.5665.1119-.8328.2233l-1.337-.772-.77,1.335c-1.7653.2323-3.0081,1.8518-2.7758,3.6171.0368.2793.11.5526.2178.8129l-.778,1.348,1.345.776c.2377,1.7657,1.8618,3.0044,3.6276,2.7667.2728-.0367.5398-.1082.7944-.2127l1.345.777.778-1.348c1.0067-.0957,1.8978-.6909,2.372-1.584Z"/><path fill="#C7006E" d="M6.41,20.486c-.0455-.0863-.0915-.1723-.138-.258-2.261-4.26-4.462-8.128-2.006-12.381l.053-.088L0,5.265l1.069,2.058c-1.4273,3.1618-1.3539,6.7984.2,9.9l3.258,6.523,1.881-3.26s.002,0,.002,0Z"/><path fill="#C7006E" d="M18.478,15.933c-.017.03-.032.061-.05.091-1.0889,1.9257-2.9403,3.3021-5.098,3.79-2.179.46-4.4.682-6.627.663l-.291.01-1.882,3.26,7.278-.44c3.4629-.2049,6.649-1.9598,8.673-4.777l2.316-.103s-4.319-2.494-4.319-2.494Z"/><path fill="#C7006E" d="M15.393,4.931c3.8648,2.206,5.2391,7.1085,3.084,11.002l4.319,2.494-1.082-2.083c1.2824-3.0307,1.2074-6.4651-.206-9.437l-3.27-6.907-2.848,4.932h.002l.001-.001Z"/><path fill="#C7006E" d="M15.391,4.932L18.239,0l-7.617.62c-3.2806.2628-6.2922,1.9161-8.275,4.543L.002,5.267l4.32,2.493c2.295-3.8123,7.2277-5.0724,11.07-2.828h-.001Z"/></g></svg></span></a>
+    <a class="lk-connectitem lk-shape-pill" style="color: #3B3B3B; background-color: #1E293B; border-color: #C7006E;" href="https://balad.ir/place?q=Tehran"><span class="lk-connectitem-icon" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g transform="translate(1.32 1.32) scale(0.10552)"><path fill="#C7006E" d="M171.9399,0h-20.1137v101.0013c0,28.07-22.755,50.825-50.825,50.825H.0001v20.1137C.0001,188.782,13.6532,202.435,30.4952,202.435h141.4448c16.842,0,30.495-13.653,30.495-30.495V30.495c0-16.8418-13.653-30.495-30.495-30.495Z"/><path fill="#C7006E" d="M30.495.0001h20.1137v50.6087H0v-20.1137C0,13.6645,13.6644.0001,30.495.0001Z"/><path fill="#C7006E" d="M101.2175,50.6089h-50.6087v50.6087c0,27.9504,22.6582,50.6087,50.6087,50.6087s50.6087-22.6582,50.6087-50.6087-22.6582-50.6087-50.6087-50.6087ZM101.2175,134.5242c-18.3947,0-33.3066-14.9119-33.3066-33.3066s14.9119-33.3066,33.3066-33.3066,33.3066,14.9119,33.3066,33.3066-14.9119,33.3066-33.3066,33.3066Z"/><circle fill="#C7006E" cx="101.2175" cy="101.2176" r="16.4371"/></g></svg></span></a>
+  </section>
+  <div class="lk-divider" style="color: #C7006E; margin-top: 20px; margin-bottom: 20px;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 212.2977 12.4" class="lk-divider-svg" aria-hidden="true">  <defs>    <style>      .cls-1 {        fill: currentColor;      }      .cls-2 {        fill: none;        stroke: currentColor;        stroke-miterlimit: 10;        stroke-width: .5268px;      }      .cls-3 {        fill: currentColor;      }      .cls-4 {        fill: currentColor;        fill-rule: evenodd;      }    </style>  </defs>  <g id="Layer_1-2" data-name="Layer 1">    <g>      <g>        <path class="cls-4" d="M106.1461,8.7971c.2086-.6169.8264-2.0894,2.1151-2.6481-1.2886-.5587-1.9065-2.0312-2.1151-2.6481-.2085.617-.8264,2.0894-2.1151,2.6481,1.2886.5587,1.9066,2.031,2.1151,2.6481h0Z"/>        <path class="cls-4" d="M106.2697,1.8166c.0025.0096.8415,3.3648,3.3476,4.2078.1285.032.1249.2165.0091.2455-2.4321.8106-3.2982,3.9863-3.3539,4.1995-.02.1254-.1972.1585-.2502.0114-.0025-.0097-.8414-3.3648-3.3476-4.2078-.123-.0306-.132-.2057-.0093-.2454,2.4321-.8107,3.2982-3.9863,3.3539-4.1995.0212-.1324.2115-.1505.2502-.0114h0ZM106.0225,12.2009c.0437.1428.2296.118.2502-.0115.0648-.2503,1.278-4.769,4.73-5.9196.1299-.0564.1085-.2162-.0093-.2455-3.5383-1.187-4.7202-5.9142-4.7238-5.9278-.0398-.1398-.2292-.1203-.2501.0114-.0649.2503-1.2782,4.769-4.7301,5.9196-.1298.0571-.1085.2162.0092.2454,3.5383,1.187,4.7203,5.9142,4.7238,5.9279h0Z"/>      </g>      <g>        <g>          <line class="cls-2" x1="6.6099" y1="6.1488" x2="90.0822" y2="6.149"/>          <circle class="cls-1" cx="6.4406" cy="6.149" r=".9866"/>          <circle class="cls-1" cx="90.0822" cy="6.1487" r=".9866"/>        </g>        <path class="cls-4" d="M4.4367,6.1488c-.5168-.1747-1.7503-.6923-2.2183-1.7718-.4681,1.0795-1.7016,1.5971-2.2183,1.7718.5168.1746,1.7503.6923,2.2183,1.7718.468-1.0795,1.7014-1.5972,2.2183-1.7718h0Z"/>      </g>      <g>        <g>          <line class="cls-2" x1="122.3792" y1="6.1488" x2="205.8516" y2="6.149"/>          <circle class="cls-1" cx="122.2099" cy="6.149" r=".9866"/>          <circle class="cls-1" cx="205.8516" cy="6.1487" r=".9866"/>        </g>        <path class="cls-4" d="M207.8555,6.1488c.5168.1747,1.7503.6923,2.2183,1.7718.4681-1.0795,1.7016-1.5971,2.2183-1.7718-.5168-.1746-1.7503-.6923-2.2183-1.7718-.468,1.0795-1.7014,1.5972-2.2183,1.7718h0Z"/>      </g>      <path class="cls-3" d="M94.3932,6.4791c.547.2705,1.1576.63,1.7417,1.1392.5841-.5091,1.1946-.8687,1.7417-1.1392.1513-.0762.2989-.1457.4408-.2118.0904-.0411.1781-.0806.264-.1185-.0859-.0379-.1736-.0775-.264-.1185-.142-.0661-.2896-.1356-.4408-.2119-.547-.2704-1.1575-.6299-1.7417-1.139-.5842.5092-1.1947.8687-1.7417,1.139-.1513.0763-.2989.1458-.4409.2119-.0903.041-.1781.0806-.264.1185.0859.0379.1737.0775.264.1185.142.0661.2896.1356.4409.2118Z"/>      <path class="cls-3" d="M117.899,5.8186c-.547-.2705-1.1576-.63-1.7417-1.1392-.5841.5091-1.1946.8687-1.7417,1.1392-.1513.0762-.2989.1457-.4408.2118-.0904.0411-.1781.0806-.264.1185.0859.0379.1736.0775.264.1185.142.0661.2896.1356.4408.2119.547.2704,1.1575.6299,1.7417,1.139.5842-.5092,1.1947-.8687,1.7417-1.139.1513-.0763.2989-.1458.4409-.2119.0903-.041.1781-.0806.264-.1185-.0859-.0379-.1737-.0775-.264-.1185-.142-.0661-.2896-.1356-.4409-.2118Z"/>    </g>  </g></svg>
+  </div>
+  <h2 class="lk-title" style="color: #FFFFFF; text-align: left;">Gallery</h2>
+  <section class="lk-image lk-image-grid" data-direction="ltr">
+    <div class="lk-image-row">
+      <figure class="lk-imagecard lk-shape-rounded lk-imagecard--has-caption" style="background-color: #C7006E; border-color: transparent;">
+      <img class="lk-imagecard-img lk-shape-rounded" src="assets/single-1.jpg" alt="Scenery">
+      <figcaption class="lk-imagecard-caption">
+        <div class="lk-imagecard-title" style="color: #FFFFFF;">Scenery</div>
+        <div class="lk-imagecard-desc" style="color: #FFFFFF;">A scenery image.</div>
+      </figcaption>
+      </figure>
+      <figure class="lk-imagecard lk-shape-rounded lk-imagecard--has-caption" style="background-color: #C7006E; border-color: transparent;">
+      <img class="lk-imagecard-img lk-shape-rounded" src="assets/single-2.jpg" alt="Scenery">
+      <figcaption class="lk-imagecard-caption">
+        <div class="lk-imagecard-title" style="color: #FFFFFF;">Scenery</div>
+      </figcaption>
+      </figure>
+    </div>
+  </section>
+  <section class="lk-image lk-image-slider" id="lk-slider-1">
+    <div class="lk-image-slider-track">
+      <figure class="lk-imagecard lk-shape-rounded lk-imagecard--has-caption" id="lk-slider-1-slide-0" style="background-color: #C7006E; border-color: transparent;">
+      <img class="lk-imagecard-img lk-shape-rounded" src="assets/slider-1.jpg" alt="Slide One">
+      <figcaption class="lk-imagecard-caption">
+        <div class="lk-imagecard-title" style="color: #FFFFFF;">Slide One</div>
+        <div class="lk-imagecard-desc" style="color: #FFFFFF;">First slide.</div>
+      </figcaption>
+      </figure>
+      <figure class="lk-imagecard lk-shape-rounded lk-imagecard--has-caption" id="lk-slider-1-slide-1" style="background-color: #C7006E; border-color: transparent;">
+      <img class="lk-imagecard-img lk-shape-rounded" src="assets/slider-2.jpg" alt="Slide Two">
+      <figcaption class="lk-imagecard-caption">
+        <div class="lk-imagecard-title" style="color: #FFFFFF;">Slide Two</div>
+      </figcaption>
+      </figure>
+      <figure class="lk-imagecard lk-shape-rounded" id="lk-slider-1-slide-2" style="background-color: #C7006E; border-color: transparent;">
+      <img class="lk-imagecard-img lk-shape-rounded" src="assets/slider-3.jpg" alt="Image">
+      </figure>
+    </div>
+    <div class="lk-image-slider-dots">
+      <button type="button" class="lk-image-slider-dot is-active" data-slide="0" aria-label="Go to slide 1"></button>
+      <button type="button" class="lk-image-slider-dot" data-slide="1" aria-label="Go to slide 2"></button>
+      <button type="button" class="lk-image-slider-dot" data-slide="2" aria-label="Go to slide 3"></button>
+    </div>
+  </section>
+  <h2 class="lk-title" style="color: #FFFFFF; text-align: left;">Examples of Promotions</h2>
+  <section class="lk-banner" data-direction="ltr">
+    <div class="lk-banner-row">
+    <a class="lk-banneritem lk-shape-rounded" href="https://example.com/banner-1" style="border-color: transparent;">
+    <img class="lk-banneritem-img" src="assets/banner-1.png" alt="Special Sale">
+    <div class="lk-banneritem-mask">
+      <div class="lk-banneritem-title" style="color: #FFFFFF;">Special Sale</div>
+      <div class="lk-banneritem-desc" style="color: #FFFFFF;">Up to 50% off!</div>
+    </div>
+    </a>
+    <a class="lk-banneritem lk-shape-rounded" href="https://example.com/banner-2" style="border-color: transparent;">
+    <img class="lk-banneritem-img" src="assets/slider-2.jpg" alt="New Collection">
+    <div class="lk-banneritem-mask">
+      <div class="lk-banneritem-title" style="color: #FFFFFF;">New Collection</div>
+      <div class="lk-banneritem-desc" style="color: #FFFFFF;">Check out the latest arrivals.</div>
+    </div>
+    </a>
+    </div>
+    <div class="lk-banner-row">
+    <a class="lk-banneritem lk-shape-rounded" href="https://example.com/banner-3" style="border-color: transparent;">
+    <img class="lk-banneritem-img" src="assets/banner-2.jpg" alt="Featured">
+    <div class="lk-banneritem-mask">
+      <div class="lk-banneritem-title" style="color: #FFFFFF;">Featured</div>
+    </div>
+    </a>
+    </div>
+  </section>
+  <h2 class="lk-title" style="color: #FFFFFF; text-align: left;">Videos</h2>
+  <a class="lk-video lk-shape-rounded" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener">
+    <img class="lk-video-img" src="assets/slider-3.jpg" alt="Video">
+    <div class="lk-video-play"><div class="lk-video-play-triangle"></div></div>
+  </a>
+  <div class="lk-divider" style="color: #C7006E; margin-top: 20px; margin-bottom: 20px;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 212.2588 3.7814" class="lk-divider-svg" aria-hidden="true">  <defs>    <style>      .cls-1 {        fill: currentColor;        fill-rule: evenodd;      }    </style>  </defs>  <g id="Layer_1-2" data-name="Layer 1">    <g>      <g>        <path class="cls-1" d="M71.3033,1.8113c0-.1326-.1081-.2407-.2407-.2407H.3201c-.1768,0-.3201.1434-.3201.3201,0,.1758.1434.3201.3201.3201h70.7424c.1326,0,.2407-.1072.2407-.2407v-.1589"/>        <path class="cls-1" d="M72.8198.133c-.9703,0-1.7572.7869-1.7572,1.7581,0,.9703.7869,1.7572,1.7572,1.7572s1.7567-.7869,1.7567-1.7572c0-.9712-.7869-1.7581-1.7567-1.7581ZM72.8198.6553c.6821,0,1.2359.5538,1.2359,1.2359,0,.6812-.5538,1.2349-1.2359,1.2349-.6826,0-1.2359-.5538-1.2359-1.2349,0-.6821.5533-1.2359,1.2359-1.2359"/>      </g>      <g>        <path class="cls-1" d="M129.0284,1.8113c0-.1326-.1072-.2407-.2407-.2407h-45.3176c-.134,0-.2407.1081-.2407.2407v.1589c0,.1335.1067.2407.2407.2407h45.3176c.1335,0,.2407-.1072.2407-.2407v-.1589"/>        <path class="cls-1" d="M128.7887,0c1.0436,0,1.8893.8476,1.8893,1.8907s-.8457,1.8907-1.8893,1.8907-1.8907-.8471-1.8907-1.8907.8476-1.8907,1.8907-1.8907"/>        <path class="cls-1" d="M83.4701,0c1.0431,0,1.8902.8471,1.8902,1.8907s-.8471,1.8907-1.8902,1.8907-1.8907-.8471-1.8907-1.8907.8471-1.8907,1.8907-1.8907"/>      </g>      <g>        <path class="cls-1" d="M141.1972,1.5706c-.1321,0-.2407.1081-.2407.2407v.1589c0,.1335.1086.2407.2407.2407h70.7415c.1805,0,.3201-.1443.3201-.3201,0-.1768-.1396-.3201-.3201-.3201h-70.7415"/>        <path class="cls-1" d="M139.4404.133c-.9703,0-1.7581.7869-1.7581,1.7567s.7879,1.7586,1.7581,1.7586,1.7567-.7883,1.7567-1.7586-.7869-1.7567-1.7567-1.7567ZM139.4404.6553c.6812,0,1.2345.5538,1.2345,1.2345,0,.6826-.5533,1.2363-1.2345,1.2363-.6826,0-1.2359-.5538-1.2359-1.2363,0-.6807.5533-1.2345,1.2359-1.2345"/>      </g>    </g>  </g></svg>
+  </div>
+  <h2 class="lk-title" style="color: #FFFFFF; text-align: left;">FAQ</h2>
+  <div class="lk-faq" data-direction="ltr">
+    <div class="lk-faqitem lk-shape-pill" style="background-color: #1E293B; border-color: #C7006E;">
+      <button type="button" class="lk-faqitem-summary" aria-expanded="false" aria-controls="lk-faqitem-answer-1"><span class="lk-faqitem-question" style="color: #C7006E;">What is Linkora?</span><svg class="lk-faqitem-arrow" viewBox="0 0 24 24" aria-hidden="true"><path fill="#C7006E" d="M5.59 7.41 10 11.83l4.41-4.42L16 8.83 10 14.83 4 8.83z"/></svg></button>
+      <div class="lk-faqitem-answer-wrap" id="lk-faqitem-answer-1">
+        <div class="lk-faqitem-answer" style="color: #FFFFFF;">A DSL for building customizable link-in-bio pages.</div>
+      </div>
+    </div>
+    <div class="lk-faqitem lk-shape-pill" style="background-color: #1E293B; border-color: #C7006E;">
+      <button type="button" class="lk-faqitem-summary" aria-expanded="false" aria-controls="lk-faqitem-answer-2"><span class="lk-faqitem-question" style="color: #C7006E;">Can I customize each block?</span><svg class="lk-faqitem-arrow" viewBox="0 0 24 24" aria-hidden="true"><path fill="#C7006E" d="M5.59 7.41 10 11.83l4.41-4.42L16 8.83 10 14.83 4 8.83z"/></svg></button>
+      <div class="lk-faqitem-answer-wrap" id="lk-faqitem-answer-2">
+        <div class="lk-faqitem-answer" style="color: #FFFFFF;">Yes — every block supports colors, shapes, and layout options so your page matches your style.</div>
+      </div>
+    </div>
+  </div>
+  <h2 class="lk-title" style="color: #FFFFFF; text-align: left;">Launch Countdown!</h2>
+  <div class="lk-countdown lk-countdown-transparent lk-shape-rounded" data-target="1791244740000" style="color: #C7006E;">
+    <div class="lk-countdown-row">
+      <div class="lk-countdown-box">
+        <span class="lk-countdown-digit">00</span>
+        <span class="lk-countdown-label">Days</span>
+      </div>
+      <div class="lk-countdown-box">
+        <span class="lk-countdown-digit">00</span>
+        <span class="lk-countdown-label">Hours</span>
+      </div>
+      <div class="lk-countdown-box">
+        <span class="lk-countdown-digit">00</span>
+        <span class="lk-countdown-label">Minutes</span>
+      </div>
+      <div class="lk-countdown-box">
+        <span class="lk-countdown-digit">00</span>
+        <span class="lk-countdown-label">Seconds</span>
+      </div>
+    </div>
+      <div class="lk-countdown-expired" style="display:none;">Linkora is live!</div>
+  </div>
+  <a class="lk-brand" href="https://github.com/Fargolnz/Linkora" target="_blank" rel="noopener">
+    <span class="lk-brand-divider" aria-hidden="true"></span>
+    <svg viewBox="0 0 128.2367 62.1405" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g fill="#fff"><path d="M.9182,61.692c2.7818-1.7757,5.3922-3.7826,7.7963-6.0434,3.7412-3.5181,8.5468-8.4605,12.5325-13.5633,6.4697-8.283,11.6054-17.3241,14.2106-27.5786.709-2.791,1.2283-5.6247,1.5793-8.4824.2288-1.8624.7717-5.1632-1.6517-5.9044-2.2093-.6757-3.7024,1.662-4.8259,3.1433-1.9643,2.5898-4.9348,7.8103-6.0578,10.4048-4.8212,11.1376-5.7046,13.5009-9.0378,25.3589-1.8636,6.6299-4.091,16.8473.6162,21.3865,3.7737,3.639,9.7773-.0414,11.3722-3.1249.6097-1.1788.406-2.0827-.2012-.8979-.98,1.9126-2.9165,3.1558-4.9923,3.6004-2.5672.5498-4.7842-.5185-6.1618-2.7262-1.4938-2.3941-1.1902-6.7852-.633-9.4128.566-2.6694.5622-3.0557,1.2759-5.6885,2.5681-9.4733,5.894-20.1201,10.1542-29.0005,1.0366-2.1608,2.1563-4.3853,3.4024-6.4327.5185-.8518,3.0078-5.8631,4.891-5.3163.824.2392.5453,3.2224.4253,4.1999-.169,1.377-.6577,4.6541-1.2493,6.6454-.6942,2.3368-1.3822,5.0239-2.286,7.4694-3.1578,8.5448-6.8379,13.9359-12.4274,21.0705-5.629,7.185-13.1699,15.4-18.2478,19.7322-1.1791,1.006-1.9978,2.0754-.8506,1.3948l.3667-.2341Z"/><path d="M29.4224,60.9174c0,.4317.4044.6475,1.2128.6475.8089,0,1.5726-.185,2.292-.555s1.4456-.8325,2.179-1.3876c.7328-.555,1.442-1.1614,2.1276-1.8192l1.8501-1.8501c.5478-.5756,1.0001-1.072,1.3567-1.4903.3561-.4183.5684-.6609.6372-.7298l.4111.37c-.1372.1367-.3942.4286-.7709.8736-.3772.445-.8464.9661-1.4081,1.5623-.5622.5961-1.1923,1.2231-1.8912,1.8809s-1.4323,1.2611-2.1995,1.809c-1.7678,1.2745-3.3168,1.9117-4.6457,1.9117-.8495,0-1.5279-.1542-2.0351-.4625-.5067-.3083-.7606-.6609-.7606-1.0587s.0411-.7534.1233-1.0689.2333-.6917.4522-1.1306c.2194-.4389.5242-.9528.9148-1.5417s.8978-1.295,1.5212-2.1173c.6239-.8223,1.3804-1.775,2.2715-2.8573l3.1657-3.7413c.1645.0411.5.0617,1.0073.0617h.9661c.3561,0,.6439-.0134.8634-.0411-4.5363,5.4135-7.0889,8.4929-7.6572,9.2401s-.9898,1.3331-1.2642,1.7576c-.4795.7267-.7195,1.3053-.7195,1.737ZM42.4859,43.5165c-.1989.1778-.4214.3186-.6681.4214s-.5278.1542-.8428.1542c-.3155,0-.5859-.1203-.812-.3597s-.3392-.5108-.3392-.812.0545-.5684.1645-.8017c.1095-.2333.26-.4389.4522-.6167.3973-.4111.8325-.6167,1.3053-.6167s.8223.1264,1.0484.3803.3392.5314.3392.8325-.0586.5684-.1747.8017c-.1167.2333-.2744.4389-.4728.6167Z"/><path d="M41.6534,61.7088c-.37-.0689-.7811-.1028-1.2334-.1028-.7262,0-1.3634.0689-1.9117.2056l7.1331-10.1959c.8906-1.2467,1.3495-1.9868,1.3773-2.2201.0545-.4522-.0894-.6784-.4317-.6784-.5072,0-1.7678,1.2539-3.7824,3.7618l-1.3156,1.624c-.11.0545-.223.0236-.3392-.0925-.1167-.1161-.1475-.2025-.0925-.257.3973-.4245.8459-.9631,1.3464-1.6137.5-.6506,1.0242-1.2776,1.5726-1.8809,1.3428-1.4934,2.4596-2.2406,3.3507-2.2406,1.5073,0,1.9868.7739,1.4389,2.3229-.11.3289-.3495.7534-.7195,1.2745l-4.3168,6.0025.1028.2261c3.4535-3.7824,5.9064-6.283,7.3592-7.5031,1.384-1.1512,2.4154-1.8264,3.0937-2.0248s1.2334-.2981,1.6651-.2981.8017.0617,1.11.185.5581.2806.7503.4728c.3561.3567.5309.7842.5242,1.2848-.0072.5005-.1028,1.0103-.2878,1.5314s-.4969,1.1378-.9353,1.8501c-.9184,1.4667-2.4668,3.3784-4.6457,5.7352-.9045.9456-1.3773,1.4975-1.4184,1.6548s-.0617.2775-.0617.3597c0,.3155.4214.4728,1.2642.4728s1.6306-.1747,2.364-.5242c.7328-.3495,1.4523-.7914,2.1584-1.3259.7056-.5345,1.3773-1.1203,2.0145-1.7576s1.2092-1.2467,1.7165-1.8295c.5067-.5828.9312-1.0895,1.2745-1.5212.3423-.4317.5756-.7164.6989-.8531l.4317.3495c-.1367.1511-.3834.4522-.74.9045s-.7986.9733-1.3259,1.5623c-.5278.5889-1.1239,1.2128-1.7884,1.8706-.665.6578-1.367,1.2611-2.107,1.809-1.7267,1.2611-3.289,1.8912-4.6868,1.8912-1.2334,0-2.0901-.3083-2.5695-.925-.1511-.1922-.2261-.4183-.2261-.6784s.0375-.5581.1131-.8942c.075-.3361.257-.7637.5447-1.2848.6439-1.11,1.5587-2.3301,2.7443-3.659,1.1851-1.329,1.9631-2.2273,2.3331-2.6929s.6645-.8706.8839-1.2128c.4111-.6578.6167-1.1645.6167-1.5212,0-.4934-.3289-.74-.9867-.74-1.3567,0-3.5974,1.5345-6.7219,4.6046-1.5762,1.5345-3.3851,3.5562-5.4269,6.0641l-1.9117,2.5079Z"/><path d="M79.5798,29.312c.9045.1511,1.8501.1511,2.8368,0l-16.9179,23.537c-3.2068,4.6591-5.2141,7.613-6.023,8.8598-.37-.0689-.6814-.1028-.9353-.1028-.2534,0-.4486.0072-.5859.0206-.1367.0134-.2775.0308-.4214.0514s-.2775.0442-.4008.0719-.2261.0483-.3083.0617l22.7559-32.4996ZM68.9728,60.9277c0,.4245.3361.6372,1.0073.6372s1.3906-.1881,2.1584-.5653,1.5243-.8459,2.2715-1.4081,1.4595-1.1748,2.1379-1.8398,1.2848-1.2848,1.8192-1.8603c.8089-.8767,1.4184-1.5962,1.8295-2.1584l.4111.37c-.0545.0545-.257.2878-.6064.6989s-.8017.9148-1.3567,1.5109-1.1923,1.2334-1.9117,1.9117-1.477,1.3125-2.2715,1.9015c-1.8223,1.3434-3.4052,2.0145-4.7485,2.0145-1.3701,0-2.0556-.7328-2.0556-2.1995,0-1.22.8356-2.6446,2.5079-4.2757.6712-.6989,1.0073-1.1717,1.0073-1.4184,0-.5478-.4039-.959-1.2128-1.2334-.8089.4522-1.5212.6784-2.1379.6784-1.0278,0-1.5417-.2128-1.5417-.6372,0-.2467.1953-.4656.5859-.6578s.8706-.2878,1.4389-.2878,1.1131.075,1.6342.2261c.4389-.2189.7811-.4594,1.0278-.7195.6033-.6301,1.1583-1.2539,1.6651-1.8706s.9939-1.1306,1.4595-1.5417c1.0556-.9322,2.1173-1.3978,3.1862-1.3978.6578,0,1.1892.1716,1.5931.5139s.5992.7534.5859,1.2334-.1645.8294-.4522,1.0484-.6033.3289-.9456.3289-.6403-.1161-.8942-.3495-.3731-.5005-.3597-.8017c.0411-.5756.3217-.9456.8428-1.11-.2056-.1645-.4697-.2467-.7914-.2467s-.6372.0586-.9456.1747-.6403.3186-.997.6064c-.7267.5622-1.6311,1.5345-2.7134,2.919-.5067.5756-1.035,1.0689-1.5828,1.4801,1.3022.6033,1.9529,1.4934,1.9529,2.6723,0,.959-.4389,1.96-1.3156,3.0012-.37.4389-.7678.8562-1.1923,1.2539-.7267.6578-1.0895,1.1234-1.0895,1.3978Z"/><path d="M89.2824,58.7898c-.5067,0-.8767-.2056-1.11-.6167-1.6311,1.8501-3.3918,3.0763-5.283,3.6796-.6301.1922-1.2437.2878-1.8398.2878s-1.107-.0689-1.5314-.2056-.7739-.3289-1.0484-.5756c-1.11-.959-1.22-2.6107-.3289-4.9541.3423-.9178.7842-1.775,1.3259-2.5695s1.1512-1.5314,1.8295-2.2098,1.4081-1.2848,2.1893-1.8192c1.7678-1.1923,3.4946-1.7884,5.1802-1.7884.7267,0,1.3536.1881,1.8809.5653s.812.9178.8531,1.624,0,1.367-.1233,1.9837-.3083,1.2334-.555,1.8501c-.4934,1.2611-1.1923,2.4534-2.0967,3.5768.0956.3978.3597.5961.7914.5961s.8428-.0997,1.2334-.2981.7811-.445,1.1717-.74.7739-.6239,1.1512-.9867.7226-.7092,1.0381-1.0381l.7811-.8634c.2189-.26.3772-.4389.4728-.5345l.4522.3495c-.1778.1645-.4039.3978-.6784.6989s-.5828.6239-.925.9661l-1.0895,1.0689c-1.4112,1.3022-2.659,1.9529-3.7413,1.9529ZM80.7516,61.3594c.2189.11.5273.1645.925.1645.8911,0,2.0351-.5005,3.4329-1.5006,1.0689-.7678,2.0217-1.6517,2.8573-2.6518v-.0822c0-1.1645.4389-2.0423,1.3156-2.6312.2333-.1645.4522-.2806.6578-.3495.6578-1.3978.9661-2.5418.925-3.4329-.0822-1.4112-.6033-2.1173-1.5623-2.1173-1.6168,0-3.8851,1.8223-6.8041,5.468-1.8778,2.3568-2.7617,4.1935-2.6518,5.5091,0,.7534.3012,1.295.9045,1.624Z"/><path d="M98.6767,60.4857c0,.6372.2703.9559.812.9559s1.1378-.1645,1.7884-.4934,1.3156-.7472,1.994-1.2539,1.3464-1.0689,2.0042-1.6856l1.7884-1.7884c.5478-.5622,1.0206-1.0689,1.4184-1.5212l.8428-.9456.4111.3495c-.26.2333-.6095.5961-1.0484,1.0895l-1.4801,1.6445c-3.3435,3.5357-6.2214,5.3035-8.6337,5.3035-.7811,0-1.4081-.1922-1.8809-.5756s-.7092-.8973-.7092-1.5417c0-2.0423,2.9735-5.0569,8.9215-9.0448-2.9056-.48-4.913-.9661-6.023-1.4595-.9045,1.8634-2.2951,3.7618-4.1729,5.6941-.4389.4522-.7092.6989-.812.74s-.1675.0719-.1953.0925-.0483-.0175-.0617-.1131-.0134-.1675,0-.2158.0411-.0997.0822-.1542c.6444-.7267,1.2406-1.4256,1.7884-2.0967,1.2745-1.59,2.2129-3.0012,2.8162-4.2346-.4934-.3155-.7739-.6506-.8428-1.0073s-.0648-.6886.0103-.997.1953-.5859.3597-.8325c.3567-.5345.7678-.8017,1.2334-.8017.8634,0,1.295.3155,1.295.9456,0,.3155-.0617.5828-.185.8017l-.37.6372c-.2467.3155-.37.6784-.37,1.0895,0,.2467.5242.48,1.5726.6989s1.7915.37,2.2304.4522c.959.1778,1.7195.2806,2.2818.3083.3834.0134.5756.1161.5756.3083,0,.1233-.223.3628-.6681.7195s-.9353.7883-1.4698,1.295-1.0556,1.0381-1.5623,1.5931-.9867,1.1203-1.4389,1.6959-.85,1.1306-1.1923,1.6651c-.74,1.1512-1.11,2.0454-1.11,2.6826Z"/><path d="M117.383,62.1405c-1.3701,0-2.0556-.4245-2.0556-1.2745,0-.6989.3978-1.5756,1.1923-2.6312l1.295-1.6445-.2056-.0822c-2.3023,2.8368-4.4741,4.618-6.5164,5.3446-.5622.1922-1.0484.2878-1.4595.2878-1.6856,0-2.5284-.8973-2.5284-2.6929,0-2.1101.8428-4.1246,2.5284-6.0436,2.4945-2.9056,5.0024-4.6252,7.5236-5.1596.7534-.1511,1.3978-.2261,1.9323-.2261s.9559.038,1.2642.1131.5787.1819.812.3186c.4934.3155.74.702.74,1.1614s-.0822.8942-.2467,1.3053l2.0145-2.4873c.37.11.7123.1645,1.0278.1645.8089,0,1.3906-.0278,1.7473-.0822l-6.9275,8.3459c-1.6445,1.9189-2.4668,3.2685-2.4668,4.0496,0,.4389.26.6578.7811.6578s1.1203-.1573,1.7987-.4728,1.3536-.7195,2.0248-1.2128,1.3259-1.0412,1.9631-1.6445,1.2262-1.1923,1.7678-1.7678,1.0175-1.11,1.4287-1.6034l.9867-1.11.4317.3495-1.0484,1.1923c-3.9468,4.5635-7.2153,6.8453-9.8054,6.8453ZM111.6889,54.7402c-1.9323,2.3434-2.8984,4.2624-2.8984,5.7558,0,.6856.3083,1.0278.925,1.0278,2.0012,0,4.8852-2.2129,8.6542-6.6397l1.7267-2.0762c.8223-1.2467,1.2334-2.1512,1.2334-2.7134,0-.959-.48-1.4389-1.4389-1.4389-1.3022,0-3.1729,1.11-5.6119,3.3301-.8356.7678-1.699,1.6856-2.5901,2.7545Z"/></g></svg>
+    <span class="lk-brand-caption" style="font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;">Made With Linkora</span>
+  </a>
+  </main>
+<script>
+(function () {
+  var sliders = document.querySelectorAll('.lk-image-slider');
+  if (!sliders.length) return;
+  sliders.forEach(function (slider) {
+    var track = slider.querySelector('.lk-image-slider-track');
+    var dots = slider.querySelectorAll('.lk-image-slider-dot');
+    var slides = track ? track.querySelectorAll('.lk-imagecard') : null;
+    if (!track || !dots.length || !slides || !slides.length) return;
+    var current = -1;
+    function slideIndex() {
+      var trackRect = track.getBoundingClientRect();
+      var best = 0, bestOverlap = -1;
+      for (var i = 0; i < slides.length; i++) {
+        var r = slides[i].getBoundingClientRect();
+        var overlap = Math.min(r.right, trackRect.right) - Math.max(r.left, trackRect.left);
+        if (overlap > bestOverlap) { bestOverlap = overlap; best = i; }
+      }
+      return best;
+    }
+    function update() {
+      var index = slideIndex();
+      if (index === current) return;
+      current = index;
+      dots.forEach(function (dot, i) {
+        dot.classList.toggle('is-active', i === current);
+      });
+    }
+    dots.forEach(function (dot) {
+      dot.addEventListener('click', function () {
+        var i = Number(dot.getAttribute('data-slide'));
+        var left = slides[i].getBoundingClientRect().left
+          - track.getBoundingClientRect().left + track.scrollLeft;
+        track.scrollTo({ left: left, behavior: 'smooth' });
+      });
+    });
+    track.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  });
+})();
+</script>
+<script>
+(function () {
+  document.querySelectorAll('.lk-faqitem').forEach(function (item) {
+    var button = item.querySelector('.lk-faqitem-summary');
+    var wrap = item.querySelector('.lk-faqitem-answer-wrap');
+    if (!button || !wrap) return;
+    var a11y = button.getAttribute('aria-expanded');
+    // Start collapsed unless the item was rendered open.
+    if (a11y === 'true') {
+      wrap.style.height = wrap.scrollHeight + 'px';
+    } else {
+      wrap.style.height = '0px';
+    }
+    button.addEventListener('click', function () {
+      var open = wrap.style.height !== '0px';
+      if (open) {
+        var from = wrap.scrollHeight;
+        wrap.style.height = from + 'px';
+        void wrap.offsetHeight;
+        wrap.style.height = '0px';
+        button.setAttribute('aria-expanded', 'false');
+        item.classList.remove('is-open');
+      } else {
+        wrap.style.height = wrap.scrollHeight + 'px';
+        button.setAttribute('aria-expanded', 'true');
+        item.classList.add('is-open');
+      }
+    });
+    if (window.ResizeObserver) {
+      new ResizeObserver(function () {
+        if (wrap.style.height !== '0px') {
+          wrap.style.height = wrap.scrollHeight + 'px';
+        }
+      }).observe(wrap);
+    }
+  });
+})();
+</script>
+<script>
+(function () {
+  var FA = {'0':'۰','1':'۱','2':'۲','3':'۳','4':'۴','5':'۵','6':'۶','7':'۷','8':'۸','9':'۹'};
+  function pad(n, digits) {
+    n = String(n);
+    while (n.length < digits) n = '0' + n;
+    return n;
+  }
+  function toPersian(s) {
+    var out = '';
+    for (var i = 0; i < s.length; i++) out += FA[s[i]] || s[i];
+    return out;
+  }
+  function update(root) {
+    var target = Number(root.getAttribute('data-target'));
+    var now = Date.now();
+    var diff = target - now;
+    if (diff < 0) diff = 0;
+    var days = Math.floor(diff / 86400000);
+    var hours = Math.floor(diff % 86400000 / 3600000);
+    var minutes = Math.floor(diff % 3600000 / 60000);
+    var seconds = Math.floor(diff % 60000 / 1000);
+    var vals = [pad(days, 2), pad(hours, 2), pad(minutes, 2), pad(seconds, 2)];
+    var fa = root.getAttribute('data-digits') === 'fa';
+    var boxes = root.querySelectorAll('.lk-countdown-digit');
+    if (boxes.length === 4) {
+      boxes.forEach(function (box, i) {
+        box.textContent = fa ? toPersian(vals[i]) : vals[i];
+      });
+    }
+    if (diff === 0) {
+      var expired = root.querySelector('.lk-countdown-expired');
+      if (expired) expired.style.display = 'block';
+      if (root.__timer) { clearInterval(root.__timer); root.__timer = null; }
+    }
+  }
+  document.querySelectorAll('.lk-countdown').forEach(function (root) {
+    update(root);
+    root.__timer = setInterval(function () { update(root); }, 1000);
+  });
+})();
+</script>
+</body>
+</html>
