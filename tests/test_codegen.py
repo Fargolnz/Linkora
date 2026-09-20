@@ -41,7 +41,7 @@ class TestPageShell:
         assert 'class="lk-brand"' in html
         assert 'href="https://github.com/Fargolnz/Linkora"' in html
         assert "ساخته شده با لینکورا" in html
-        assert "Made With Linkora" not in html
+        assert "Built With Linkora" not in html
         assert "mix-blend-mode: difference" in html
         assert 'viewBox="0 0 128.2367 62.1405"' in html
         assert "<g fill=\"#fff\">" in html
@@ -55,7 +55,7 @@ class TestPageShell:
     def test_brand_footer_en(self):
         html = _html('Page { language: en }\nLink { title: "GitHub", url: "https://github.com" }')
         assert 'class="lk-brand"' in html
-        assert "Made With Linkora" in html
+        assert "Built With Linkora" in html
         assert "ساخته شده با لینکورا" not in html
         assert "font-family: \"Inter\"" in html
 

@@ -224,7 +224,7 @@ BRAND_URL = "https://github.com/Fargolnz/Linkora"
 #: Branding caption per page language. Pinned (never themed).
 BRAND_CAPTIONS = {
     "fa": "ساخته شده با لینکورا",
-    "en": "Made With Linkora",
+    "en": "Built With Linkora",
 }
 
 #: Caption font stacks per page language. Pinned (never themed), so the
