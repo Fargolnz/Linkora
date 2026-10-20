@@ -32,6 +32,7 @@ Link { title: "GitHub", url: "https://github.com/Fargolnz" }
 
 | Persian (RTL, default theme) | English (LTR, default theme) | English (dark theme) |
 |---|---|---|
+| ![Persian sample](docs/screenshots/Linkora-fa-card.png) | ![English sample](docs/screenshots/Linkora-en-card.png) | ![Dark theme sample](docs/screenshots/Linkora-en-themed-card.png) |
 | ![Persian sample](docs/screenshots/Linkora-fa.png) | ![English sample](docs/screenshots/Linkora-en.png) | ![Dark theme sample](docs/screenshots/Linkora-en-themed.png) |
 | [`examples/Linkora-fa.lkr`](examples/Linkora-fa.lkr) ([live demo](https://fargolnz.github.io/Linkora/demo/Linkora-fa)) | [`examples/Linkora-en.lkr`](examples/Linkora-en.lkr) ([live demo](https://fargolnz.github.io/Linkora/demo/Linkora-en)) | [`examples/Linkora-en-themed.lkr`](examples/Linkora-en-themed.lkr) ([live demo](https://fargolnz.github.io/Linkora/demo/Linkora-en-themed)) |
 
